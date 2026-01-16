@@ -1,0 +1,6 @@
+# Task: Unit Testing ADK User Surface
+
+- [ ] Read [walkthrough.md](file:///C:/Users/eqhsp/.gemini/antigravity/brain/19cfb6c2-0ba8-4e65-8db5-7d450253cef9/walkthrough.md) and source code <!-- id: 0 -->
+- [ ] Create `tests/test_adk_cli.py` <!-- id: 1 -->
+- [ ] Run unit tests <!-- id: 2 -->
+- [ ] Update [walkthrough.md](file:///C:/Users/eqhsp/.gemini/antigravity/brain/19cfb6c2-0ba8-4e65-8db5-7d450253cef9/walkthrough.md) with test results <!-- id: 3 -->

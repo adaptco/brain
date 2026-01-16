@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for wiring the ADK end-to-end. Includes steps to update pre-commit hooks, implement proper schema validation using the jsonschema library, and synchronize the IDE control surface documentation.",
+  "updatedAt": "2026-01-15T23:07:03.958106400Z",
+  "version": "3"
+}

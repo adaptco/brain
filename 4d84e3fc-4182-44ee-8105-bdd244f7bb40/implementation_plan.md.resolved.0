@@ -1,0 +1,31 @@
+# IDE Control Surface Pack Implementation Plan
+
+## Goal Description
+Implement the "IDE Control Surface Pack" (Option A) to elevate the IDE from a preference-based environment to a normative control surface within the ADK. This pack forces alignment between local development and CI/CD pipelines, ensuring determinism and reducing "works on my machine" issues.
+
+## Proposed Changes
+
+### Documentation
+#### [NEW] [IDEComplianceChecklist.v1.md](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/IDEComplianceChecklist.v1.md)
+A normative checklist artifact defining the minimum requirements for a compliant IDE setup. This serves as a "Gate" for contributing to the ADK.
+
+#### [NEW] [CI_PARITY_RUNBOOK.md](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/CI_PARITY_RUNBOOK.md)
+A guide explaining how to reproduce CI workflows locally, ensuring the "Replay Court" concept is actionable.
+
+### Policy-as-Code Bindings
+#### [NEW] [.pre-commit-config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/.pre-commit-config.yaml)
+Configuration for pre-commit hooks to enforce formatting, linting, and schema validation locally before commits can be made.
+
+#### [NEW] [.editorconfig](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/.editorconfig)
+Standardizes indentation, charset, and whitespace across different editors.
+
+### Reference Control Environment
+#### [NEW] [.devcontainer/devcontainer.json](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/.devcontainer/devcontainer.json)
+Defines the "Golden Control Surface" – a reference VS Code Dev Container configuration that guarantees toolchain parity with the project's requirements.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Checklist Review**: Verify `IDEComplianceChecklist.v1.md` covers all points mentioned in the user request (JSON Schema, Pre-commit, CI parity, Debugger, Dev container).
+2.  **Config Validation**: Ensure `.pre-commit-config.yaml` and `.devcontainer/devcontainer.json` are valid JSON/YAML.
+3.  **Runbook Clarity**: Read through `CI_PARITY_RUNBOOK.md` to ensure it provides clear commands.

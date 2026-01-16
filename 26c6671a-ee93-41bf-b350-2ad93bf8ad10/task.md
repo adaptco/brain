@@ -1,0 +1,27 @@
+# Task: Release Candidate Blueprint & Contract Pack v0
+
+- [x] Planning & Configuration <!-- id: 0 -->
+    - [x] Analyze requirements and blueprint <!-- id: 1 -->
+    - [x] Obtain user configuration (Language Spine: Docker-first, License: MIT, Repo: adk) <!-- id: 2 -->
+- [x] Repository Scaffolding <!-- id: 3 -->
+    - [x] Create directory structure (`contracts`, `cli`, `examples`, `docs`, `tests`, `.github`) <!-- id: 4 -->
+    - [x] Create root files (`LICENSE`, `README.md`, `SECURITY.md`) <!-- id: 5 -->
+- [x] Contract Pack v0 Implementation <!-- id: 6 -->
+    - [x] Implement Schemas (`artifact`, `event`, `gate_result`, `state`, `tool_policy`) <!-- id: 7 -->
+    - [x] Implement State Machine (`states.yaml`, `transitions.yaml`) <!-- id: 8 -->
+    - [x] Implement Gate Catalog (`catalog.yaml`, `severity.yaml`) <!-- id: 9 -->
+    - [x] Implement Vocabulary Map (`vocabulary_map.yaml`) <!-- id: 10 -->
+- [x] CLI Implementation <!-- id: 11 -->
+    - [x] Create `Dockerfile` (if Docker-first) or implementation files <!-- id: 12 -->
+    - [x] Implement wrapper scripts (`adk.sh`, `validate.sh`, etc.) <!-- id: 13 -->
+    - [x] Implement Host Wrappers (`adk.ps1`, `adk` shell script) <!-- id: 24 -->
+- [x] Examples & Tests <!-- id: 14 -->
+    - [x] Create Golden Path example (`input.json`, `expected/`) <!-- id: 15 -->
+    - [x] Create Tests (`schema_self_test.sh`, `golden_path_test.sh`) <!-- id: 16 -->
+- [x] CI/CD Configuration <!-- id: 17 -->
+    - [x] Configure `ci.yml` <!-- id: 18 -->
+    - [x] Configure `release.yml` <!-- id: 19 -->
+- [x] Documentation <!-- id: 20 -->
+    - [x] Author `boundaries.md` <!-- id: 21 -->
+    - [x] Author `golden_path.md`, `threat_model.md`, etc. <!-- id: 22 -->
+    - [x] Final Verification <!-- id: 23 -->

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to generate the Release Candidate Blueprint (RC0) for the IDE Control Surface Pack.\nIncludes the creation of the `contracts/v0` standard (schemas, state machine), the `cli` structure (pending spine choice), and the CI/docs wrapper.\nRequires user input for Language Spine, Package Name, and License.",
+  "updatedAt": "2026-01-15T12:58:47.323465500Z"
+}

@@ -1,0 +1,36 @@
+# Implementation Plan - IDE Control Surface Pack
+
+Goal: Implement "Option A — IDE Control Surface Pack" to establish "tooling as contract" for the ADK.
+
+## User Review Required
+> [!IMPORTANT]
+> Since this is a fresh workspace, I will be creating the directory structure from scratch.
+> I will assume `SurfaceContract.v0` should be a new JSON artifact that references the new tools.
+
+## Proposed Changes
+
+### Documentation & Policy
+#### [NEW] [IDE_COMPLIANCE.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/IDE_COMPLIANCE.md)
+- Content: `IDEComplianceChecklist.v1` (Artifact ID: `adk://policy/ide.compliance_checklist.v1`)
+
+#### [NEW] [CI_PARITY.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/CI_PARITY.md)
+- Content: `CI Parity Runbook v1` (Artifact ID: `adk://runbook/ci_parity.v1`)
+
+### Dev Environment
+#### [NEW] [devcontainer.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.devcontainer/devcontainer.json)
+- Content: `adk-ide-control-surface` configuration (Artifact ID: `adk://env/devcontainer.ide_control_surface.v1`)
+
+### Tooling
+#### [NEW] [.pre-commit-config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.pre-commit-config.yaml)
+- Content: Pre-commit config bundle (Artifact ID: `adk://policy/precommit.bundle.v1`)
+
+### Surface Contract
+#### [NEW] [SurfaceContract.v0.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/SurfaceContract.v0.json)
+- Content: A JSON file binding the above artifacts into the Surface Contract.
+
+## Verification Plan
+
+### Manual Verification
+1.  **File Existence**: Verify all files are created at the correct paths.
+2.  **Content Check**: Verify contents match the user provided specifications.
+3.  **Validation**: If possible, run `pre-commit validate-config` (if pre-commit is installed) or basic JSON validation on the created JSON files.

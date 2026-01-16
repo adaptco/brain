@@ -1,0 +1,57 @@
+# Emerge Game Engine Implementation Plan
+
+Goal: Use the ADK framework to build a game engine with an orchestrator, sandbox, side-scrolling agentic field, and physics model.
+
+## User Review Required
+> [!IMPORTANT]
+> No build system was found. I will create a `Makefile` to compile the project.
+
+## Proposed Changes
+
+### Build System
+#### [NEW] [Makefile](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/Makefile)
+- Compiles `src` and `tests`.
+- Targets: `all`, `clean`, `test`.
+
+### ADK Framework Setup
+#### [NEW] [devcontainer.ide_control_surface.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/env/devcontainer.ide_control_surface.v1)
+- Defines the Sandbox environment specifications.
+
+#### [NEW] [ide.compliance_checklist.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/policy/ide.compliance_checklist.v1)
+- Defines agent compliance policy.
+
+#### [NEW] [ci_parity.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/runbook/ci_parity.v1)
+- Defines CI runbook.
+
+### Engine Core (`src/engine`)
+#### [NEW] [Orchestrator.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Orchestrator.hpp) / [Orchestrator.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Orchestrator.cpp)
+- Manages agent lifecycle.
+- Loads agents using `agent_capsule` schema (mocked).
+- Controls the Sandbox.
+
+#### [NEW] [Sandbox.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Sandbox.hpp) / [Sandbox.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp)
+- The execution environment.
+- Contains the `AgenticField` and `PhysicsModel`.
+- Stepping mechanism.
+
+#### [NEW] [AgenticField.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/AgenticField.hpp) / [AgenticField.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/AgenticField.cpp)
+- Generates the side-scrolling environment.
+- Provides influence/potential field for agents.
+
+#### [NEW] [PhysicsModel.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/PhysicsModel.hpp) / [PhysicsModel.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/PhysicsModel.cpp)
+- Integrates `SafetyLayer`.
+- Applies physics updates to state.
+
+## Verification Plan
+
+### Automated Tests
+- Run `make test` to compile and run the engine verification test.
+- `tests/engine_test.cpp` will:
+    1.  Instantiate Orchestrator.
+    2.  Initialize Sandbox.
+    3.  Load a mock Agent.
+    4.  Step through the Side-scrolling field.
+    5.  Verify Physics enforcement via `SafetyLayer`.
+
+### Manual Verification
+- None required if tests pass.

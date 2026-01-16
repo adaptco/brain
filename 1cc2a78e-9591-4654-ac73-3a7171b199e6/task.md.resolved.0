@@ -1,0 +1,8 @@
+# SafetyLayer::clip Implementation
+
+- [ ] Design C++ Interface for `SafetyLayer::clip` <!-- id: 0 -->
+    - [ ] Create `include/safety/SafetyLayer.hpp` draft <!-- id: 1 -->
+    - [ ] Define `ViolationClass` enums and `ClipStats` structs <!-- id: 2 -->
+    - [ ] Define `SafetyLayer::clip` signature with doxygen-style invariant comments <!-- id: 3 -->
+- [ ] Implement `SafetyLayer::clip` <!-- id: 4 -->
+- [ ] Verify `SafetyLayer::clip` behavior <!-- id: 5 -->

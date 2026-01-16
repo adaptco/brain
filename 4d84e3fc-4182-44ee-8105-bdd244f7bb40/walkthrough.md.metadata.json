@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the Agency Docking Shell.\nExplains the Architecture:\n- Hub (DockingShell): The orchestrator.\n- Spoke (Field Game): The environment source.\n- Tensor Field: The math core (Eigenstate + RAG).\n- Learning Routine: The bootstrap process.\nIncludes confirmation of the successful verification run.",
+  "updatedAt": "2026-01-15T14:05:05.791064600Z",
+  "version": "1"
+}

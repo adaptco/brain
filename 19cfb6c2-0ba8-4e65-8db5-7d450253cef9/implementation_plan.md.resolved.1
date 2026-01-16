@@ -1,0 +1,66 @@
+# Implementation Plan - RC0 Blueprint
+
+Goal: Implement the "Release Candidate Blueprint (RC0)" targeting a "Contracts-first + Docker-first CLI" architecture.
+
+## User Review Required
+> [!IMPORTANT]
+> **Missing Configuration Inputs**
+> I need the following decisions to proceed:
+> 1.  **Language Spine**: TypeScript / Python / Docker-first (Recommended: Docker-first)
+> 2.  **Package + Repo Name**: e.g. `qadk` + `Q-Enterprises/qadk`
+> 3.  **License Posture**: MIT / Apache-2.0 / etc.
+> 4.  **Vocabulary Posture**: Native or Neutral+Mapping (Recommended: Neutral+Mapping)
+
+## Proposed Changes
+
+### Repository Layout
+- Create directories: `contracts/v0`, `cli`, `examples`, `docs`, `tests`, `.github/workflows`
+
+### Contracts (contracts/v0)
+#### [NEW] Schemas
+- `schemas/artifact.schema.json`
+- `schemas/event.schema.json`
+- `schemas/gate_result.schema.json`
+- `schemas/state.schema.json`
+- `schemas/tool_policy.schema.json`
+
+#### [NEW] State Machine
+- `state_machine/states.yaml`
+- `state_machine/transitions.yaml`
+
+#### [NEW] Gates
+- `gates/catalog.yaml`
+- `gates/severity.yaml`
+
+#### [NEW] Mappings
+- `mappings/vocabulary_map.yaml`
+
+### CLI (cli)
+#### [NEW] Dockerfile
+- Encapsulating the logic (Docker-first spine).
+
+#### [NEW] Scripts
+- `adk.sh` (entrypoint)
+- `commands/validate.sh`
+- `commands/pack.sh`
+
+### CI & Docs
+#### [NEW] Workflows
+- `.github/workflows/ci.yml` (validation)
+- `.github/workflows/release.yml` (publishing)
+
+#### [NEW] Documentation
+- `docs/boundaries.md`
+- `docs/threat_model.md`
+
+## Verification Plan
+
+### Automated Tests
+- **Schema Validation**: Run `schema_self_test.sh` to ensure all JSON schemas are valid meta-schemas.
+- **Transition Consistency**: Run `transition_consistency_test.sh` to verify state machine integrity.
+- **Golden Path**: Run `golden_path_test.sh` to see if examples produce expected artifacts.
+- **Docker Build**: Verify `docker build` succeeds for the CLI.
+
+### Manual Verification
+- Review `docs/boundaries.md`.
+- Check `LICENSE` matches the user's choice.

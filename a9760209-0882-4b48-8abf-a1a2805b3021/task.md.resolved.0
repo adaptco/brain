@@ -1,0 +1,7 @@
+# Unified Shell Design
+
+- [ ] Draft Architecture Document (`unified_shell_design.md`) <!-- id: 0 -->
+    - [ ] Define Core Principles (Determinism, Uniformity) <!-- id: 1 -->
+    - [ ] Design Runtime Bridge Patterns (Subprocess, FFI, RPC) <!-- id: 2 -->
+    - [ ] Design Plugin/Extension System <!-- id: 3 -->
+- [ ] Review with User <!-- id: 4 -->

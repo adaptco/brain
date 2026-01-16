@@ -1,0 +1,37 @@
+# SafetyLayer Interface Design
+
+## Goal Description
+Implement the `SafetyLayer::clip` interface in C++. This layer acts as the "Envelope" in the user's "Envelope -> Data Spine -> Loop Wiring" architecture. It serves as a hard safety manifold, ensuring that actions never leave the safe region. The design mimics a torque-limited joint controller with clear distinctions between hard bounds (enforced clips) and soft warnings (logging).
+
+## User Review Required
+> [!IMPORTANT]
+> **Safety Contract**: The `clip` function returns a `ClipResult` that explicitly states if the action was modified. The caller *must* respect the `clamped_action` in the result.
+
+## Proposed Changes
+
+### Structure
+Creating a standard C++ project structure:
+- `include/safety/SafetyLayer.hpp`: The core interface definition.
+- `src/safety/SafetyLayer.cpp`: Implementation (placeholder for now).
+
+### [SafetyLayer](file:///include/safety/SafetyLayer.hpp)
+The header will define:
+- **Enums**: `ViolationType` (None, SoftLimit, HardLimit, InvariantBreach).
+- **Structs**:
+    - `SafetyBounds`: Defines min/max for hard and soft limits.
+    - `Action`: A generic representation of the control signal (e.g., torque/velocity).
+    - `ClipStats`: Telemetry struct for what happened (logged, blocked, TQ passed).
+- **Class**: `SafetyLayer`
+    - Method: `clip(const Action& proposed, const State& context) -> ClipResult`
+    - Invariants: Documented as generally applicable rules (e.g., $|u| \le u_{max}$).
+
+## Verification Plan
+### Automated Tests
+- Create a simple main.cpp driver to compile against the header and verify struct sizes/alignments if necessary.
+- Unit tests to pass signals through `clip` and assert:
+    - Signals inside soft bounds are untouched.
+    - Signals between soft and hard bounds trigger warnings but pass (or are damped, depending on "soft warning" interpretation - usually just warning, but user said "torque-limited", implying potential soft-capping. I will assume soft warnings are just flags/logs for now unless "torque-limited" implies spring-damper behavior near limits. Re-reading: "hard bounds, soft warnings" -> likely just reporting).
+    - Signals outside hard bounds are clamped.
+
+### Manual Verification
+- Review the generated header file against the user's specific "zero-ambiguity" requirement.

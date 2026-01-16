@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Design plan for the SafetyLayer C++ interface, defining structures for hard/soft limits, violation reporting, and the core clip function signature.",
+  "updatedAt": "2026-01-15T12:30:59.986143500Z"
+}

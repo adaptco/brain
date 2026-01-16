@@ -1,0 +1,7 @@
+# Agency Docking Shell (Hub & Spoke Architecture)
+
+- [x] Design [DockingShell](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/agency_hub/docking_shell.py#6-56) (Hub) Protocol <!-- id: 0 -->
+- [x] Implement [TensorField](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/agency_hub/tensor_field.py#26-84) (Voxelized State & Eigen-Normalization) <!-- id: 1 -->
+- [x] Build `RAGManifold` (Vector Store w/ Dot Product Unification) <!-- id: 2 -->
+- [x] Create [SpokeAdapter](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/agency_hub/spoke_interface.py#4-29) (Interface for Field Games) <!-- id: 3 -->
+- [x] Implement `LearningRoutine` (Bootstrap/Training Loop) <!-- id: 4 -->

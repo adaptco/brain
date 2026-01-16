@@ -1,0 +1,39 @@
+# Implementation Plan: 16-bit 2.5D Racing Game
+
+## Goal Description
+Create a retro-style racing game that mimics the "Mode 7" depth effect found in 16-bit console games (like Mario Kart). This serves as a creative "checkpoint" and demonstrating agentic coding capabilities.
+
+## User Review Required
+> [!NOTE]
+> I will use **generic assets** (geometric shapes and generated patterns) instead of copyrighted Nintendo characters or sprites. I will simulate the *style* and *feel* of the 16-bit era.
+
+## Proposed Changes
+
+### Structure
+I will create a self-contained web application.
+
+#### [NEW] [index.html](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/mk_checkpoint/index.html)
+The container for the game canvas and UI.
+
+#### [NEW] [style.css](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/mk_checkpoint/style.css)
+Retro styling, pixel-art font usage (if available), and layout.
+
+#### [NEW] [game.js](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/mk_checkpoint/game.js)
+The core game engine.
+*   **Loop**: standard `requestAnimationFrame`.
+*   **Renderer**: distinct "Mode 7" projection algorithm:
+    *   Iterate screen scanlines (y-axis).
+    *   Calculate depth (Z) for each scanline.
+    *   Project track coordinates (Map X, Map Y) based on Player position and Angle.
+    *   Sample from a "Track Map" (grid or texture).
+*   **Player**: 2D handling physics (acceleration, drifting friction).
+*   **Sprites**: Draw objects with scale `1/Z`.
+
+#### [NEW] [assets.js](file:///c:/Users/eqhsp/.gemini/antigravity/brain/4d84e3fc-4182-44ee-8105-bdd244f7bb40/mk_checkpoint/assets.js)
+Generates the track map texture and sprite data programmatically to keep the project standalone.
+
+## Verification Plan
+### Manual Verification
+*   **Visual Check**: Open `index.html` in browser.
+*   **Gameplay**: Verify car moves, rotates, and the ground plane rotates correctly in perspective (the "Mode 7" effect).
+*   **Performance**: Ensure 60fps on standard hardware.

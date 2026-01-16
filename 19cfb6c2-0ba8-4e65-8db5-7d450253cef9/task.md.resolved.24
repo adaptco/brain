@@ -1,0 +1,9 @@
+# Task: Finalize ADK User Surface
+
+- [x] Implement Hashing Infrastructure ([cli/hashing.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hashing.py), [cli/hirr_harness.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hirr_harness.py)) <!-- id: 0 -->
+- [x] Implement `adk` CLI Entry Point ([cli/adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.py)) <!-- id: 1 -->
+- [x] Implement `adk validate` command <!-- id: 2 -->
+- [x] Implement `adk replay` command <!-- id: 3 -->
+- [x] Implement `adk commit` command <!-- id: 4 -->
+- [ ] Update [Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/Dockerfile) to use the new Python CLI <!-- id: 5 -->
+- [ ] Verification (`adk validate`, `adk replay`, `docker build`) <!-- id: 6 -->

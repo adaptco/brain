@@ -1,0 +1,20 @@
+# Task: Implement RC0 Blueprint
+
+- [x] Obtain Configuration Inputs (Defaults: Docker-first, MIT, Neutral+Mapping) <!-- id: 0 -->
+- [x] Create Repository Layout `(contracts/, cli/, examples/, docs/, tests/)` <!-- id: 1 -->
+- [/] Implement Contracts v0 <!-- id: 2 -->
+    - [x] Schemas (`artifact`, `event`, `gate_result`, `state`, `tool_policy`) <!-- id: 3 -->
+    - [x] State Machine ([states.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/state_machine/states.yaml), [transitions.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/state_machine/transitions.yaml)) <!-- id: 4 -->
+    - [x] Gates ([catalog.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/gates/catalog.yaml), [severity.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/gates/severity.yaml)) <!-- id: 5 -->
+    - [x] Mappings ([vocabulary_map.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/mappings/vocabulary_map.yaml)) <!-- id: 6 -->
+- [/] Implement CLI <!-- id: 7 -->
+    - [x] Dockerfile <!-- id: 8 -->
+    - [x] Scripts ([adk.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.sh), `commands/`) <!-- id: 9 -->
+- [/] Implement CI & Docs <!-- id: 10 -->
+    - [x] Workflows ([ci.yml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.github/workflows/ci.yml), [release.yml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.github/workflows/release.yml)) <!-- id: 11 -->
+    - [x] Documentation ([boundaries.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/boundaries.md), [threat_model.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/threat_model.md)) <!-- id: 12 -->
+- [/] Verification <!-- id: 13 -->
+    - [/] Schema Validation ([schema_self_test.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/tests/schema_self_test.sh)) <!-- id: 14 -->
+    - [/] Transition Consistency ([transition_consistency_test.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/tests/transition_consistency_test.sh)) <!-- id: 15 -->
+    - [/] Golden Path ([golden_path_test.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/tests/golden_path_test.sh)) <!-- id: 16 -->
+    - [ ] Docker Build <!-- id: 17 -->

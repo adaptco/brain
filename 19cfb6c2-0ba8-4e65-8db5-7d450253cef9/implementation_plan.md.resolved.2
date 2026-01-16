@@ -1,0 +1,46 @@
+# Implementation Plan - ADK User Surface
+
+Goal: Finalize the "User Surface" of the ADK by implementing the `adk` CLI wrapper and extended validation logic, ensuring "Environmental Determinism".
+
+## User Review Required
+> [!IMPORTANT]
+> I will be replacing the bash-based [adk.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.sh) with a Python-based `adk.py` (or similar) to robustly handle the "HIRR Oracle" and hashing requirements described.
+
+## Proposed Changes
+
+### Core Infrastructure (The Spine)
+#### [NEW] [cli/hashing.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hashing.py)
+- Implements deterministic hashing.
+- Normalizes newlines (`\r\n` to `\n`).
+- Handles consistent JSON serialization (`sort_keys=True`, specific separators).
+
+#### [NEW] [cli/hirr_harness.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hirr_harness.py)
+- The "HIRR Oracle" harness.
+- Verifies current state against golden path hashes.
+
+### CLI Implementation
+#### [NEW] [cli/adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.py)
+- Unified entry point using `argparse`.
+- Commands:
+    - `validate`: Invokes Schema Validator.
+    - `replay`: Invokes HIRR Harness.
+    - `commit`: Node 6 Actuator logic (pre-commit check).
+
+#### [MODIFY] [cli/Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/Dockerfile)
+- Update entrypoint to use the Python CLI.
+
+### Validation Logic
+#### [NEW] [cli/validator.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/validator.py)
+- Implements the "Schema Validator Binding".
+- Validates artifacts against schemas in `contracts/v0/schemas`.
+
+## Verification Plan
+
+### Automated Tests
+- **CLI Test**: Verify `adk --help` outputs expected commands.
+- **Validation Test**: Run `adk validate` on sample artifacts.
+- **Replay Test**: Run `adk replay` (will check against generated hashes).
+- **Docker Build**: Verify `docker build` succeeds with the new Python CLI.
+
+### Manual Verification
+- Check that `hashing.py` handles newline normalization correctly.

@@ -1,0 +1,45 @@
+# Walkthrough - RC0 Blueprint Implementation
+
+I have successfully implemented the "Release Candidate Blueprint (RC0)" following the "Contracts-first + Docker-first CLI" architecture.
+
+## Configuration Defaults Used
+- **Language Spine**: Docker-first
+- **Package/Repo**: `adk` / `example/adk`
+- **License**: MIT
+- **Vocabulary**: Neutral+Mapping
+
+## Implemented Components
+
+### Repository Layout
+Created the following directory structure:
+- `contracts/v0`
+- `cli`
+- `examples`
+- `docs`
+- `tests`
+- `.github/workflows`
+
+### Contracts v0
+Implemented in `contracts/v0/`:
+- **Schemas**: `artifact`, `event`, `gate_result`, `state`, `tool_policy` (in `schemas/`)
+- **State Machine**: `states.yaml`, `transitions.yaml` (in `state_machine/`)
+- **Gates**: `catalog.yaml`, `severity.yaml` (in `gates/`)
+- **Mappings**: `vocabulary_map.yaml` (in `mappings/`)
+
+### CLI
+Implemented in `cli/`:
+- **Dockerfile**: Python 3.11-slim base.
+- **Scripts**: `adk.sh` (entrypoint), `commands/validate.sh`, `commands/pack.sh`.
+
+### CI & Docs
+- **Workflows**: `ci.yml` (validation), `release.yml` (publishing).
+- **Documentation**: `boundaries.md`, `threat_model.md`.
+
+## Verification
+- **Test Scripts**: Created `schema_self_test.sh`, `transition_consistency_test.sh`, `golden_path_test.sh` in `tests/`.
+- **Docker Build**: A `Dockerfile` is present and ready for building.
+
+## Next Steps
+- Populate `examples/` with real data.
+- Implement actual logic in the CLI scripts (currently placeholders).
+- Add real validation logic to test scripts.

@@ -1,0 +1,12 @@
+# Task: Emerge Game Engine
+
+- [ ] Analyze existing framework (`adk`) <!-- id: 0 -->
+    - [ ] Understand `schemas`
+    - [ ] Understand `contract` and `gate`
+- [ ] Design Game Engine utilizing the framework <!-- id: 1 -->
+    - [ ] Define Orchestrator role
+    - [ ] Define Sandbox environment
+    - [ ] Designing Side-scrolling Agentic Field
+    - [ ] Physics Model integration
+- [ ] Implement Game Engine Core <!-- id: 2 -->
+- [ ] Verify Implementation <!-- id: 3 -->

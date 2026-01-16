@@ -1,0 +1,35 @@
+# Driver Training Routine Plan
+
+## Goal Description
+Establish a formal learning routine for the `TokenSuzuki.PocketBunny.R32` driver. This involves defining the reinforcement learning configuration, reward function, and training entry point to satisfy the "Tsukuba Trial" requirements and "Kawaii Constraint" (smooth control).
+
+## User Review Required
+> [!NOTE]
+> This plan introduces a new top-level directory `training/`.
+> We are assuming a PPO (Proximal Policy Optimization) approach for the continuous control task of driving.
+
+## Proposed Changes
+### Training Module
+#### [NEW] [config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/config.yaml)
+- Define hyperparameters:
+    - Algorithm: PPO
+    - Timesteps: 1,000,000 (matching the "1M Step HIRR Gate")
+    - Entropy Coefficient: 0.01 (Exploration)
+    - Learning Rate: 3e-4
+
+#### [NEW] [reward.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/reward.py)
+- Implement `calculate_reward(state, action, next_state)`:
+    - **Progress Reward**: Speed along centerline.
+    - **Kawaii Penalty**: Negative reward for high jerk/snap (protecting the "Geometry Plane").
+    - **Safety Penalty**: Large negative for collision or off-track.
+
+#### [NEW] [train.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/train.py)
+- The main entry point script ("The Routine").
+- Loads [suzuki_v1.contract.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/adk-contracts/governance/suzuki_v1.contract.json) to verify Identity.
+- Initializes the environment (Mocked/Conceptual "Tsukuba").
+- Runs the training loop.
+- Exports the final "Control Plane" weights.
+
+## Verification Plan
+### Automated Verification
+- Run `python training/train.py --dry-run` to verify the pipeline initializes and the reward function computes without error.

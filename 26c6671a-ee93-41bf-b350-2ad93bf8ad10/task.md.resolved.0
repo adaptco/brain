@@ -1,0 +1,26 @@
+# Task: Release Candidate Blueprint & Contract Pack v0
+
+- [ ] Planning & Configuration <!-- id: 0 -->
+    - [/] Analyze requirements and blueprint <!-- id: 1 -->
+    - [ ] Obtain user configuration (Language Spine, Repo Name, License) <!-- id: 2 -->
+- [ ] Repository Scaffolding <!-- id: 3 -->
+    - [ ] Create directory structure (`contracts`, `cli`, `examples`, `docs`, `tests`, `.github`) <!-- id: 4 -->
+    - [ ] Create root files (`LICENSE`, `README.md`, `SECURITY.md`) <!-- id: 5 -->
+- [ ] Contract Pack v0 Implementation <!-- id: 6 -->
+    - [ ] Implement Schemas (`artifact`, `event`, `gate_result`, `state`, `tool_policy`) <!-- id: 7 -->
+    - [ ] Implement State Machine (`states.yaml`, `transitions.yaml`) <!-- id: 8 -->
+    - [ ] Implement Gate Catalog (`catalog.yaml`, `severity.yaml`) <!-- id: 9 -->
+    - [ ] Implement Vocabulary Map (`vocabulary_map.yaml`) <!-- id: 10 -->
+- [ ] CLI Implementation <!-- id: 11 -->
+    - [ ] Create `Dockerfile` (if Docker-first) or implementation files <!-- id: 12 -->
+    - [ ] Implement wrapper scripts (`adk.sh`, `validate.sh`, etc.) <!-- id: 13 -->
+- [ ] Examples & Tests <!-- id: 14 -->
+    - [ ] Create Golden Path example (`input.json`, `expected/`) <!-- id: 15 -->
+    - [ ] Create Tests (`schema_self_test.sh`, `golden_path_test.sh`) <!-- id: 16 -->
+- [ ] CI/CD Configuration <!-- id: 17 -->
+    - [ ] Configure `ci.yml` <!-- id: 18 -->
+    - [ ] Configure `release.yml` <!-- id: 19 -->
+- [ ] Documentation <!-- id: 20 -->
+    - [ ] Author `boundaries.md` <!-- id: 21 -->
+    - [ ] Author `golden_path.md`, `threat_model.md`, etc. <!-- id: 22 -->
+    - [ ] Final Verification <!-- id: 23 -->

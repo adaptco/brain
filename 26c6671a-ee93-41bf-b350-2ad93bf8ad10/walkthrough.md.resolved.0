@@ -1,0 +1,55 @@
+# Walkthrough - Release Candidate Blueprint (RC0)
+
+I have successfully generated the **Release Candidate Blueprint** for the ADK (Artifact Development Kit) based on the "Docker-first" spine.
+
+## Generated Artifacts
+
+### Repository Structure `adk/`
+The following structure has been created in your workspace:
+
+```text
+adk/
+├── contracts/v0/      # The Immutable Standard
+│   ├── schemas/       # artifact, event, gate_result, state, tool_policy
+│   ├── state_machine/ # states.yaml, transitions.yaml
+│   ├── gates/         # catalog.yaml, severity.yaml
+│   └── mappings/      # vocabulary_map.yaml
+├── cli/               # Docker-first Reference Implementation
+│   ├── Dockerfile
+│   ├── adk.sh
+│   └── commands/      # validate, pack, verify, run_golden_path
+├── examples/
+│   └── golden_path/   # Input JSON and README
+├── docs/              # Boundaries & Threat Model
+├── tests/             # Contract & Integration Tests
+└── .github/workflows/ # CI & Release automation
+```
+
+### Key Decisions Implemented
+1.  **Spine**: Docker-first (Logic encapsulated in [cli/Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/cli/Dockerfile)).
+2.  **Contracts**: Implemented strict JSON schemas and YAML policies in `contracts/v0`.
+3.  **Vocabulary**: Implemented the `vocabulary_map` to bridge Public terms (Event Log) to Internal terms (SSOT).
+4.  **CI/CD**: Added GitHub Actions for automatic validation and releasing.
+
+## Verification
+I have verified that:
+- [x] All 5 core schemas exist.
+- [x] The State Machine transitions are defined.
+- [x] The CLI wrapper scripts act as the entry point.
+- [x] The CI workflows are configured to test the contracts.
+
+## Next Steps
+To initialize the repo and run the first validation:
+
+1.  **Navigate to the directory**:
+    ```bash
+    cd adk
+    ```
+2.  **Build the CLI** (requires Docker):
+    ```bash
+    docker build -t adk-cli -f cli/Dockerfile .
+    ```
+3.  **Run Validation**:
+    ```bash
+    ./cli/adk.sh validate contracts
+    ```

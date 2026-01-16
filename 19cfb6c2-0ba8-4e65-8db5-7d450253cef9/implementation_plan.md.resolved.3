@@ -1,0 +1,36 @@
+# Implementation Plan - Wire ADK End-to-End
+
+Goal: Finalize the ADK surface by connecting the IDE Control Surface (pre-commit, devcontainer) to the authenticated CLI logic ([adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.py)) and implementing real validation.
+
+## Proposed Changes
+
+### 1. IDE Control Surface ([.pre-commit-config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.pre-commit-config.yaml))
+#### [MODIFY] [.pre-commit-config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.pre-commit-config.yaml)
+- Change entry point from `python -m adk.tools.validate_schemas` to `python cli/adk.py validate`.
+- This ensures the "Integrity Gate" logic is consistent between local dev and CI.
+
+### 2. Validation Logic ([cli/validator.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/validator.py))
+#### [MODIFY] [cli/validator.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/validator.py)
+- Replace mock logic with real `jsonschema` validation.
+- Scan for `*.json` and `*.yaml` files.
+- Validate them against `contracts/v0/schemas/*.schema.json`.
+
+### 3. Environment Parity ([devcontainer.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.devcontainer/devcontainer.json))
+#### [MODIFY] [.devcontainer/devcontainer.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/.devcontainer/devcontainer.json)
+- Ensure `jsonschema` is installed (it's already in [requirements.txt](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/requirements.txt), so just verify `requirements-dev.txt` is aligned or creates a superset).
+
+### 4. Surface Contract ([SurfaceContract.v0.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/SurfaceContract.v0.json))
+#### [MODIFY] [SurfaceContract.v0.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/SurfaceContract.v0.json)
+- Update content to strictly adhere to the [artifact.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/schemas/artifact.schema.json) if needed (it currently might be missing [id](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/validator.py#3-19), `type`, `uri` structure expected by the schema, or the schema needs to be flexible).
+- *Decision*: I will make [SurfaceContract.v0.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/SurfaceContract.v0.json) conform to [artifact.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/contracts/v0/schemas/artifact.schema.json) to prove validation works.
+
+### 5. Documentation
+#### [MODIFY] [docs/IDE_COMPLIANCE.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/IDE_COMPLIANCE.md)
+- Reference `adk validate` and `adk replay`.
+
+#### [MODIFY] [docs/CI_PARITY.md](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docs/CI_PARITY.md)
+- Update canonical CI command to include `adk validate`.
+
+## Verification Plan
+1.  **Manual Verification**: Run `python cli/adk.py validate` and ensure it passes on the updated [SurfaceContract.v0.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/SurfaceContract.v0.json).
+2.  **Pre-commit Verification**: Run `pre-commit run --all-files` (if installed) or simulate the command it runs.

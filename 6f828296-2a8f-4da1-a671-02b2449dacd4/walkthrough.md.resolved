@@ -1,0 +1,46 @@
+# Embedding Circuit & Driver Routine Walkthrough
+
+The "Tsukuba Trial" learning routine has been implemented using a specialized **Embedding Circuit**. This architecture compresses vehicle telemetry into a "Driver Signature" before decoding it into control actions.
+
+## Governance & Configuration
+
+### [config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/config.yaml)
+Defines the `EmbeddingCircuit-PPO` algorithm and the topological constraints:
+- **Embedding Dim**: 64 (The "Signature" size)
+- **Timesteps**: 1,000,000 (Matches HIRR Gate)
+- **Invariants**: LapTime Variance < 0.001
+
+## The Circuit Architecture
+
+### [circuit.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/circuit.py)
+A PyTorch `nn.Module` that serves as the "Identity Core" for the driver.
+- **Encoder**: Compresses `[Yaw, Speed, LatG, Slip]` -> `[64]` (Signature).
+- **Control Plane**: Deep layers processing the signature.
+- **Action Head**: Outputs `[Steer, Throttle, Brake]`.
+- **Export**: Mints the circuit to `suzuki_r32_circuit.pt`.
+
+## The Routine (Reward & Training)
+
+### [reward.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/reward.py)
+Implements the "Kawaii Constraint" and "Geometry Plane" protections:
+- **Pace**: Reward for speed.
+- **Smoothness**: Penalty for jerky steering (Kawaii).
+- **Stability**: Severe penalty for slip angle > 0.1 rad.
+
+### [train.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/train.py)
+The execution script that:
+1. Verifies the [suzuki_v1.contract.json](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/adk-contracts/governance/suzuki_v1.contract.json).
+2. Initializes the [EmbeddingCircuit](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/circuit.py#4-40).
+3. Runs the mock "Tsukuba" simulation loop.
+4. Optimizes the circuit weights.
+5. Calcifies the result into an artifact.
+
+> [!NOTE]
+> [train.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/training/train.py) requires `torch` and `numpy`. Ensure these are installed in the environment to run the "Tsukuba Trial".
+
+## Next Steps
+Run the training routine to mint the first `suzuki_r32_circuit.pt` artifact:
+```bash
+pip install -r requirements.txt
+python training/train.py
+```

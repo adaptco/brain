@@ -1,0 +1,40 @@
+# Walkthrough - ADK User Surface
+
+I have finalized the "User Surface" of the ADK, transforming it into a proper "programmable platform" that enforces "Environmental Determinism".
+
+## Implemented Components
+
+### 1. The Hashing Spine (Determinism)
+- **[cli/hashing.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hashing.py)**: Ensures stable digests across OSs.
+    - **Newline Normalization**: `\r\n` (Windows) is converted to `\n` (Linux/Mac).
+    - **JSON Stability**: Artifacts are serialized with `sort_keys=True`.
+    - **Recursive Normalization**: Recursively normalizes strings within JSON objects.
+
+### 2. The HIRR Harness (Oracle)
+- **[cli/hirr_harness.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/hirr_harness.py)**: The mechanism that walks the ADK workspace and asserts that every file matches its expected hash.
+- **Binary Safety**: Updated to gracefully skip non-UTF-8 binary files (like [.pb](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/c6642758-eeea-42c5-a3b9-3113e0856aab.pb) artifacts).
+
+### 3. The `adk` CLI (Entry Point)
+- **[cli/adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/cli/adk.py)**: A unified Python CLI that replaces the shell script.
+- **Commands**:
+    - `adk validate [path]`: Validates artifacts against schemas.
+    - `adk replay [path]`: Invokes the HIRR Harness.
+    - `adk commit -m "..."`: The "Integrity Gate" (Validate + Replay).
+
+### 4. Unit Test Suite
+- **[tests/test_adk_cli.py](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/tests/test_adk_cli.py)**: Comprehensive unit tests covering:
+    - Hashing determinism (newlines, JSON structure)
+    - Schema validation mocking
+    - HIRR Harness replay logic (including binary skip)
+
+## Verification Results
+
+### Unit Tests
+- **Command**: `python -m unittest tests/test_adk_cli.py`
+- **Result**: `OK` (8 tests passed).
+- **Coverage**: Verified core logic for hashing, validation, and replay.
+
+### Integration Tests
+- **Validation**: `python cli/adk.py validate` passed.
+- **Replay**: `python cli/adk.py replay` passed (traced all source files).
+- **Commit Guard**: `python cli/adk.py commit` successfully ran the pre-commit integrity checks before mocking the git commit.

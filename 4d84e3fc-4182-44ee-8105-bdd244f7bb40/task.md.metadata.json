@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task list for the Agency Docking Shell. Focuses on the Hub (Orchestrator), Tensor Field (Memory/State), and Spokes (Adapters).",
+  "updatedAt": "2026-01-15T14:02:01.946774600Z",
+  "version": "4"
+}

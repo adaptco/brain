@@ -1,0 +1,18 @@
+# SafetyLayer::clip Implementation
+
+- [x] Design C++ Interface for `SafetyLayer::clip` <!-- id: 0 -->
+    - [x] Create `include/safety/SafetyLayer.hpp` draft <!-- id: 1 -->
+    - [x] Define `ViolationClass` enums and `ClipStats` structs <!-- id: 2 -->
+    - [x] Define `SafetyLayer::clip` signature with doxygen-style invariant comments <!-- id: 3 -->
+- [x] Implement `SafetyLayer::clip` <!-- id: 4 -->
+- [x] Verify `SafetyLayer::clip` behavior (Test file created, compiler missing) <!-- id: 5 -->
+- [x] Bind Tooling Requirements to Surface Contract <!-- id: 6 -->
+- [x] Define Gate Checklist for Tooling Compliance <!-- id: 7 -->
+- [x] Implement PR Template and Audit Hooks <!-- id: 8 -->
+- [x] Generate ADK Public Schema Set v0 <!-- id: 9 -->
+- [x] Emit Node Schemas (Actuator, Integrity, Adapter) <!-- id: 10 -->
+- [x] Finalize `contracts_index.json` <!-- id: 11 -->
+- [x] Generate Genesis Block Sample <!-- id: 12 -->
+- [x] Create Threat Model (STRIDE) <!-- id: 13 -->
+- [x] Implement Metrics Collection (Loop Wiring) <!-- id: 14 -->
+- [x] Define Traceability/Reproducibility Metric <!-- id: 15 -->
