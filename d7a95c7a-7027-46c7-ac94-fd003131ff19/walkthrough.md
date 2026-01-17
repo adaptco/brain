@@ -40,3 +40,17 @@ Activating Integrity Gate (Node 6)...
 [3/3] Proceeding to Vault (Git Commit)...
 ```
 The system correctly enforces the gate before invoking the underlying git command.
+
+## Release Build
+### Compilation
+The ADK CLI has been compiled into a standalone executable using `PyInstaller`.
+- **Artifact**: `dist/adk.exe`
+- **Verification**: Run `dist/adk.exe --help`
+
+### Build Verification
+Executed `dist/adk.exe replay`:
+```text
+Triggering HIRR Replay...
+Verifying critical system invariants...
+HIRR Replay: All systems nominal. Determinism holds.
+```

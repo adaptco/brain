@@ -27,5 +27,10 @@
     - [x] Port Canvas & WebSocket Logic
     - [x] Create HUD Components
     - [x] Update Server to Serve React Build
+- [ ] Integrate Stripe Payments <!-- id: 7 -->
+    - [ ] Install Stripe CLI & SDK
+    - [ ] Create Checkout Session Endpoint (Server)
+    - [ ] Add "Unlock Full Game" Button (React)
+    - [ ] Handle Webhooks
 - [/] Verify Emulation <!-- id: 3 -->
     - [/] Run Scaffolding Test (Level 1 + Boss Room) (Skipped: No Compiler)

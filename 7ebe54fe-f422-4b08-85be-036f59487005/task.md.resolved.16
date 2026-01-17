@@ -1,0 +1,36 @@
+# Task: Emerge Game Engine (Mega Man Emulation)
+
+- [ ] Analyze existing framework (`adk`) <!-- id: 0 -->
+    - [x] Understand `schemas`
+    - [x] Understand `contract` and `gate`
+    - [x] Create missing ADK policy files
+- [x] Design Mega Man Engine utilizing the framework <!-- id: 1 -->
+    - [/] Define Orchestrator (Game Loop)
+    - [/] Define Sandbox (World Model Container)
+    - [/] Design Side-scrolling Agentic Field (Level Generator)
+    - [/] Design Physics Model (Platformer Mechanics)
+    - [/] Design Avatar (Mega Man) and Boss Agents
+- [x] Implement Game Engine Core <!-- id: 2 -->
+    - [x] Orchestrator & Sandbox
+    - [x] Physics & SafetyLayer Integration
+    - [x] Level Generator (World Model)
+- [x] Create WebSocket Shell <!-- id: 4 -->
+    - [x] Design Node.js WebSocket Server
+    - [x] Update Engine for StdIO Communication
+    - [x] Implement Server
+- [x] Deploy SPA Checkpoint <!-- id: 5 -->
+    - [x] Create HTML5 Canvas Frontend
+    - [x] Implement WebSocket Client
+    - [x] Render Game State
+- [x] Migrate to React SPA <!-- id: 6 -->
+    - [x] Initialize Vite React Project
+    - [x] Port Canvas & WebSocket Logic
+    - [x] Create HUD Components
+    - [x] Update Server to Serve React Build
+- [ ] Integrate Stripe Payments <!-- id: 7 -->
+    - [ ] Install Stripe CLI & SDK
+    - [ ] Create Checkout Session Endpoint (Server)
+    - [ ] Add "Unlock Full Game" Button (React)
+    - [ ] Handle Webhooks
+- [/] Verify Emulation <!-- id: 3 -->
+    - [/] Run Scaffolding Test (Level 1 + Boss Room) (Skipped: No Compiler)

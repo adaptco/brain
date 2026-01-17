@@ -1,0 +1,35 @@
+# ADK Release Compilation Plan
+
+## Goal Description
+Compile the `adk` Python CLI and its `adk_core` dependencies into a standalone executable (`adk.exe`) for the release version. This ensures the "Integrity Gate" can be distributed without requiring a specific Python environment on the end-user's machine, furthering the goal of "Environmental Determinism".
+
+## User Review Required
+> [!IMPORTANT]
+> This process requires installing `pyinstaller` in the current environment.
+> The resulting artifact will be a Windows Executable (`.exe`) located in the `dist/` directory.
+
+## Proposed Changes
+
+### Build Infrastructure
+#### [NEW] [adk.spec](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.spec)
+*   **Purpose**: PyInstaller specification file.
+*   **Settings**:
+    *   Entry point: [adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py)
+    *   Name: `adk`
+    *   Onefile: True (Single binary)
+    *   Hidden Imports: None expected (standard lib), but will monitor.
+    *   Paths: Include `adk_core` package.
+
+### Execution Steps
+1.  **Install Build Tools**: `pip install pyinstaller`
+2.  **Generate Spec**: Run PyInstaller to generate the default spec, then verify/modify it for determinism (stripping paths where possible).
+3.  **Build**: Run `pyinstaller adk.spec --clean`
+4.  **Verify**: Run `dist/adk.exe --help` and `dist/adk.exe replay`.
+
+## Verification Plan
+### Automated Tests
+*   `dist/adk.exe validate` (should fail gracefully or pass depending on directory content)
+*   `dist/adk.exe replay` (should pass if `hirr_harness` logic holds)
+
+### Manual Verification
+*   Check file size and existence of `dist/adk.exe`.

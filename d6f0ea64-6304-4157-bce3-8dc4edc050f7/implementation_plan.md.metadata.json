@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to install Stripe CLI via Chocolatey and guide the user through authentication.",
+  "updatedAt": "2026-01-16T11:49:07.644420500Z"
+}

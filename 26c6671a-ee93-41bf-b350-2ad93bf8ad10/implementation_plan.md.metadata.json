@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan to generate the Release Candidate Blueprint (RC0) for the IDE Control Surface Pack.\nIncludes the creation of the `contracts/v0` standard (schemas, state machine), the `cli` structure (pending spine choice), and the CI/docs wrapper.\nRequires user input for Language Spine, Package Name, and License.",
-  "updatedAt": "2026-01-15T12:58:47.323465500Z"
+  "summary": "Plan to orchestrate the creation of a release bundle for the ADK.\nThis involves executing the `pack` command via the host wrapper to generate the `contracts` tarball, and then verifying the integrity of the output.\nThis simulates the GitHub Actions `release.yml` workflow locally.",
+  "updatedAt": "2026-01-16T11:26:45.000890300Z",
+  "version": "1"
 }

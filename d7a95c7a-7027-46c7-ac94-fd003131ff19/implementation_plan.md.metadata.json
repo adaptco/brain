@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan to implement the ADK CLI wrapper and its underlying deterministic engines (Hashing Anchor, HIRR Harness) as requested.",
-  "updatedAt": "2026-01-15T15:01:27.433777200Z"
+  "summary": "Plan to compile the ADK CLI into a standalone executable using PyInstaller.",
+  "updatedAt": "2026-01-16T11:25:06.517537300Z",
+  "version": "1"
 }

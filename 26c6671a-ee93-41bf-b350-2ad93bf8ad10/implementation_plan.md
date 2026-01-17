@@ -1,61 +1,21 @@
-# Release Candidate Blueprint (RC0) Implementation Plan
+# Release Bundle Orchestration Plan
 
-Targeting a "Contracts-first + Docker-first CLI" architecture (default recommendation) unless otherwise specified.
+I will act as the runtime orchestrator to produce the official V0 release bundle.
 
-## User Review Required
+## Goal
+Generate the distributable artifacts for the ADK, proving the "spine" works as intended.
 
-> [!IMPORTANT]
-> **Missing Configuration Inputs**
-> To generate the final bundle, I need the following decisions from you:
-> 1. **Language Spine**: `TypeScript` / `Python` / `Docker-first` (Recommended: **Docker-first**)
-> 2. **Package + Repo Name**: e.g. `qadk` + `Q-Enterprises/qadk`
-> 3. **License Posture**: `MIT` / `Apache-2.0` / etc.
-> 4. **Vocabulary Posture**: `Native` or `Neutral+Mapping` (Recommended: **Neutral+Mapping**)
+## Proposed Steps
 
-## Proposed Changes
+1.  **Validate Environment**: Ensure `adk/` exists and Docker is ready.
+2.  **Execute Pack**: Run `.\adk.ps1 pack`.
+    *   This triggers the Dockerized CLI.
+    *   It archives `contracts/v0`.
+    *   It generates a SHA256 checksum.
+3.  **Verify Output**: Check for the existence of:
+    *   `adk-contracts-v0.tar.gz`
+    *   `adk-contracts-v0.tar.gz.sha256`
+4.  **Validate Bundle**: Run `.\adk.ps1 verify <bundle>` to ensure the pack is valid.
 
-I will create the following directory structure and files in the current workspace, corresponding to the RC0 Blueprint.
-
-### Repository Layout
-
-```text
-(repo_root)/
-  contracts/v0/        # The immutable standard
-    schemas/           # JSON Schemas
-    state_machine/     # YAML Definitions
-    gates/             # Policy YAML
-    mappings/          # Vocabulary
-  cli/                 # The reference implementation
-  examples/            # Golden path inputs/outputs
-  docs/                # Boundaries & Usage
-  tests/               # Integration tests
-  .github/workflows/   # CI/CD
-```
-
-### Component Details
-
-#### [NEW] [contracts/v0]
-- **Schemas**: `artifact.schema.json`, `event.schema.json`, `gate_result.schema.json`, `state.schema.json`, `tool_policy.schema.json`.
-- **State Machine**: `states.yaml`, `transitions.yaml`.
-- **Gates**: `catalog.yaml`, `severity.yaml`.
-- **Mappings**: `vocabulary_map.yaml`.
-
-#### [NEW] [cli]
-- **Dockerfile**: For the Docker-first spine (encapsulating the logic).
-- **Scripts**: `adk.sh` (entrypoint), `commands/validate.sh`, `commands/pack.sh`, etc.
-
-#### [NEW] [CI & Docs]
-- **Workflows**: `ci.yml` (validation), `release.yml` (publishing).
-- **Docs**: `boundaries.md`, `threat_model.md`.
-
-## Verification Plan
-
-### Automated Tests
-- **Schema Validation**: Run `schema_self_test.sh` to ensure all JSON schemas are valid meta-schemas.
-- **Transition Consistency**: Run `transition_consistency_test.sh` to verify state machine integrity.
-- **Golden Path**: Run `golden_path_test.sh` to certify the example produces the expected artifacts/events.
-- **Docker Build**: Verify `docker build` succeeds for the CLI.
-
-### Manual Verification
-- Review `boundaries.md` to ensure it explicitly states what the ADK is *not*.
-- Check `LICENSE` matches the user's choice.
+## Outcome
+A signed, stamped release bundle ready for distribution (simulating a GH Release).

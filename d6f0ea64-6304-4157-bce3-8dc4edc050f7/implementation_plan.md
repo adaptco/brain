@@ -1,0 +1,28 @@
+# Stripe CLI Installation and Setup
+
+## Goal Description
+
+Install the Stripe CLI to enable management of Stripe resources from the command line. This setup will use the existing Chocolatey installation on the Windows system.
+
+## User Review Required
+>
+> [!NOTE]
+> The installation involves running `choco install stripe-cli`. This might require administrative privileges depending on how Chocolatey is configured.
+> After installation, you will need to complete the `stripe login` flow in your browser.
+
+## Proposed Changes
+
+### System
+
+- Run `choco install stripe-cli` to install the tool.
+
+## Verification Plan
+
+### Automated Tests
+
+- Run `stripe --version` to confirm successful installation.
+
+### Manual Verification
+
+- User completes `stripe login`.
+- User can run a test command like `stripe customers list`.

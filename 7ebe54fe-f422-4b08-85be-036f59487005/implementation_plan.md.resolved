@@ -75,6 +75,17 @@ Goal: Use the ADK framework to build a game engine scaffolding a Mega Man emulat
 - **Hooks**:
   - `useGameSocket`: Manages WS connection and state updates.
 
+### Stripe Integration
+#### [NEW] [stripe_integration.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/stripe_integration.md) (Optional Doc)
+
+#### [MODIFY] [server/server.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/server.js)
+- Add `/create-checkout-session` endpoint.
+- Add `/webhook` endpoint for Stripe events.
+- Requires `stripe` npm package.
+
+#### [MODIFY] [server/react-client/src/components/HUD.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/components/HUD.jsx)
+- Add "Buy Credits" button.
+
 ## Verification Plan
 
 ### Automated Tests

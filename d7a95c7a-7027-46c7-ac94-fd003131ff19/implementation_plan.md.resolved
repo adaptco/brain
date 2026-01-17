@@ -1,48 +1,35 @@
-# ADK CLI & Integrity Engine Implementation Plan
+# ADK Release Compilation Plan
 
 ## Goal Description
-Implement the `adk` CLI wrapper to serve as the unified "User Surface" for the ADAPTCO-ADK. This includes recreating the "Environmental Determinism" components (`hashing.py`, `hirr_harness.py`) described by the user to ensure infrastructure-level integrity and model drift elimination. The CLI will provide `validate`, `replay`, and `commit` commands.
+Compile the `adk` Python CLI and its `adk_core` dependencies into a standalone executable (`adk.exe`) for the release version. This ensures the "Integrity Gate" can be distributed without requiring a specific Python environment on the end-user's machine, furthering the goal of "Environmental Determinism".
 
 ## User Review Required
 > [!IMPORTANT]
-> Since the referenced `hashing.py` and `hirr_harness.py` were not found in the workspace, this plan includes their creation based on the "Analysis" section of the request.
+> This process requires installing `pyinstaller` in the current environment.
+> The resulting artifact will be a Windows Executable (`.exe`) located in the `dist/` directory.
 
 ## Proposed Changes
 
-### Core Infrastructure (The Spine)
-#### [NEW] [hashing.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk_core/hashing.py)
-*   **Purpose**: The "Hashing Anchor".
-*   **Logic**: 
-    *   Read files in binary mode.
-    *   Normalize `\r\n` to `\n`.
-    *   Compute SHA-256 (or similar) hash.
-    *   Ensure cross-platform stability.
+### Build Infrastructure
+#### [NEW] [adk.spec](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.spec)
+*   **Purpose**: PyInstaller specification file.
+*   **Settings**:
+    *   Entry point: [adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py)
+    *   Name: `adk`
+    *   Onefile: True (Single binary)
+    *   Hidden Imports: None expected (standard lib), but will monitor.
+    *   Paths: Include `adk_core` package.
 
-#### [NEW] [hirr_harness.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk_core/hirr_harness.py)
-*   **Purpose**: The "HIRR Harness".
-*   **Logic**:
-    *   Deterministic JSON serialization.
-    *   `sort_keys=True`.
-    *   Specific separators (e.g., `(',', ':')`).
-    *   Verify state against "Golden Path" hashes.
-
-### CLI Wrapper (The Surface)
-#### [NEW] [adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py)
-*   **Purpose**: The CLI entry point.
-*   **Commands**:
-    *   `validate`: Runs schema validation (will need a placeholder or basic schema validator).
-    *   `replay`: Triggers `hirr_harness` validation.
-    *   `commit`: Wrapper for git commit, running validation/replay checks first ("Integrity Gate").
-
-### Schemas
-#### [NEW] [schema_validator.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk_core/schema_validator.py)
-*   **Purpose**: Basic schema validation logic.
+### Execution Steps
+1.  **Install Build Tools**: `pip install pyinstaller`
+2.  **Generate Spec**: Run PyInstaller to generate the default spec, then verify/modify it for determinism (stripping paths where possible).
+3.  **Build**: Run `pyinstaller adk.spec --clean`
+4.  **Verify**: Run `dist/adk.exe --help` and `dist/adk.exe replay`.
 
 ## Verification Plan
 ### Automated Tests
-*   Run `python adk.py replay` and verify it passes for valid data.
-*   Run `python adk.py validate` with a dummy schema/data.
-*   Run `python adk.py commit` (simulated) to check the hook logic.
+*   `dist/adk.exe validate` (should fail gracefully or pass depending on directory content)
+*   `dist/adk.exe replay` (should pass if `hirr_harness` logic holds)
 
 ### Manual Verification
-*   Execute the `adk` commands in the terminal and check output messages.
+*   Check file size and existence of `dist/adk.exe`.

@@ -1,0 +1,9 @@
+# Stripe CLI Management
+
+- [ ] Install Stripe CLI
+    - [ ] Install via Chocolatey (`choco install stripe-cli`)
+    - [ ] Verify installation (`stripe --version`)
+- [ ] Authenticate Stripe CLI
+    - [ ] Run `stripe login` (Requires user interaction)
+- [ ] Verify Setup
+    - [ ] Check configuration
