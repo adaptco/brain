@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Walkthrough documenting the completed Docling normalization cluster implementation with file structure, key components, and quick start instructions.",
-  "updatedAt": "2026-01-21T18:29:44.468026900Z"
+  "summary": "Walkthrough documenting the completed Docling normalization cluster implementation. Updated with linting fixes for code blocks and tables.",
+  "updatedAt": "2026-01-21T18:56:19.750875600Z",
+  "version": "2"
 }

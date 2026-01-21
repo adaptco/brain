@@ -16,7 +16,7 @@
 
 - [x] `ingest-api` (FastAPI): accept docs, return `bundle_id`
 - [x] `docling-worker`: parse + normalize → `doc.normalized.v1`
-- [x] `embed-worker`: chunk + embed → `chunk.embedding.v1`
+- [x] `embed-worker`: PyTorch + RQ Worker (REFINED)
 - [x] `ledger`: append-only JSONL + hash-chain
 
 ## Queues / Storage
@@ -28,3 +28,8 @@
 
 - [x] Replay test: same input → identical hashes
 - [x] Integration test: full pipeline end-to-end
+
+## Deployment
+
+- [x] Execute local deployment script (`deploy-local.bat`)
+- [!] Verify service health (BLOCKED: Docker daemon connection failure)

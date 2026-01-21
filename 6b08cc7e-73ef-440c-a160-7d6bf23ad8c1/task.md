@@ -7,5 +7,11 @@
 - [x] Create `tests/` directory structure
 - [x] Implement Replay Test (submit same doc twice → identical bundle_id/hashes)
 - [x] Implement Integration Test (end-to-end ingest → ledger entry)
-- [/] Add pytest configuration to pyproject.toml
-- [ ] Verify tests pass
+- [x] Add pytest configuration to pyproject.toml
+- [x] Verify tests pass
+
+## Embed Worker Implementation
+
+- [x] Implement `embed-worker/worker.py` from user snippet
+- [x] Verify imports and schema compliance
+- [ ] Test deterministic embedding generation

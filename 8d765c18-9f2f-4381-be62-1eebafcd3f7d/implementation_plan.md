@@ -4,6 +4,7 @@
 
 1. Resolving the `jest` execution failure for `Qube/QubeAgent.test.ts`.
 2. Implementing the logic to "embed artifacts into permanent knowledge" by writing signed events to the ADK event log upon system triggers (like the Genesis Event).
+3. Deploying the Docling Cluster locally and verifying service availability.
 
 ## User Review Required
 >
@@ -32,9 +33,19 @@
 * Add `fs` write capability or call an external `adk` script to append the event.
 * Ensure it adheres to `event.schema.json`.
 
+### 3. Deploy Docling Cluster
+
+* **Action**: Run `.\scripts\deploy-local.bat` in `Qube/docling-cluster`.
+* **Verification**: Check `docker-compose ps` and hit health endpoints.
+
 ## Verification Plan
 
 ### Automated Tests
 
 * Run `npx jest` and ensure it passes.
 * Verify `output/events` contains a valid JSON line after the test runs.
+
+### Manual Verification
+
+* Verify Docling services (API, Vector Store, Ledger) are up.
+* Check Docker container statuses.

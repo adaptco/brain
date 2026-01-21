@@ -23,6 +23,8 @@
 - [ ] Re-Implement Orchestrator Agent (Files Missing) <!-- id: 20 -->
 - [ ] Activate AgentEvents-Zap 6 (Sovereign Integrity) <!-- id: 21 -->
 
+- [x] Fix IDE Errors (src/main.cpp includes, GEMINI.md linting) <!-- id: 30 -->
+
 ## Docling Pipeline Infrastructure
 
 - [ ] Create `docker-compose.yml` (Qdrant, Redis, API, Workers) <!-- id: 22 -->

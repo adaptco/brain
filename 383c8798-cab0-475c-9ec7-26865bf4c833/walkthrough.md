@@ -9,9 +9,10 @@ All outputs are hash-chained for replay and audit.
 
 ## Files Created (25 total)
 
-```
+```text
 docling-cluster/
 ├── docker-compose.yml          # Local dev deployment
+├── kind-cluster.yaml           # Local K8s cluster config
 ├── pyproject.toml              # Python dependencies
 ├── README.md
 ├── lib/
@@ -22,11 +23,10 @@ docling-cluster/
 │   ├── doc_normalized_v1.py    # Pydantic: normalized doc
 │   └── chunk_embedding_v1.py   # Pydantic: chunk + vector
 ├── services/
-│   ├── ingest-api/             # FastAPI ingestion
-│   ├── docling-worker/         # Celery Docling parser
-│   └── embed-worker/           # PyTorch embedder + Qdrant
+│   ├── ingest-api/             # FastAPI ingestion (RQ producer)
+│   ├── docling-worker/         # RQ Docling parser
+│   └── embed-worker/           # RQ PyTorch embedder + Qdrant
 ├── k8s/
-│   ├── kind-cluster.yaml       # Local K8s via kind
 │   ├── configmap.yaml          # Pinned versions
 │   └── deployments.yaml        # All services
 └── scripts/
@@ -44,9 +44,10 @@ curl -X POST http://localhost:8000/ingest -F "file=@doc.pdf"
 
 ## Determinism Anchors
 
-| Anchor | Location |
-|--------|----------|
+| Anchor      | Location |
+| ----------- | -------- |
 | Docling version | `k8s/configmap.yaml` |
 | Normalizer version | `lib/normalize.py` |
 | Embedder model + hash | `services/embed-worker/worker.py` |
+| Queue System | RQ (Redis Queue) |
 | Hash chain | `lib/ledger.py` |

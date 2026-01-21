@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the verification strategy implementation for docling-cluster. Covers deterministic bundle_id fixes, the new test suite for replay and integration testing, and the manual verification results confirming hash-chain integrity.",
+  "updatedAt": "2026-01-21T19:00:36.746609200Z"
+}

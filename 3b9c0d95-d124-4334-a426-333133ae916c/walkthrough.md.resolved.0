@@ -1,0 +1,37 @@
+# Walkthrough - Embed Worker Integration
+
+I have successfully integrated the new Embed Worker into the `docling-cluster`. This involved transitioning the service from Celery to RQ and updating the shared logic to support deterministic chunk indexing and hash-chain integrity.
+
+## Changes Made
+
+### Shared Library (`lib`)
+- [x] **[canonical.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py)**: Added [compute_chunk_id](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py#43-54) for deterministic ID generation.
+- [x] **[__init__.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/__init__.py)**: Exported [compute_chunk_id](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py#43-54).
+
+### Shared Schemas (`schemas`)
+- [x] **[__init__.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/__init__.py)**: Added aliases ([Chunker](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/chunk_embedding_v1.py#17-22), [Embedding](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/chunk_embedding_v1.py#24-32), [Provenance](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/chunk_embedding_v1.py#34-37)) to match the new worker's domain model.
+
+### Embed Worker Service
+- [x] **[requirements.txt](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/requirements.txt)**: Replaced `celery` with `rq`.
+- [x] **[Dockerfile](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/Dockerfile)**: Updated `CMD` to run the script directly.
+- [x] **[worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py)**: Implemented the new PyTorch/Qdrant logic using `RQ`.
+
+## Verification Results
+
+### Import Verification
+I verified that the imports in [worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py) correctly resolve with the new library structure.
+
+```python
+# Verified imports:
+from lib import compute_chunk_id, get_ledger, hash_canonical_without_integrity
+from schemas import ChunkEmbeddingV1, Chunker, Embedding, Provenance
+```
+
+### Docker Readiness
+The [Dockerfile](file:///c:/Users/eqhsp/Downloads/Qube/Dockerfile) is updated and ready for a fresh build:
+```bash
+docker build -t embed-worker ./docling-cluster/services/embed-worker
+```
+
+## Alignment with Velocity Architecture
+The integration follows the **Deterministic Emulator** logic by ensuring that all [chunk_id](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py#43-54)s are derived from content, and the [IntegritySentinel](file:///c:/Users/eqhsp/Downloads/Qube/jurassic_sdk/src/refusal.rs#30-36) logic (from our previous Rust draft) is supported by the [hash_canonical_without_integrity](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py#34-41) and `get_ledger` calls.

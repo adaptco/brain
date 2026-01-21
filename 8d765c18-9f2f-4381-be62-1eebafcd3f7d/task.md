@@ -11,3 +11,8 @@
 - [x] Verification
   - [x] Confirm tests pass
   - [x] Verify event log output
+
+- [x] Deploy Docling Cluster
+  - [x] Investigate/Create `scripts/deploy-local.bat`
+  - [x] Run deployment script
+  - [/] Verify services are running

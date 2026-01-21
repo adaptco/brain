@@ -1,65 +1,54 @@
-# Docling Pipeline - Implementation Plan
+# Docling Cluster - Implementation Plan
 
-## Architecture
+## Architecture (Distributed RQ)
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ ingest-api  │────▶│   Redis     │────▶│docling-worker│
-│  (FastAPI)  │     │  (queues)   │     │  (parse)     │
-└─────────────┘     └─────────────┘     └──────┬───────┘
-                                               │
-                    ┌─────────────┐            ▼
-                    │   Qdrant    │◀────┌─────────────┐
-                    │  (vectors)  │     │embed-worker │
-                    └─────────────┘     │  (chunk)    │
-                                        └──────┬──────┘
-                                               │
-                                        ┌──────▼──────┐
-                                        │   Ledger    │
-                                        │  (JSONL)    │
-                                        └─────────────┘
+```mermaid
+graph TD
+    A[ingest_api] -->|push job| B(Redis: docling_queue)
+    B --> C[docling_worker]
+    C -->|parse/normalize| D[ledger]
+    C -->|push job| E(Redis: embed_queue)
+    E --> F[embed_worker]
+    F -->|extract/embed| G[Qdrant]
+    F -->|log integrity| D
 ```
 
-## Directory Structure
+## Directory Structure (Qube/)
 
-```
-docling/
+```text
+Qube/docling-cluster/
 ├── docker-compose.yml
-├── services/
-│   ├── ingest-api/
-│   │   ├── Dockerfile
-│   │   ├── requirements.txt
-│   │   └── main.py
-│   ├── docling-worker/
-│   │   ├── Dockerfile
-│   │   ├── requirements.txt
-│   │   └── worker.py
-│   ├── embed-worker/
-│   │   ├── Dockerfile
-│   │   ├── requirements.txt
-│   │   └── worker.py
-│   └── ledger/
-│       ├── Dockerfile
-│       ├── requirements.txt
-│       └── ledger.py
-├── schemas/
-│   ├── doc.normalized.v1.json
-│   └── chunk.embedding.v1.json
-├── lib/
-│   └── jcs.py  # JSON Canonicalization
-└── tests/
-    ├── test_replay.py
-    └── test_integration.py
+├── lib/               # Shared logic (JCS, hashing)
+├── schemas/           # Pydantic models (doc.v1, chunk.v1)
+├── services/          # (Optional: grouped services)
+├── ingest_api/        # FastAPI + RQ Dispatcher
+├── docling_worker/    # RQ Worker for normalization
+├── embed_worker/      # RQ Worker for PyTorch embeddings
+└── ledger/            # Append-only hash-chain service
 ```
 
-## Key Design Decisions
+## Key Components
 
-1. **JCS Canonicalization**: RFC 8785 for deterministic JSON → reproducible hashes.
-2. **Hash-Chain Ledger**: Each entry includes `prev_hash` for integrity verification.
-3. **Redis Queues**: `docling:pending`, `embed:pending` for async processing.
-4. **Qdrant**: Vector storage with metadata for chunk retrieval.
+### 1. Unified Schemas
 
-## Verification Strategy
+Located in `schemas/`. Provides strict Pydantic models with JSON aliases for cross-language compatibility.
 
-- **Replay Test**: Submit same document twice → assert identical `bundle_id` and hashes.
-- **Integration Test**: End-to-end flow from ingest → ledger entry.
+- `DocNormalizedV1`: Full document structure.
+- `ChunkEmbeddingV1`: Text chunk + vector metadata + provenance.
+
+### 2. Integrity Layer
+
+Located in `lib/`.
+
+- **JCS**: Deterministic JSON serialization via `jcs.py`.
+- **Hashing**: SHA256 of canonicalized objects (excluding the `integrity` field for self-hashing).
+
+### 3. Vector Storage
+
+**Qdrant** is used for low-latency vector search. The `embed_worker` handles UPSERT operations with metadata (doc_id, chunk_id, etc.).
+
+## Deployment & Verification
+
+- **Local Dev**: `.\scripts\deploy-local.bat` (Requires Docker).
+- **Unit Testing**: `jest` and `pytest` for schema and logic validation.
+- **System Test**: `test_replay.py` ensures deterministic hashing.

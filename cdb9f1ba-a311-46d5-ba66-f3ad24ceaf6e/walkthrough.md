@@ -1,0 +1,38 @@
+# Walkthrough: Workspace Fixes and C++ Include Resolution
+
+I have resolved the persistent C++ include errors and markdown warnings in your workspace.
+
+## C++ Include Path Resolution
+
+The "file not found" errors were caused by IntelliSense being unable to probe the compiler for standard library paths in your environment. I fixed this by:
+
+1. **Adding explicit absolute paths** to `c_cpp_properties.json` for:
+   - Project includes
+   - MSVC Standard Library
+   - Windows SDK (UCRT, Shared, UM)
+2. **Implementing an explicit destructor** in the `Sandbox` class to resolve the "incomplete type" error (`C2027`) caused by `unique_ptr` and forward declarations.
+
+### Manual Verification
+
+I verified that the code now compiles using the actual compiler on your system:
+
+```powershell
+& "cl.exe" /I"./include" ... src/main.cpp
+# Output: main.cpp (Success)
+```
+
+## Markdown Warning Fixes
+
+- **GEMINI.md**: Added a top-level heading and adjusted spacing to satisfy markdown linting.
+- **README.md**: Added a missing language specifier to a fenced code block.
+
+## Deployment Status: Docling Cluster
+
+The local deployment script `deploy-local.bat` for `docling-cluster` was executed but failed because **Docker Desktop is not running**. Once you start Docker, let me know and I can retry the deployment.
+
+---
+
+**Next Steps**:
+
+1. **Reload VS Code Window** (`Ctrl+Shift+P` → "Reload Window") to refresh IntelliSense.
+2. **Start Docker Desktop** if you wish to proceed with the `docling-cluster` deployment.

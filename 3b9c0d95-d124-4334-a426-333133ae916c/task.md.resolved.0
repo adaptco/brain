@@ -1,0 +1,8 @@
+# Task: Integrate Embed Worker & Refinement
+
+- [ ] Explore `docling-cluster` directory structure [/]
+- [ ] Create `implementation_plan.md` for the Embed Worker integration [ ]
+- [ ] Save `embed_worker.py` to the appropriate location [ ]
+- [ ] Verify/Scaffold `lib.py` and `schemas.py` if missing [ ]
+- [ ] Align with Stage-5 Refusal logic (Jurassic Pixels) [ ]
+- [ ] Notify user for review [ ]

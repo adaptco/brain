@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Architecture and implementation plan for the Docling Pipeline.\n\nServices:\n- ingest-api: FastAPI endpoint for document submission\n- docling-worker: Parses and normalizes documents\n- embed-worker: Chunks text and generates embeddings\n- ledger: Append-only JSONL with hash-chain integrity\n\nInfra: Docker Compose orchestration with Redis (queues) and Qdrant (vectors).",
-  "updatedAt": "2026-01-21T18:29:41.986006700Z",
-  "version": "4"
+  "summary": "Docling Cluster Implementation Plan (Refined).\nArchitecture:\n- Distributed processing via Redis Queue (RQ).\n- Services: ingest_api, docling_worker, embed_worker, ledger.\n- Data: Redis (queues), Qdrant (vectors), Ledger (hash-chain JSONL).\n- Integrity: JCS canonicalization + SHA256.",
+  "updatedAt": "2026-01-21T19:06:20.783514400Z",
+  "version": "5"
 }

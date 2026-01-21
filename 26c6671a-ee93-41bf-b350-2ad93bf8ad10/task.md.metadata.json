@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task tracking: All implementation done. Running tests.",
-  "updatedAt": "2026-01-21T18:45:07.910186900Z",
-  "version": "21"
+  "summary": "Docling Pipeline Implementation - Deployment Blocked. Infrastructure and services implemented. Local deployment script executed, but Docker daemon connection issues in the environment are preventing successful service health verification.",
+  "updatedAt": "2026-01-21T19:03:20.688530500Z",
+  "version": "24"
 }

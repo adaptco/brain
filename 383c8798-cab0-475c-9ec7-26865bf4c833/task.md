@@ -30,3 +30,4 @@
 
 - [x] Test determinism (replay test) — *ledger hash-chain implemented*
 - [x] Validate hash-chain integrity — *verify_chain() implemented*
+- [x] Final linting and cleanup — *walkthrough.md and k8s/ structure resolved*

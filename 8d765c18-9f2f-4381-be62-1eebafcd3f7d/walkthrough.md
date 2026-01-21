@@ -50,3 +50,31 @@ File: [event_log.jsonl](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk
 ```
 
 ✅ Event conforms to [event.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/schemas/event.schema.json)
+
+---
+
+## Docling Cluster Deployment
+
+### Status: In Progress ⏳
+
+The Docling Cluster is currently being deployed via `.\scripts\deploy-local.bat`.
+
+**Deployment includes:**
+
+- **Infrastructure**: Redis (7-alpine), Qdrant (Vector Store)
+- **Application Services**: Ingest API, Docling Worker, Embed Worker, Ledger
+- **Dependencies**: Currently downloading and building ML stacks (Torch, CUDA).
+
+**Current Command Output:**
+
+```
+[+] up 21/21
+Downloading nvidia_cublas_cu...
+Downloading torch-2.10.0...
+```
+
+The services will be available at:
+
+- Ingest API: <http://localhost:8000>
+- Vector Store: <http://localhost:6333>
+- Ledger: <http://localhost:8001>

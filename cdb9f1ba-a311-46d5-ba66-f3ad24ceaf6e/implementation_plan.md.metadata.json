@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to resolve persistent C++ include errors by providing explicit standard library and Windows SDK paths to IntelliSense, and fixing markdown warnings in GEMINI.md.",
+  "updatedAt": "2026-01-21T19:00:35.676954200Z"
+}

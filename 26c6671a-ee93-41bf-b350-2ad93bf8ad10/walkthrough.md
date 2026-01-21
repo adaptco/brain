@@ -9,9 +9,17 @@
 | JCS Library | ✅ Canonicalization + hashing |
 | ingest-api | ✅ FastAPI document submission |
 | docling-worker | ✅ Parse + normalize |
-| embed-worker | ✅ Chunk + embed |
+| embed-worker | ✅ REFINED: PyTorch-ready + RQ worker |
 | ledger | ✅ Append-only hash-chain |
 | Replay Test | ✅ PASSED |
+
+## Refined Embed Worker
+
+The `embed_worker` has been upgraded to use:
+
+- **PyTorch Structure**: L2 normalization and mock model inference loop.
+- **RQ (Redis Queue)**: Robust worker management via `rq.Worker`.
+- **Enhanced Schemas**: Includes `chunk_text`, `provenance`, and late-bound `integrity` hashing.
 
 ## Directory Structure
 
