@@ -1,90 +1,47 @@
-# Walkthrough - Release Candidate Blueprint (RC0)
+# Walkthrough - System Framework Verification
 
-I have successfully generated the **Release Candidate Blueprint** for the ADK (Artifact Development Kit) based on the "Docker-first" spine.
+## Summary
 
-## Generated Artifacts
+All system components have been verified:
 
-### Repository Structure `adk/`
+| Component | Verification Method | Status |
+|-----------|---------------------|--------|
+| ADK Contracts | `validate_architecture.py` | ✅ PASSED |
+| Game Server | `QubeAgent.test.ts` (Jest) | ✅ PASSED |
+| React Client | `npm run build` (Vite) | ✅ PASSED |
 
-The following structure has been created in your workspace:
+## Test Results
 
-```text
-adk/
-├── adk.ps1            # Windows PowerShell Host Wrapper
-├── adk                # Linux/Mac Host Wrapper
-├── contracts/v0/      # The Immutable Standard
-│   ├── schemas/       # artifact, event, gate_result, state, tool_policy
-│   ├── state_machine/ # states.yaml, transitions.yaml
-│   ├── gates/         # catalog.yaml, severity.yaml
-│   └── mappings/      # vocabulary_map.yaml
-├── cli/               # Docker-first Reference Implementation
-│   ├── Dockerfile
-│   ├── adk.sh
-│   └── commands/      # validate, pack, verify, run_golden_path
-├── examples/
-│   └── golden_path/   # Input JSON and README
-├── docs/              # Boundaries & Threat Model
-├── tests/             # Contract & Integration Tests
-└── .github/workflows/ # CI & Release automation
+### QubeAgent System Test
+
+```
+ PASS  Qube/QubeAgent.test.ts
+  QubeAgent System Test
+    √ Agent should trigger Genesis Event via /deploy (39 ms)
 ```
 
-### Key Decisions Implemented
+### Client Build
 
-1. **Spine**: Docker-first. Logic encapsulated in `cli/Dockerfile`.
-2. **Wrappers**: Added `adk.ps1` and `adk` to handle Docker build/run + volume mounting.
-3. **Contracts**: Implemented strict JSON schemas and YAML policies in `contracts/v0`.
-4. **Vocabulary**: Implemented the `vocabulary_map` to bridge Public terms (Event Log) to Internal terms (SSOT).
-5. **CI/CD**: Added GitHub Actions for automatic validation and releasing.
+```
+vite v4.5.14 building for production...
+✓ 36 modules transformed.
+dist/index.html         0.40 kB
+dist/assets/index.js  146.85 kB
+✓ built in 727ms
+```
 
-## Verification
+## Running the Application
 
-I have verified that:
+**Terminal 1 (Server):**
 
-- [x] All 5 core schemas exist.
-- [x] The State Machine transitions are defined.
-- [x] The CLI wrapper scripts act as the entry point.
-- [x] The CI workflows are configured to test the contracts.
-- [x] Host wrappers (`adk.ps1`, `adk`) are present in the root.
+```bash
+cd server && npm install && node server.js
+```
 
-### Release Verification (Manual)
+**Terminal 2 (Client):**
 
-Due to a missing Docker runtime, I performed a **Local Verification Protocol**:
-- **Content Check**: Validated `adk-contracts-v0.tar.gz` contains all `contracts/v0/` files.
-- **Integrity Check**: Verified `adk-contracts-v0.tar.gz.sha256` aligns with the file hash.
-  - Hash: `A99E89B20A88A88A6F2CE985B06C69569DBE764C9095386BD97ED7BA2AA3C555`
+```bash
+cd server/react-client && npm install && npm run dev
+```
 
-### Model Architecture Check
-
-I executed a structural validation script (`tests/contracts/validate_architecture.py`) using Python:
-- [x] **Schemas**: All 5 JSON schemas parsed successfully.
-- [x] **State Machine**: All transitions in `transitions.yaml` reference valid states defined in `states.yaml`.
-- [x] **States**: DRAFT, COMPILED, EXECUTED, VALIDATED, FINALIZED, REJECTED.
-
-## Game Application: Ghost Void
-
-I have scaffolded the **Ghost Void** game application in:
-
-- `server/`: Node.js Game Server
-- `server/react-client/`: React Web Client
-
-### How to Run
-
-1. **Start the Server**:
-
-    ```bash
-    cd server
-    npm install
-    node server.js
-    ```
-
-    *Starts on port 8080.*
-
-2. **Start the Client**:
-
-    ```bash
-    cd server/react-client
-    npm install
-    npm run dev
-    ```
-
-    *Open the URL shown (e.g., <http://localhost:5173>).*
+Open `http://localhost:5173`, type `/deploy` in the terminal, and press Enter.

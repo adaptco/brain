@@ -1,0 +1,104 @@
+# Docling Pipeline Implementation Plan
+
+## Goal
+
+Build a local-first document processing pipeline using **IBM Docling** for parsing, **PyTorch** for embeddings, and a **hash-chain ledger** for deterministic replay.
+
+## Architecture
+
+```mermaid
+graph LR
+    A[ingest-api] --> B[parse_queue]
+    B --> C[docling-worker]
+    C --> D[embed_queue]
+    D --> E[embed-worker]
+    E --> F[Qdrant]
+    C --> G[Ledger]
+    E --> G
+```
+
+## Proposed Changes
+
+### [NEW] `docling-pipeline/` (New Directory)
+
+#### [NEW] `docker-compose.yml`
+
+- **Qdrant**: Vector store (`qdrant/qdrant:latest`)
+- **Redis**: Queue backend (`redis:alpine`)
+- **ingest-api**: FastAPI service
+- **docling-worker**: Celery worker for Docling parsing
+- **embed-worker**: Celery worker for PyTorch embeddings
+- Shared volume for ledger persistence
+
+---
+
+#### [NEW] `schemas/doc_normalized_v1.py`
+
+- Pydantic model for `doc.normalized.v1`
+- JCS canonicalization + SHA256 integrity
+
+#### [NEW] `schemas/chunk_embedding_v1.py`
+
+- Pydantic model for `chunk.embedding.v1`
+- L2 normalization for vectors
+
+---
+
+#### [NEW] `services/ingest_api/main.py`
+
+- FastAPI app accepting documents
+- Returns `bundle_id`
+- Enqueues to `parse_queue`
+
+#### [NEW] `services/docling_worker/tasks.py`
+
+- Celery task using IBM Docling
+- Normalizes output → `doc.normalized.v1`
+- Writes to ledger
+- Enqueues chunks to `embed_queue`
+
+#### [NEW] `services/embed_worker/tasks.py`
+
+- Celery task using PyTorch embedder
+- L2 normalizes vectors
+- Writes to Qdrant + ledger
+
+---
+
+#### [NEW] `lib/ledger.py`
+
+- Append-only JSONL writer
+- Hash-chain: each record includes `prev_ledger_hash`
+- `sha256_canonical` computed via JCS (RFC8785)
+
+#### [NEW] `lib/normalize.py`
+
+- Unicode NFKC
+- Whitespace collapse
+- LF line endings
+- Stable block ordering
+
+---
+
+## Determinism Anchors (ConfigMap)
+
+| Key | Example |
+|-----|---------|
+| `pipeline_version` | `v0.1.0` |
+| `docling_version` | `0.5.0` |
+| `normalizer_version` | `norm.v1` |
+| `chunker_version` | `chunk.v1` |
+| `embedder_model_id` | `text-embedder-v1` |
+| `weights_hash` | `sha256:abc...` |
+
+## Verification Plan
+
+### Automated Tests
+
+- Replay test: same input → identical `doc_id`, `chunk_ids`, embedding hashes
+- Hash-chain integrity: verify `prev_ledger_hash` links
+
+### Manual Verification
+
+- Ingest a test PDF, verify Qdrant contains correct vectors
+- Query ledger JSONL, verify hash chain

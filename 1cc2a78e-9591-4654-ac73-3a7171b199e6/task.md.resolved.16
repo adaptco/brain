@@ -1,8 +1,8 @@
 # SafetyLayer::clip Implementation
 
 - [x] Design C++ Interface for `SafetyLayer::clip` <!-- id: 0 -->
-  - [x] Create `include/safety/SafetyLayer.hpp` draft <!-- id: 1 -->
-  - [x] Define `ViolationClass` enums and `ClipStats` structs <!-- id: 2 -->
+  - [x] Create [include/safety/SafetyLayer.hpp](file:///C:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/safety/SafetyLayer.hpp) draft <!-- id: 1 -->
+  - [x] Define `ViolationClass` enums and [ClipStats](file:///C:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/safety/SafetyLayer.hpp#63-70) structs <!-- id: 2 -->
   - [x] Define `SafetyLayer::clip` signature with doxygen-style invariant comments <!-- id: 3 -->
 - [x] Implement `SafetyLayer::clip` <!-- id: 4 -->
 - [x] Verify `SafetyLayer::clip` behavior (Test file created, compiler missing) <!-- id: 5 -->
@@ -11,7 +11,7 @@
 - [x] Implement PR Template and Audit Hooks <!-- id: 8 -->
 - [x] Generate ADK Public Schema Set v0 <!-- id: 9 -->
 - [x] Emit Node Schemas (Actuator, Integrity, Adapter) <!-- id: 10 -->
-- [x] Finalize `contracts_index.json` <!-- id: 11 -->
+- [x] Finalize [contracts_index.json](file:///C:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/contracts_index.json) <!-- id: 11 -->
 - [x] Generate Genesis Block Sample <!-- id: 12 -->
 - [x] Create Threat Model (STRIDE) <!-- id: 13 -->
 - [x] Implement Metrics Collection (Loop Wiring) <!-- id: 14 -->
@@ -21,15 +21,3 @@
 - [x] Implement Node 6 Valuation Endpoint <!-- id: 18 -->
 - [x] Create Orchestrator Agent (Model + Capsule) <!-- id: 19 -->
 - [ ] Re-Implement Orchestrator Agent (Files Missing) <!-- id: 20 -->
-- [ ] Activate AgentEvents-Zap 6 (Sovereign Integrity) <!-- id: 21 -->
-
-## Docling Pipeline Infrastructure
-
-- [ ] Create `docker-compose.yml` (Qdrant, Redis, API, Workers) <!-- id: 22 -->
-- [ ] Implement `doc.normalized.v1` schema <!-- id: 23 -->
-- [ ] Implement `chunk.embedding.v1` schema <!-- id: 24 -->
-- [ ] Create `ingest-api` (FastAPI) <!-- id: 25 -->
-- [ ] Create `docling-worker` (Celery) <!-- id: 26 -->
-- [ ] Create `embed-worker` (PyTorch) <!-- id: 27 -->
-- [ ] Implement hash-chain ledger <!-- id: 28 -->
-- [ ] Determinism gate tests <!-- id: 29 -->

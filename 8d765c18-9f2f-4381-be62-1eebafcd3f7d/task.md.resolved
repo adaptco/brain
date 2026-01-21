@@ -1,0 +1,13 @@
+# Fix Verification & Embed Artifacts
+
+## Tasks
+
+- [x] Fix Test Infrastructure
+  - [x] Capture full Jest error output
+  - [x] Diagnose and fix the test failure (tests already pass!)
+- [/] Implement Artifact Embedding
+  - [ ] Modify [server.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/server.js) to emit ADK-compliant events
+  - [ ] Wire Genesis Event to event log write
+- [ ] Verification
+  - [ ] Confirm tests pass
+  - [ ] Verify event log output

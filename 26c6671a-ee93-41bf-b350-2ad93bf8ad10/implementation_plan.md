@@ -1,44 +1,65 @@
-# Ghost Void Game - Implementation Plan
+# Docling Pipeline - Implementation Plan
 
-## Goal
+## Architecture
 
-Scaffold a dual-process application (Node.js Server + React Client) featuring a "Terminal Shell" interface and a game canvas.
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│ ingest-api  │────▶│   Redis     │────▶│docling-worker│
+│  (FastAPI)  │     │  (queues)   │     │  (parse)     │
+└─────────────┘     └─────────────┘     └──────┬───────┘
+                                               │
+                    ┌─────────────┐            ▼
+                    │   Qdrant    │◀────┌─────────────┐
+                    │  (vectors)  │     │embed-worker │
+                    └─────────────┘     │  (chunk)    │
+                                        └──────┬──────┘
+                                               │
+                                        ┌──────▼──────┐
+                                        │   Ledger    │
+                                        │  (JSONL)    │
+                                        └─────────────┘
+```
 
-## Proposed Architecture
+## Directory Structure
 
-### 1. Game Server (`server/`)
+```
+docling/
+├── docker-compose.yml
+├── services/
+│   ├── ingest-api/
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── main.py
+│   ├── docling-worker/
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── worker.py
+│   ├── embed-worker/
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── worker.py
+│   └── ledger/
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       └── ledger.py
+├── schemas/
+│   ├── doc.normalized.v1.json
+│   └── chunk.embedding.v1.json
+├── lib/
+│   └── jcs.py  # JSON Canonicalization
+└── tests/
+    ├── test_replay.py
+    └── test_integration.py
+```
 
-- **Runtime**: Node.js
-- **Dependencies**: `ws` (WebSockets), `express` (optional, for static serving later).
-- **Key File**: `server.js`
-  - Manages WS connections.
-  - Listens for `CMD_DEPLOY` from the terminal.
-  - Broadcasts `GENESIS_EVENT` to clients.
+## Key Design Decisions
 
-### 2. React Client (`server/react-client/`)
+1. **JCS Canonicalization**: RFC 8785 for deterministic JSON → reproducible hashes.
+2. **Hash-Chain Ledger**: Each entry includes `prev_hash` for integrity verification.
+3. **Redis Queues**: `docling:pending`, `embed:pending` for async processing.
+4. **Qdrant**: Vector storage with metadata for chunk retrieval.
 
-- **Tooling**: Vite + React
-- **Styling**: CSS Modules or simple CSS (Dark/Cyberpunk theme).
-- **Components**:
-  - `App.jsx`: Main layout.
-  - `GameCanvas.jsx`: Pure HTML5 Canvas renderer for the "Game". handles Z (shoot) and Arrow (move) inputs.
-  - `Terminal.jsx`: Overlay shell. Parses text input. Handles `/deploy`.
+## Verification Strategy
 
-## Step-by-Step Implementation
-
-1. **Server Scaffold**:
-    - Create `server/package.json`.
-    - Write `server.js` with basic "echo" and "command parsing" logic.
-2. **Client Scaffold**:
-    - Use `npm create vite@latest` (simulated via file creation) to set up React.
-    - Implement `Terminal.jsx` with an input loop and history display.
-    - Implement `GameCanvas.jsx` with a basic requestAnimationFrame loop.
-3. **Integration**:
-    - Connect Client `ws` to `localhost:8080`.
-    - Ensure `/deploy` in Terminal -> Sends msg to Server -> Server logs "Big Boss Triggered" -> Server sends "Genesis" -> Client shows visual effect.
-
-## User Verification
-
-- Run `node server.js` in one term.
-- Run `npm run dev` in another.
-- Visit localhost.
+- **Replay Test**: Submit same document twice → assert identical `bundle_id` and hashes.
+- **Integration Test**: End-to-end flow from ingest → ledger entry.

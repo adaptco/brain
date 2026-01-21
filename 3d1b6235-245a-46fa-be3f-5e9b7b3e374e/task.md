@@ -1,19 +1,30 @@
+# Task: Docling Pipeline Implementation
 
-# Task: Implementing Vehicle Agent Avatar
+## Infrastructure
 
-## Core Components
+- [x] Create `docker-compose.yml` with all services
+- [x] Create Dockerfiles for each service
+- [x] Create `requirements.txt` per service
 
-- [x] Create `ISFModel.js` (Container/Physics)
-- [x] Create `AlexisDriver.js` (Driver Logic)
-- [x] Create `LexusAgent.js` (Avatar/Agent Composition)
+## Schemas
 
-## Integration
+- [x] Define `doc.normalized.v1` JSON schema
+- [x] Define `chunk.embedding.v1` JSON schema
+- [x] Implement JCS canonicalization + hashing
 
-- [x] Integrate `LexusAgent` into `GameCanvas.jsx`
-- [ ] Fix any import errors in `GameCanvas.jsx` (Verified: Imports added)
+## Services
+
+- [x] `ingest-api` (FastAPI): accept docs, return `bundle_id`
+- [x] `docling-worker`: parse + normalize → `doc.normalized.v1`
+- [x] `embed-worker`: chunk + embed → `chunk.embedding.v1`
+- [x] `ledger`: append-only JSONL + hash-chain
+
+## Queues / Storage
+
+- [x] Redis for task queues
+- [x] Qdrant for vector storage
 
 ## Verification
 
-- [ ] Check `package.json` for build scripts
-- [ ] Verify project builds without errors
-- [ ] (Optional) Run the application to see the agent in action
+- [ ] Build Docker images
+- [ ] Integration test: full pipeline end-to-end

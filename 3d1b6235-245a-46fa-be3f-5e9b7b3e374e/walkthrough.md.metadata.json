@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Walkthrough of the Vehicle Agent Avatar implementation, including the Lexus Agent, IS-F Model, Alexis Driver, and GameCanvas integration.",
-  "updatedAt": "2026-01-21T17:27:20.365401200Z"
+  "summary": "Walkthrough of the Docling pipeline implementation with Docker Compose, FastAPI, workers, schemas, ledger, and verification steps.",
+  "updatedAt": "2026-01-21T18:33:11.300016Z",
+  "version": "2"
 }

@@ -1,0 +1,52 @@
+# Docling Normalization Cluster - Walkthrough
+
+## Summary
+
+Built a deterministic document processing pipeline:
+**Documents → IBM Docling → Canonical JSON → PyTorch Embeddings → Qdrant**
+
+All outputs are hash-chained for replay and audit.
+
+## Files Created (25 total)
+
+```
+docling-cluster/
+├── docker-compose.yml          # Local dev deployment
+├── pyproject.toml              # Python dependencies
+├── README.md
+├── lib/
+│   ├── canonical.py            # JCS canonicalization + SHA256
+│   ├── normalize.py            # L2 norm, document text norm
+│   └── ledger.py               # Hash-chain ledger
+├── schemas/
+│   ├── doc_normalized_v1.py    # Pydantic: normalized doc
+│   └── chunk_embedding_v1.py   # Pydantic: chunk + vector
+├── services/
+│   ├── ingest-api/             # FastAPI ingestion
+│   ├── docling-worker/         # Celery Docling parser
+│   └── embed-worker/           # PyTorch embedder + Qdrant
+├── k8s/
+│   ├── kind-cluster.yaml       # Local K8s via kind
+│   ├── configmap.yaml          # Pinned versions
+│   └── deployments.yaml        # All services
+└── scripts/
+    ├── deploy-local.sh
+    └── deploy-local.bat
+```
+
+## Quick Start
+
+```bash
+cd docling-cluster
+docker-compose up --build
+curl -X POST http://localhost:8000/ingest -F "file=@doc.pdf"
+```
+
+## Determinism Anchors
+
+| Anchor | Location |
+|--------|----------|
+| Docling version | `k8s/configmap.yaml` |
+| Normalizer version | `lib/normalize.py` |
+| Embedder model + hash | `services/embed-worker/worker.py` |
+| Hash chain | `lib/ledger.py` |

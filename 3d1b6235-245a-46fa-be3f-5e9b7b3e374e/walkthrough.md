@@ -1,46 +1,59 @@
+# Walkthrough: Docling Pipeline
 
-# Walkthrough - Vehicle Agent Avatar
+## Summary
 
-I have successfully implemented the "Lexus" Avatar Agent, which models a "Super App Super Model" behavior, driven by "Alexis" inside an "IS-F" container.
+Built a **deterministic document processing pipeline** using IBM Docling, PyTorch embeddings, and an append-only ledger with hash-chain integrity.
 
-## Changes
+## Components Created
 
-### 1. New Agent Architecture
+### Infrastructure
 
-I created three new classes in `server/react-client/src/game`:
+| File | Description |
+|------|-------------|
+| [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docker-compose.yml) | Multi-service: Redis, Qdrant, ingest-api, workers |
 
-- **[ISFModel.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/ISFModel.js)**: A physics container representing the vehicle.
-- **[AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js)**: The driver intelligence with states (IDLE, DRIVING, OPTIMIZING).
-- **[LexusAgent.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js)**: The composite Agent.
+### Schemas (`docling/schemas/`)
 
-### 2. UI Integration
+| File | Description |
+|------|-------------|
+| [doc_normalized_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/doc_normalized_v1.py) | Pydantic schema for parsed documents |
+| [chunk_embedding_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/chunk_embedding_v1.py) | Pydantic schema for embeddings |
 
-I updated **[GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx)** to:
+### Services
 
-- Instantiated the `LexusAgent`.
-- Run the agent's `update()` loop.
-- Render the agent's position and internal state (Driver Name, State, etc.) on the canvas.
+| Service | Path | Description |
+|---------|------|-------------|
+| ingest-api | [main.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/ingest_api/main.py) | FastAPI: `POST /ingest` |
+| docling-worker | [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/docling_worker/tasks.py) | Docling parse + normalize |
+| embed-worker | [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/embed_worker/tasks.py) | PyTorch embeddings |
 
-### 3. Documentation Fixes
+### Common Utilities (`docling/common/`)
 
-I also resolved markdown lint errors in **[boundaries.md](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/docs/boundaries.md)**.
+- **canonicalize.py**: JCS + SHA256 hashing
+- **normalize.py**: NFKC text + L2 vector normalization
 
-## Verification Results
+### Ledger (`docling/ledger/`)
 
-### Build Verification
+- **ledger.py**: Append-only JSONL with hash-chain
 
-I ran `npm run build` in `server/react-client`, and it completed successfully:
+## Running the Pipeline
 
+```bash
+# Start all services
+docker compose up --build -d
+
+# Ingest a document
+curl -X POST http://localhost:8000/ingest -F file=@document.pdf
+
+# View ledger
+cat docling/data/ledger.jsonl | jq .
 ```
-> ghost-void-client@0.0.0 build
-> vite build
 
-vite v4.5.14 building for production...
-✓ 36 modules transformed.
-dist/index.html                   0.40 kB │ gzip:  0.28 kB
-dist/assets/index-4e19ee22.css    0.68 kB │ gzip:  0.36 kB
-dist/assets/index-25baa016.js   146.85 kB │ gzip: 47.61 kB
-✓ built in 748ms
-```
+## Determinism Anchors
 
-This confirms that all imports are correct and the code syntax is valid.
+All outputs are reproducible via:
+
+- `parser.config_hash`
+- `embedding.weights_hash`
+- `integrity.sha256_canonical`
+- `integrity.prev_ledger_hash`

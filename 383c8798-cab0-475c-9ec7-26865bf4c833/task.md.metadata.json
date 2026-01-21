@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Checklist tracking the implementation of the Docling normalization pipeline with Kubernetes deployment. Covers planning, core infrastructure, services, deployment, and verification phases.",
+  "updatedAt": "2026-01-21T18:22:55.084216300Z"
+}

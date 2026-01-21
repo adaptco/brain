@@ -1,0 +1,39 @@
+
+# Walkthrough - Vehicle Agent Avatar
+
+I have successfully implemented the "Lexus" Avatar Agent, which models a "Super App Super Model" behavior, driven by "Alexis" inside an "IS-F" container.
+
+## Changes
+
+### 1. New Agent Architecture
+I created three new classes in `server/react-client/src/game`:
+
+- **[ISFModel.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/ISFModel.js)**: A physics container representing the vehicle.
+- **[AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js)**: The driver intelligence with states (IDLE, DRIVING, OPTIMIZING).
+- **[LexusAgent.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js)**: The composite Agent.
+
+### 2. UI Integration
+I updated **[GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx)** to:
+- Instantiated the `LexusAgent`.
+- Run the agent's `update()` loop.
+- Render the agent's position and internal state (Driver Name, State, etc.) on the canvas.
+
+### 3. Documentation Fixes
+I also resolved markdown lint errors in **[boundaries.md](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/docs/boundaries.md)**.
+
+## Verification Results
+
+### Build Verification
+I ran `npm run build` in `server/react-client`, and it completed successfully:
+```text
+> ghost-void-client@0.0.0 build
+> vite build
+
+vite v4.5.14 building for production...
+✓ 36 modules transformed.
+dist/index.html                   0.40 kB │ gzip:  0.28 kB
+dist/assets/index-4e19ee22.css    0.68 kB │ gzip:  0.36 kB
+dist/assets/index-25baa016.js   146.85 kB │ gzip: 47.61 kB
+✓ built in 748ms
+```
+This confirms that all imports are correct and the code syntax is valid.

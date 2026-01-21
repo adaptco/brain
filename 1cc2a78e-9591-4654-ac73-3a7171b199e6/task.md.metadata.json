@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Marking Orchestrator Agent task as complete.",
-  "updatedAt": "2026-01-21T17:27:45.106024100Z",
-  "version": "15"
+  "summary": "Added Docling pipeline infrastructure tasks including Docker Compose, FastAPI ingest, workers, schemas, and ledger.",
+  "updatedAt": "2026-01-21T18:24:01.736177700Z",
+  "version": "18"
 }

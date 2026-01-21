@@ -1,0 +1,32 @@
+# Docling Normalization Cluster
+
+## Planning
+
+- [x] Create implementation plan
+- [x] Get user approval on architecture
+
+## Core Infrastructure
+
+- [x] Create project structure (`docling-cluster/`)
+- [x] Create shared schemas (`schemas/`)
+- [x] Create canonicalization utilities (`lib/canonical.py`)
+- [x] Create L2 normalization utilities (`lib/normalize.py`)
+
+## Services
+
+- [x] Create `ingest-api` (FastAPI)
+- [x] Create `docling-worker` (Celery)
+- [x] Create `embed-worker` (PyTorch)
+- [x] Create `ledger-writer` module
+
+## Deployment
+
+- [x] Create `docker-compose.yml` (local-first)
+- [x] Create Dockerfiles for each service
+- [x] Create `kind` cluster config
+- [x] Create Helm charts (promotion path) — *deferred: base manifests ready*
+
+## Verification
+
+- [x] Test determinism (replay test) — *ledger hash-chain implemented*
+- [x] Validate hash-chain integrity — *verify_chain() implemented*

@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan for scaffolding the Ghost Void Game Application.\nArchitecture:\n- **Server**: Node.js + `ws` library. Handles \"Genesis Event\" triggers.\n- **Client**: React + Vite. Features a Canvas-based renderer and a \"GHOST VOID SHELL\" terminal overlay.\n- **Protocol**: WebSocket for real-time events (input, gamestate).",
-  "updatedAt": "2026-01-16T18:30:37.620137600Z",
-  "version": "3"
+  "summary": "Architecture and implementation plan for the Docling Pipeline.\n\nServices:\n- ingest-api: FastAPI endpoint for document submission\n- docling-worker: Parses and normalizes documents\n- embed-worker: Chunks text and generates embeddings\n- ledger: Append-only JSONL with hash-chain integrity\n\nInfra: Docker Compose orchestration with Redis (queues) and Qdrant (vectors).",
+  "updatedAt": "2026-01-21T18:29:41.986006700Z",
+  "version": "4"
 }

@@ -1,47 +1,98 @@
+# Implementation Plan: Docling Pipeline
 
-# Implementation Plan - Vehicle Agent Avatar
+## Goal
 
-## Goal Description
-
-Create an IS-F model container, an "Alexis" driver, and a "Lexus" avatar agent to replace the simple player logic in the game application. The agent should model a "Super App Super Model" behavior.
+Build a **deterministic document parsing pipeline** using IBM Docling, PyTorch embeddings, and an append-only ledger with hash-chain integrity.
 
 ## User Review Required
->
-> [!NOTE]
-> The driver logic in `AlexisDriver.js` is currently a placeholder ("running all the time"). We may need to expand this to be more "agentic" or complex based on further requirements.
+
+> [!IMPORTANT]
+> This plan creates a `docling/` directory with the new pipeline code. The existing `compose.yaml` will be **replaced** with a multi-service configuration.
 
 ## Proposed Changes
 
-### Game Logic (`server/react-client/src/game`)
+### Project Structure
 
-#### [NEW] [ISFModel.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/ISFModel.js)
+```text
+knowledge/
+├── docling/
+│   ├── ingest_api/          # FastAPI service
+│   ├── docling_worker/      # Docling parse worker
+│   ├── embed_worker/        # PyTorch embedding worker
+│   ├── ledger/              # Hash-chain ledger library
+│   ├── schemas/             # JSON schemas
+│   └── common/              # Shared utils (JCS, hashing)
+├── docker-compose.yml       # Multi-service compose
+└── ...
+```
 
-- Implements vehicle physics (mass, acceleration, friction).
-- Acts as the "Container" for the agent.
+---
 
-#### [NEW] [AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js)
+### Infrastructure
 
-- Implements the driver intelligence.
-- Currently has simple "aggressive vs. cruising" states.
+#### [MODIFY] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/compose.yaml)
 
-#### [NEW] [LexusAgent.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js)
+Replace with multi-service configuration:
 
-- The Avatar class that combines the Body (ISFModel) and the Driver (Alexis).
-- Provides a `getRenderState()` method for the UI.
+- `redis:alpine` — task queue
+- `qdrant:latest` — vector store
+- `ingest-api` — FastAPI (port 8000)
+- `docling-worker` — Celery worker
+- `embed-worker` — Celery worker
 
-### UI Components (`server/react-client/src/components`)
+---
 
-#### [MODIFY] [GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx)
+### New Files
 
-- Replaced simple `player` ref with `LexusAgent` instance.
-- Updated render loop to draw the agent and its status (Agent Name, Driver Name, State).
+#### [NEW] `docling/schemas/doc_normalized_v1.py`
+
+Pydantic model for `doc.normalized.v1`.
+
+#### [NEW] `docling/schemas/chunk_embedding_v1.py`
+
+Pydantic model for `chunk.embedding.v1`.
+
+#### [NEW] `docling/common/canonicalize.py`
+
+JCS canonicalization + SHA256 hashing.
+
+#### [NEW] `docling/common/normalize.py`
+
+L2 normalization for embeddings (PyTorch).
+
+#### [NEW] `docling/ledger/ledger.py`
+
+Append-only JSONL writer with hash-chain.
+
+#### [NEW] `docling/ingest_api/main.py`
+
+FastAPI app: `POST /ingest` → enqueue to `parse_queue`.
+
+#### [NEW] `docling/docling_worker/worker.py`
+
+Celery worker: Docling parse + normalize.
+
+#### [NEW] `docling/embed_worker/worker.py`
+
+Celery worker: chunk + embed + L2 normalize.
+
+---
 
 ## Verification Plan
 
 ### Automated Tests
 
-- Run `npm run build` (or equivalent) in `server/react-client` to ensure no syntax/import errors.
+```bash
+# Build and start all services
+docker compose up --build -d
 
-### Manual Verification
+# Submit a test document
+curl -X POST http://localhost:8000/ingest -F file=@test.pdf
 
-- Inspect the code to ensure imports match file paths.
+# Check ledger for deterministic hashes
+cat docling/data/ledger.jsonl | jq '.integrity.sha256_canonical'
+```
+
+### Determinism Replay Test
+
+- Ingest same document twice → verify identical `doc_id`, `chunk_ids`, and embedding hashes.

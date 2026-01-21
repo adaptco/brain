@@ -1,14 +1,34 @@
-# Big Boss Implementation Task List
+# Ghost-Void Development Tasks
 
-- [/] Analyze existing Boss implementation <!-- id: 0 -->
-- [x] Design "Big Boss" characteristics and behavior <!-- id: 1 -->
-- [x] Implement Big Boss class/logic <!-- id: 2 -->
-- [x] Integrate Big Boss into existing Sandbox/Engine <!-- id: 3 -->
-- [x] Verify Big Boss behavior <!-- id: 4 -->
-- [x] Implement Boss "Model Deployment" behavior <!-- id: 5 -->
-  - [x] Update Boss interface to support world modification <!-- id: 6 -->
-  - [x] Wire Orchestrator -> Sandbox -> Boss flow <!-- id: 7 -->
-- [/] Implement Game App Shell (Web Terminal) <!-- id: 8 -->
-  - [x] Create Terminal.jsx component <!-- id: 9 -->
-  - [x] Integrate Terminal into App.jsx <!-- id: 10 -->
-  - [x] Add style for retro look <!-- id: 11 -->
+## Big Boss Implementation
+
+- [x] Analyze existing Boss implementation
+- [x] Design "Big Boss" characteristics and behavior
+- [x] Implement Big Boss class/logic
+- [x] Integrate Big Boss into existing Sandbox/Engine
+- [x] Verify Big Boss behavior
+- [x] Implement Boss "Model Deployment" behavior
+  - [x] Update Boss interface to support world modification
+  - [x] Wire Orchestrator -> Sandbox -> Boss flow
+- [x] Implement Game App Shell (Web Terminal)
+  - [x] Create Terminal.jsx component
+  - [x] Integrate Terminal into App.jsx
+  - [x] Add style for retro look
+
+## Qube Runtime Kernel
+
+- [x] Create TokenPixel.hpp
+- [x] Create QubeRuntime.hpp/.cpp
+- [x] Create QubeMain.cpp with stdin JSON parsing
+- [x] Update Makefile with qube target
+
+## Docling Cluster Pipeline (NEW)
+
+- [ ] Create pipeline directory structure
+- [ ] Implement canonical schemas (doc.normalized.v1, chunk.embedding.v1)
+- [ ] Implement hash-chain ledger module
+- [ ] Create ingest-api (FastAPI)
+- [ ] Create docling-worker (parse + normalize)
+- [ ] Create embed-worker (PyTorch embeddings)
+- [ ] Create docker-compose.yml
+- [ ] Add operational checklist / determinism gates

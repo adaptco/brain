@@ -1,38 +1,126 @@
-# Game App Shell Implementation Plan
+# Docling Cluster Pipeline Implementation Plan
 
-## Goal Description
+## Goal
 
-Create a "Game App Shell" within the React Client. This will be a "Retro Terminal" style overlay that allows the user to input commands directly to the engine and view logs/output. This enhances the "scaffolding" feel and provides the requested "Shell".
+Create a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment.
 
 ## Proposed Changes
 
-### React Client
+---
 
-#### [NEW] [Terminal.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/components/Terminal.jsx)
+### Pipeline Directory Structure
 
-- A component that renders a scrolling log of texts.
-- An input line at the bottom.
-- Handled commands:
-  - `/deploy` -> Sends `{"type": "genesis_plane"}` to server (triggering Boss).
-  - `/clear` -> Clears local log.
-  - `*` -> Sends raw input to server.
-- Visuals: Dark background, green monospace text, semi-transparent overlay.
+#### [NEW] [pipeline/](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/)
 
-#### [MODIFY] [App.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/App.jsx)
+```
+pipeline/
+├── docker-compose.yml
+├── schemas/
+│   ├── doc.normalized.v1.schema.json
+│   └── chunk.embedding.v1.schema.json
+├── lib/
+│   ├── canonical.py       # JCS hash + ledger
+│   └── normalize.py       # L2 norm + text policy
+├── ingest_api/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── main.py            # FastAPI
+├── docling_worker/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── worker.py          # Celery/Arq task
+├── embed_worker/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── worker.py          # PyTorch embeddings
+└── ledger/
+    └── ledger.jsonl       # Append-only hash chain
+```
 
-- Import and render `<Terminal />`.
-- Pass `sendInput` or similar mechanism to Terminal.
-- Layout: Position the terminal as an overlay or below the canvas.
+---
 
-#### [MODIFY] [index.css](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/index.css)
+### Core Modules
 
-- Add CSS classes for `.terminal`, `.terminal-log`, `.terminal-input`.
+#### [NEW] `lib/canonical.py`
+
+- `jcs_canonical_bytes(obj)` – RFC8785-style JSON canonicalization
+- `sha256_hex(b)` – SHA256 hex digest
+- `hash_canonical_without_integrity(payload)` – Strips `integrity`, hashes, re-injects
+- `append_to_ledger(record, ledger_path)` – Appends with `prev_ledger_hash`
+
+#### [NEW] `lib/normalize.py`
+
+- `normalize_text(text)` – NFKC, collapse whitespace, LF endings
+- `l2_normalize(tensor)` – PyTorch L2 normalization
+
+---
+
+### Services
+
+#### [NEW] `ingest_api/main.py` (FastAPI)
+
+- `POST /ingest` – Accepts file upload + metadata, returns `bundle_id`
+- Enqueues to `parse_queue` (Redis)
+
+#### [NEW] `docling_worker/worker.py`
+
+- Consumes `parse_queue`
+- Parses with IBM Docling (pinned version)
+- Normalizes text (NFKC, whitespace, LF)
+- Emits `doc.normalized.v1` to ledger
+- Enqueues chunks to `embed_queue`
+
+#### [NEW] `embed_worker/worker.py`
+
+- Consumes `embed_queue`
+- Generates embeddings (PyTorch, pinned model)
+- L2 normalizes vectors
+- Emits `chunk.embedding.v1` to ledger
+- Upserts to Qdrant
+
+---
+
+### Infrastructure
+
+#### [NEW] `docker-compose.yml`
+
+Services:
+
+- `redis:alpine` – Queue backend
+- `qdrant:latest` – Vector store
+- `ingest-api` – FastAPI (port 8000)
+- `docling-worker` – Celery worker
+- `embed-worker` – Celery worker
+
+Volumes:
+
+- `./ledger:/data/ledger` – Persistent ledger
+
+---
+
+## Determinism Anchors (ConfigMap-ready)
+
+| Key | Example |
+|-----|---------|
+| `pipeline_version` | `v1.0.0` |
+| `docling_version` | `0.4.0` |
+| `normalizer_version` | `norm.v1` |
+| `chunker_version` | `chunk.v1` |
+| `embedder_model_id` | `sentence-transformers/all-MiniLM-L6-v2` |
+| `weights_hash` | `sha256:abc...` |
+
+---
 
 ## Verification Plan
 
-### Manual Verification
+### Replay Test
 
-- Start `npm run dev` (client) and `npm run start` (server).
-- Open browser.
-- Type `/deploy` in the new terminal component.
-- Verify "Genesis Plane" appears in game and "Deploying model" logs appear in the terminal window (if we pipe logs back, which `server.js` does via `engine.stdout.on`).
+1. Submit a known document to `/ingest`
+2. Capture `doc_id`, `chunk_ids`, embedding hashes
+3. Purge and re-process
+4. Assert identical hashes
+
+### Ledger Integrity
+
+- Verify each record's `prev_ledger_hash` chains correctly
+- Reject records with missing integrity fields
