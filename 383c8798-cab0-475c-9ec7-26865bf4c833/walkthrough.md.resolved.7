@@ -46,10 +46,9 @@ curl -X POST http://localhost:8000/ingest -F "file=@doc.pdf"
 
 | Anchor      | Location |
 | ----------- | -------- |
-| Docling version | `k8s/configmap.yaml` |
-| Normalizer version | `lib/normalize.py` |
-| Embedder model + hash | `services/embed-worker/worker.py` |
+| Docling version | [k8s/configmap.yaml](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/k8s/configmap.yaml) |
+| Normalizer version | [lib/normalize.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/normalize.py) |
+| Embedder model + hash | [services/embed-worker/worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py) |
 | Queue System | RQ (Redis Queue) |
-| Batch Logic | `services/embed-worker/worker.py` (DataLoader) |
-| Batch Signing | `WalletProxy` (Sovereign Key) |
-| Hash chain | `lib/ledger.py` |
+| Batch Logic | [services/embed-worker/worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py) (DataLoader) |
+| Hash chain | [lib/ledger.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/ledger.py) |
