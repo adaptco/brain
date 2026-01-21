@@ -62,21 +62,21 @@ pipeline/
 - `POST /ingest` – Accepts file upload + metadata, returns `bundle_id`
 - Enqueues to `parse_queue` (Redis)
 
-#### [NEW] `docling_worker/worker.py`
+#### [MODIFY] `docling_worker/tasks.py`
 
 - Consumes `parse_queue`
-- Parses with IBM Docling (pinned version)
-- Normalizes text (NFKC, whitespace, LF)
-- Emits `doc.normalized.v1` to ledger
-- Enqueues chunks to `embed_queue`
+- Parses with IBM Docling
+- Normalizes text
+- **Batches chunks** (e.g., groups of 32)
+- Enqueues batches to `embed_queue`
 
-#### [NEW] `embed_worker/worker.py`
+#### [MODIFY] `embed_worker/worker.py`
 
 - Consumes `embed_queue`
-- Generates embeddings (PyTorch, pinned model)
-- L2 normalizes vectors
-- Emits `chunk.embedding.v1` to ledger
-- Upserts to Qdrant
+- **Processes batches** using PyTorch batch inference
+- Uses L2 normalization on batch tensors
+- Performs bulk upsert to Qdrant
+- Appends multiple records to ledger efficiently
 
 ---
 

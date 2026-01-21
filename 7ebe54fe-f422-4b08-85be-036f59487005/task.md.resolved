@@ -34,3 +34,9 @@
   - [x] Document CLI Trigger Commands
 - [/] Verify Emulation <!-- id: 3 -->
   - [/] Run Scaffolding Test (Level 1 + Boss Room) (Skipped: No Compiler)
+- [/] Implement Batch Processing in RAG Pipeline <!-- id: 8 -->
+  - [/] Locate `embed_chunk` in `embed_worker`
+  - [ ] Research `DataLoader` and Batch embedding logic
+  - [ ] Create Implementation Plan for Batch Processing
+  - [ ] Update `embed_worker` to support batches
+  - [ ] Verify performance improvements and integrity protocols

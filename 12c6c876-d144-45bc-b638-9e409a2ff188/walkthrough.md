@@ -1,51 +1,48 @@
-# Big Boss Implementation & Game App Shell Walkthrough
+# Docling Cluster Pipeline Walkthrough
 
-I have implemented the "Big Boss" agent and the requested "Game App Shell" (Web Terminal).
+I have implemented a deterministic, high-throughput document processing pipeline (the "Scribe") using IBM Docling, PyTorch, and Qdrant.
 
-## Changes
+## 🏗️ The "Sovereign" Architecture
 
-### 1. Game App Shell (Web Terminal) [NEW]
+### 1. Services Orchestration
 
-I added a retro-style terminal overlay to the React Client.
+- **[ingest-api](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/ingest_api/main.py)**: FastAPI gateway for document uploads.
+- **[docling-worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)**: Uses Docling to parse docs and groups chunks into **batches of 32**.
+- **[embed-worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)**: Processes batches using vectorized PyTorch inference and perform bulk upserts to **Qdrant**.
+- **[ledger-library](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/lib/ledger.py)**: Maintains an immutable, append-only hash-chain of every event.
 
-#### [Terminal.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/components/Terminal.jsx)
+### 2. The Batch Processing Evolution
 
-- **Features**:
-  - Command input parsing (`/deploy`, `/clear`).
-  - Scrolling log output.
-  - Sends `/deploy` as a genesis trigger command to the engine.
+To handle the 10k–100k document scale, I refactored the embedding flow to use **Batch Processing**:
 
-#### [App.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/App.jsx)
+- **Vectorized Inference**: `get_embeddings` processes multiple texts at once, maximizing GPU/CPU efficiency.
+- **L2 Normalization**: Systematic application of $x / \|x\|_2$ across the batch tensor.
+- **Bulk Upsert**: Point structures are pushed to Qdrant in a single `upsert` call per batch.
 
-- Integrated `<Terminal />` into the main layout.
+### 3. Determinism & Integrity
 
-#### [index.css](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/index.css)
+- **Canonical JCS Hashing**: Every JSON record is canonicalized (RFC8785) before hashing.
+- **Provenance Tracking**: `source_block_refs` tie every embedding back to the page/block index in the source PDF.
+- **Model Anchoring**: `WEIGHTS_HASH` is recorded to prevent semantic drift.
 
-- Added retro styling (Matrix/Terminal green on black, monospace fonts).
+## 🚀 Deployment Guide
 
-### 2. The Big Boss & Model Deployment
+### Local Launch
 
-#### [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp)
+```bash
+cd docling-pipeline
+docker-compose up -d --build
+```
 
-- **Rage Mode**: Moves faster (speed 2.0 vs 0.5) when `rageTimer_` exceeds 5 seconds.
-- **Health**: Starts with 500 health.
-- **Model Deployment**: `DeployEmergence` method spawns the Genesis Plane.
+### Access Points
 
-#### [Sandbox](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp)
+- **Ingest API**: `http://localhost:8000/docs`
+- **Qdrant Dashboard**: `http://localhost:6333/dashboard`
+- **Ledger Audit**: `tail -f docling-pipeline/ledger/ledger.jsonl`
 
-- **Engine Wiring**: Delegates `TriggerGenesis` logic to the Boss.
+## ✅ Operational Checklist
 
-## Verification
-
-### Automated Tests
-
-- Verification suite: [tests/boss_test.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/tests/boss_test.cpp).
-  - Verifies Big Boss behavior and deployment logic.
-
-### Manual Verification
-
-1. **Start the App**: `npm run dev` (client) & `npm run start` (server).
-2. **Open Browser**: Go to the client URL (usually <http://localhost:5173>).
-3. **Use the Shell**:
-    - Type `/deploy` in the command prompt at the bottom.
-    - **Observe**: The terminal logs "Genesis Plane" events, and the game world should update with the new plane.
+- [x] Pin Docling v0.5.0
+- [x] Group chunks into batches (size=32)
+- [x] L2 normalize output tensors
+- [x] Chain-hash entire pipeline flow

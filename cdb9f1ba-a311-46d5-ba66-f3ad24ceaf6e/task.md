@@ -1,10 +1,9 @@
-# Task: Deployment and Workspace Fixes
+# Task: Batch Processing and Sovereign OS Integration
 
-- [ ] Deploy `docling-cluster` [/]
+- [x] Implement Batch Processing for Embed Worker
+  - [x] Modify `docling_worker` to enqueue batches
+  - [x] Modify `embed_worker` to use `DataLoader` logic
+
 - [x] Fix markdown warnings in `GEMINI.md`
-- [ ] Debug persistent C++ include errors in `src/main.cpp` [/]
-  - [x] Create implementation plan
-  - [ ] Test manual compilation with `cl.exe` to verify include path
-  - [ ] Update IntelliSense configuration with absolute paths if necessary
-  - [ ] Verify VS Code is using the correct configuration provider
-- [ ] Final verification of all @[current_problems]
+- [x] Debug persistent C++ include errors in `src/main.cpp`
+- [ ] Deploy `docling-cluster` (Pending Docker)

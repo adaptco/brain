@@ -7,11 +7,13 @@ A deterministic document processing pipeline: **Docling → Canonical JSON → E
 ### Core Library (`docling-cluster/lib/`)
 
 #### [NEW] [canonical.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/canonical.py)
+
 - JCS-canonical JSON serialization (RFC8785-compatible)
 - SHA256 hashing with integrity field exclusion
 - `hash_canonical_without_integrity()` for fail-closed re-derivable hashes
 
 #### [NEW] [normalize.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/lib/normalize.py)
+
 - L2 normalization for embeddings (PyTorch)
 - Optional z-score normalization pass
 - Thin abstraction layer for JAX swap
@@ -21,11 +23,13 @@ A deterministic document processing pipeline: **Docling → Canonical JSON → E
 ### Schemas (`docling-cluster/schemas/`)
 
 #### [NEW] [doc_normalized_v1.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/doc_normalized_v1.py)
+
 - Pydantic model for `doc.normalized.v1`
 - Unicode NFKC, whitespace collapse, LF line endings
 - Parser version + config hash tracking
 
 #### [NEW] [chunk_embedding_v1.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/schemas/chunk_embedding_v1.py)
+
 - Pydantic model for `chunk.embedding.v1`
 - Chunker params + embedder model tracking
 - Provenance block references
@@ -35,34 +39,39 @@ A deterministic document processing pipeline: **Docling → Canonical JSON → E
 ### Services
 
 #### [NEW] `ingest-api/` (FastAPI)
+
 - `POST /ingest` - accepts docs + metadata, returns `bundle_id`
 - Publishes to `parse_queue` (Redis)
 - Health endpoint for k8s probes
 
 #### [NEW] `docling-worker/` (Celery)
-- Consumes `parse_queue`
-- Calls IBM Docling for parsing
+
+- Consumes `parse_queue`, calls IBM Docling
 - Applies document normalization
-- Emits `doc.normalized.v1` → `embed_queue`
-- Writes to ledger
+- Batches chunks into `List[Dict]` payload
+- Emits batch → `embed_queue` (calling `embed_batch`)
 
 #### [NEW] `embed-worker/` (PyTorch)
-- Consumes `embed_queue`
-- Deterministic chunking (pinned tokenizer)
-- Generates embeddings, applies L2 norm
-- Writes to Qdrant + ledger
+
+- Consumes `embed_queue` (batch mode)
+- Vectorized embedding generation (PyTorch `DataLoader`)
+- Batch storage in Qdrant + batch ledger logging
+- Identity-anchored provenance (SHA-256)
 
 ---
 
 ### Deployment
 
 #### [NEW] [docker-compose.yml](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/docker-compose.yml)
+
 Services: `qdrant`, `redis`, `ingest-api`, `docling-worker`, `embed-worker`
 
 #### [NEW] [kind-cluster.yaml](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/k8s/kind-cluster.yaml)
+
 Local Kubernetes cluster config for development/testing
 
 #### [NEW] `helm/` (promotion path)
+
 - Per-service Helm charts
 - `ConfigMap` for pinned versions + hashes
 - `PersistentVolume` for ledger
@@ -72,11 +81,13 @@ Local Kubernetes cluster config for development/testing
 ## Verification Plan
 
 ### Automated Tests
+
 1. **Determinism test**: Same input bundle → identical `doc_id`, `chunk_ids`, embedding hashes
 2. **Hash-chain test**: Verify `prev_ledger_hash` links correctly
 3. **Replay test**: Re-run pipeline, compare outputs byte-for-byte
 
 ### Manual Verification
+
 1. Run `docker-compose up` and ingest sample documents
 2. Inspect ledger JSONL for correct hash chains
 3. Query Qdrant to verify embeddings stored correctly

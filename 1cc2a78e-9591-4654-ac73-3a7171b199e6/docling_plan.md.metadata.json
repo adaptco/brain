@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Detailed plan for building a Docling-based document processing pipeline with FastAPI ingest, Celery workers, Qdrant vector store, and hash-chain ledger for deterministic replay.",
-  "updatedAt": "2026-01-21T18:24:03.705029800Z"
+  "summary": "Added Batch Processing details to the Docling plan.",
+  "updatedAt": "2026-01-21T19:20:40.258060900Z",
+  "version": "1"
 }

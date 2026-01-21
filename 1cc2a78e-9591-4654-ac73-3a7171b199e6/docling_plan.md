@@ -80,6 +80,12 @@ graph LR
 
 ---
 
+### [MODIFY] `services/embed_worker/tasks.py`
+
+- **Upgrade**: Move from single-chunk to batch processing.
+- **DataLoader**: Use PyTorch `DataLoader` to manage tensor batches.
+- **Qdrant**: Use `upsert` with a list of points for high-velocity ingestion.
+
 ## Determinism Anchors (ConfigMap)
 
 | Key | Example |

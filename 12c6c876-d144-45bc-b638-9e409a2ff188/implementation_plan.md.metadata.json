@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan for creating a deterministic Docling-based document processing pipeline with FastAPI ingest, Celery workers, PyTorch embeddings, Qdrant vector store, and hash-chain ledger.",
-  "updatedAt": "2026-01-21T18:23:35.184059400Z",
-  "version": "3"
+  "summary": "Updating implementation plan to include Batch Processing for the Embed Worker. This involves refactoring the docling-worker to enqueue batches and the embed-worker to process them using PyTorch batching.",
+  "updatedAt": "2026-01-21T19:20:28.569424500Z",
+  "version": "4"
 }

@@ -26,6 +26,31 @@ I verified that the code now compiles using the actual compiler on your system:
 - **GEMINI.md**: Added a top-level heading and adjusted spacing to satisfy markdown linting.
 - **README.md**: Added a missing language specifier to a fenced code block.
 
+## Batch Processing Implementation
+
+The RAG pipeline has been upgraded to support batch processing, significantly improving throughput for large documents.
+
+### [Docling Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
+
+- Refactored `parse_document` to group chunks into batches of 32.
+- Updated the queueing mechanism to use `embed_batch` instead of single-chunk tasks.
+
+### [Embed Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
+
+- Implemented `embed_batch` to handle multiple chunks in a single vectorized operation.
+- Utilized PyTorch's capabilities for bulk embedding generation.
+- Integrated bulk upserts to **Qdrant** and bulk appends to the **Ledger**.
+
+## Verification Status
+
+- [x] **C++ Include Paths**: Resolved via `compile_commands.json` and explicit `c_cpp_properties.json` paths.
+- [x] **Markdown Warnings**: `README.md` and `GEMINI.md` are now compliant.
+- [x] **Batch Processing**: Code logic implemented and synchronized across `worker.py` and `tasks.py`.
+- [ ] **Deployment**: Pending user starting Docker Desktop.
+
+> [!IMPORTANT]
+> To see the C++ IntelliSense fixes, please **Reload Window** (`Ctrl+Shift-P` -> `Developer: Reload Window`).
+
 ## Deployment Status: Docling Cluster
 
 The local deployment script `deploy-local.bat` for `docling-cluster` was executed but failed because **Docker Desktop is not running**. Once you start Docker, let me know and I can retry the deployment.

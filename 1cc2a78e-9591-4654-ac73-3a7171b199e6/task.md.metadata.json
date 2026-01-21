@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Added Docling pipeline infrastructure tasks including Docker Compose, FastAPI ingest, workers, schemas, and ledger.",
-  "updatedAt": "2026-01-21T18:24:01.736177700Z",
-  "version": "18"
+  "summary": "Marked Batch Processing task as complete.",
+  "updatedAt": "2026-01-21T19:21:07.361928800Z",
+  "version": "21"
 }

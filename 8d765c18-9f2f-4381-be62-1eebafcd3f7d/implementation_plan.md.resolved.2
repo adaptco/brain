@@ -2,13 +2,12 @@
 
 ## Goal
 
-1. Resolving the `jest` execution failure for `Qube/QubeAgent.test.ts`.
+1. Resolving the `jest` execution failure for [Qube/QubeAgent.test.ts](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/Qube/QubeAgent.test.ts).
 2. Implementing the logic to "embed artifacts into permanent knowledge" by writing signed events to the ADK event log upon system triggers (like the Genesis Event).
 3. Deploying the Docling Cluster locally and verifying service availability.
 4. Implementing the **Batch Processing Evolution** to maximize GPU/CPU utilization and reduce ledger overhead.
 
 ## User Review Required
->
 > [!IMPORTANT]
 > Transitioning to batch processing changes the job payload structure in the `embed_queue`. This requires synchronized updates to both `docling-worker` and `embed-worker`.
 
@@ -17,38 +16,27 @@
 ### 1. Fix Test Infrastructure
 
 * **Investigate**: Rerun `jest` to capture full error.
-* **Fix**: Likely adjusting `jest.config.js` or `package.json` imports, or fixing the `child_process` spawn path in the test.
-  * Current Test Path: `QubeAgent.test.ts`
+* **Fix**: Likely adjusting [jest.config.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/jest.config.js) or [package.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/package.json) imports, or fixing the `child_process` spawn path in the test.
+  * Current Test Path: [QubeAgent.test.ts](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/Qube/QubeAgent.test.ts)
   * Target Server: `../server/server.js`
   * Potential Issue: `__dirname` resolution in `ts-jest`.
 
 ### 2. Implement Artifact Embedding
 
-* **Design**: The "Genesis Event" in `server.js` should trigger the creation of an ADK-compliant Event.
+* **Design**: The "Genesis Event" in [server.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/server.js) should trigger the creation of an ADK-compliant Event.
   * **Event Type**: `emit` or `geneisis` (custom).
   * **Payload**: The simulation initialization data.
   * **Storage**: `knowledge/events/event_log.jsonl` (or similar).
 
 #### [MODIFY] [server.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/server.js)
 
-* Add `fs` write capability or call an external `adk` script to append the event.
-* Ensure it adheres to `event.schema.json`.
+* Add `fs` write capability or call an external [adk](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/adk) script to append the event.
+* Ensure it adheres to [event.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/schemas/event.schema.json).
 
 ### 3. Deploy Docling Cluster
 
-* **Action**: Run `.\scripts\deploy-local.bat` in `Qube/docling-cluster`.
+* **Action**: Run [.\scripts\deploy-local.bat](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/Qube/docling-cluster/scripts/deploy-local.bat) in [Qube/docling-cluster](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/Qube/docling-cluster).
 * **Verification**: Check `docker-compose ps` and hit health endpoints.
-
-### 4. Batch Processing Evolution
-
-* **docling-worker**:
-  * Modify `tasks.py` to collect all chunks into a list.
-  * Enqueue a single job with a `batch_chunks` payload instead of multiple individual jobs.
-* **embed-worker**:
-  * Modify `worker.py` to handle `batch_chunks`.
-  * Implement `embed_batch` using `torch` for simultaneous processing.
-  * Use Qdrant's `upsert` with a list of `PointStruct` objects for efficiency.
-  * Batch append results to the Ledger in a single operation.
 
 ## Verification Plan
 

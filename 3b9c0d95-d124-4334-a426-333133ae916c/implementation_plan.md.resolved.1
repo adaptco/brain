@@ -1,0 +1,21 @@
+# Batch Processing Evolution for Embed Worker
+
+Evolve the `embed-worker` to handle batches of document chunks simultaneously. This improves GPU utilization (via PyTorch) and optimizes Qdrant/Ledger write throughput.
+
+## Proposed Changes
+
+### [docling-cluster/services/embed-worker]
+
+#### [MODIFY] [worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py)
+- **Refactor [get_embedding](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py#53-75)**: Change to `get_embeddings_batch(texts: List[str]) -> List[List[float]]`.
+- **New `embed_batch` Function**: Replace/Augment [embed_chunk](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py#76-153) with an `embed_batch` task that accepts a list of job payloads.
+- **Batch Ledger Writes**: Update the ledger in a single operation (or loop within the batch) to reduce overhead.
+- **Batch Qdrant Upsert**: Use `qdrant_client.upsert` with all points in the batch.
+
+## Verification Plan
+
+### Automated Tests
+- Create `test_batch_worker.py` to simulate a batch of 10 chunks and verify all are embedded, stored in Qdrant, and recorded in the ledger.
+
+### Manual Verification
+- Monitor worker logs to confirm "Batch Processing" logs and verify GPU memory/utilization if applicable.

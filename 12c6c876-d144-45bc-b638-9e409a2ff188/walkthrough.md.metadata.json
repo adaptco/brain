@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Added a \"Game App Shell\" to the React client. This is a Retro Terminal component (`Terminal.jsx`) that overlays the game. It allows users to input commands like `/deploy` to trigger the genesis event directly from the app, bypassing the need for separate CLI terminals.",
-  "updatedAt": "2026-01-16T18:27:00.175488800Z",
-  "version": "2"
+  "summary": "Walkthrough for the Docling Cluster Pipeline implementation. Covers the deterministic document processing flow, from FastAPI ingest to PyTorch-based batch embeddings and Qdrant storage, all anchored by a cryptographic ledger.",
+  "updatedAt": "2026-01-21T19:22:34.338044Z",
+  "version": "3"
 }

@@ -127,3 +127,52 @@ Goal: Use the ADK framework to build a game engine scaffolding a Mega Man emulat
   - Spawn Avatar.
   - Simulate 100 frames of running/jumping.
   - Verify Avatar reaches "Checkpoint" or interacts with "Boss".
+
+---
+
+# Sovereign RAG Pipeline: Batch Processing Evolution
+
+Goal: Integrate high-velocity mechanical enforcement with long-term **Semantic Memory** by implementing an asynchronous batch embedding pipeline.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This upgrade assumes the existence of the `docling-pipeline` directory and its services. The "Sovereign" labeling requires strict adherence to SHA-256 identity and canonical hashing for document provenance.
+
+## Proposed Changes
+
+### Embed Worker (`docling-pipeline/services/embed_worker`)
+
+#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)
+
+- Consolidate logic from `worker.py`.
+- **`get_embeddings`**:
+  - Switch to local device detection (`cuda`, `mps`, `cpu`).
+  - Implement `DataLoader` with `pin_memory=True` and `num_workers > 0` for high-throughput batching.
+  - Implement a real embedding pass (if model is available) or a robust vectorized mock that maintains semantic fidelity.
+- **`embed_batch`**:
+  - Implement bulk upsert to Qdrant using the truncated SHA-256 (32 hex) ID protocol.
+  - Ensure `source_block_refs` and model metadata are correctly mapped for audit trails.
+
+#### [DELETE] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
+
+- Consolidate logic into `tasks.py` and use a generic RQ worker entry point if possible, or keep `worker.py` as a slim wrapper.
+
+### Documentation
+
+#### [NEW] [rag_pipeline.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/rag_pipeline.md)
+
+- Technical guide on the **Semantic Ledger**, **Identity Protocol**, and **Integrity Protocol**.
+
+## Verification Plan
+
+### Automated Tests
+
+- `pytest docling-pipeline/tests/test_embed_batch.py`:
+  - Verify SHA-256 ID unicity.
+  - Verify L2 normalization output.
+  - Benchmark batch vs single-chunk throughput.
+
+### Manual Verification
+
+- Use `stripe trigger` (conceptually) or a test script to ingest a large document and observe the `embed-worker` logs for batch processing performance.

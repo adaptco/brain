@@ -20,6 +20,14 @@ Created a robust test infrastructure in `tests/`:
 - **[test_replay.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_replay.py)**: Verifies that identical documents produce identical IDs and hashes.
 - **[test_integration.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_integration.py)**: Verifies the full ingest → ledger flow and ledger hash-chain integrity.
 
+### Embed Worker Implementation
+
+I have added the **Embed Worker** service based on your provided implementation:
+
+- **[worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py)**: Handles chunk embedding using PyTorch (mocked) and storage in Qdrant.
+- **Improved Determinism**: Replaced Python's `hash()` with `hashlib.sha256()` for manual seeding. This prevents non-deterministic embeddings caused by Python's process-level hash randomization.
+- **Library Fixes**: Restored and fixed `lib/__init__.py` to ensure correct exports for the worker and tests.
+
 ---
 
 ## Verification Results

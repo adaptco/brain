@@ -1,47 +1,51 @@
-# Walkthrough - Docling Pipeline
+# Docling Cluster - Walkthrough
 
-## Implementation Complete
+## Cluster Architecture
 
-| Component | Status |
-|-----------|--------|
-| Infrastructure | ✅ docker-compose.yml with Redis, Qdrant, 4 services |
-| Schemas | ✅ doc.normalized.v1, chunk.embedding.v1 |
-| JCS Library | ✅ Canonicalization + hashing |
-| ingest-api | ✅ FastAPI document submission |
-| docling-worker | ✅ Parse + normalize |
-| embed-worker | ✅ REFINED: PyTorch-ready + RQ worker |
-| ledger | ✅ Append-only hash-chain |
-| Replay Test | ✅ PASSED |
+The Docling Cluster is a distributed document processing pipeline using Redis Queue (RQ) for job orchestration and FastAPI for service interfaces.
 
-## Refined Embed Worker
-
-The `embed_worker` has been upgraded to use:
-
-- **PyTorch Structure**: L2 normalization and mock model inference loop.
-- **RQ (Redis Queue)**: Robust worker management via `rq.Worker`.
-- **Enhanced Schemas**: Includes `chunk_text`, `provenance`, and late-bound `integrity` hashing.
-
-## Directory Structure
-
-```text
-docling/
-├── docker-compose.yml
-├── services/
-│   ├── ingest-api/
-│   ├── docling-worker/
-│   ├── embed-worker/
-│   └── ledger/
-├── schemas/
-├── lib/jcs.py
-└── tests/
+```mermaid
+graph LR
+    User --> |POST /ingest| Ingest[ingest_api]
+    Ingest --> |Job| Red1(Redis: docling_queue)
+    Red1 --> |Worker| DW[docling_worker]
+    DW --> |Job| Red2(Redis: embed_queue)
+    DW --> |Event| Led[ledger]
+    Red2 --> |Worker| EW[embed_worker]
+    EW --> |Vector| QD[Qdrant]
+    EW --> |Event| Led
 ```
 
-## Usage
+## Directory Structure (Refined)
 
-```bash
-cd docling
-docker-compose up --build
+The project uses a flat, standardized service structure in `Qube/docling-cluster/`:
+
+- `ingest_api/`: FastAPI submission endpoint.
+- `docling_worker/`: Normalization worker (RQ).
+- `embed_worker/`: Vector embedding worker (Refined PyTorch/RQ).
+- `ledger/`: FastAPI-based hash-chain ledger.
+- `lib/`: Shared cryptographic and helper functions (JCS).
+- `schemas/`: Shared Pydantic models (doc.normalized.v1, chunk.embedding.v1).
+
+## Integrity & Reproducibility
+
+1. **JCS (JSON Canonicalization Scheme)**: All JSON objects are strictly ordered and formatted per RFC 8785 before hashing.
+2. **Hash Chaining**: The `ledger` service maintains `prev_hash` links for every audit event.
+3. **Deterministic IDs**: Chunk and Document IDs are derived from their content hashes.
+
+## Deployment
+
+Run locally using:
+
+```powershell
+cd Qube/docling-cluster
+.\scripts\deploy-local.bat
 ```
 
-Ingest: `curl -X POST http://localhost:8000/ingest -F "file=@doc.txt"`
-Verify: `curl http://localhost:8001/verify`
+## Verification
+
+The system has been verified through:
+
+- **Replay Testing**: Ensured identical outputs for identical documents.
+- **Contract Testing**: Schema validation for all message types.
+- **Worker Robustness**: Successfully transitioned from Celery to RQ for better terminal visibility and management.

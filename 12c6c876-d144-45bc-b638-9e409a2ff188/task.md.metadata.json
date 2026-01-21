@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Complete task list including Big Boss implementation, Qube Runtime Kernel, and the new Docling Cluster Pipeline.",
-  "updatedAt": "2026-01-21T18:23:35.166708700Z",
-  "version": "12"
+  "summary": "Batch processing and pipeline setup completed. All Docling services are implement and orchestrated.",
+  "updatedAt": "2026-01-21T19:22:08.464323100Z",
+  "version": "14"
 }

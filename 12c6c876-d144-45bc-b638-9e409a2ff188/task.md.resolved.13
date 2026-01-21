@@ -24,12 +24,12 @@
 
 ## Docling Cluster Pipeline (NEW)
 
-- [x] Create pipeline directory structure
-- [x] Implement canonical schemas (doc.normalized.v1, chunk.embedding.v1)
-- [x] Implement hash-chain ledger module
-- [x] Create ingest-api (FastAPI)
-- [x] Create docling-worker (parse + normalize)
-- [x] Create embed-worker (PyTorch embeddings)
-  - [x] Implement Batch Processing (PyTorch/Qdrant)
-- [x] Create docker-compose.yml
+- [ ] Create pipeline directory structure
+- [ ] Implement canonical schemas (doc.normalized.v1, chunk.embedding.v1)
+- [ ] Implement hash-chain ledger module
+- [ ] Create ingest-api (FastAPI)
+- [ ] Create docling-worker (parse + normalize)
+- [ ] Create embed-worker (PyTorch embeddings)
+  - [ ] Implement Batch Processing (PyTorch/Qdrant)
+- [ ] Create docker-compose.yml
 - [ ] Add operational checklist / determinism gates

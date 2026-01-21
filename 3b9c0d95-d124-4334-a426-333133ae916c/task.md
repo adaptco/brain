@@ -1,8 +1,7 @@
-# Task: Integrate Embed Worker & Refinement
+# Task: Evolved Batch Processing & Sovereign Signing
 
-- [x] Explore `docling-cluster` directory structure
-- [x] Create `implementation_plan.md` for the Embed Worker integration
-- [x] Save `embed_worker.py` to the appropriate location
-- [x] Verify/Scaffold `lib.py` and `schemas.py` if missing
-- [/] Align with Stage-5 Refusal logic (Jurassic Pixels)
-- [x] Notify user for review
+- [x] Evolutionary Step: Refine Batch Pipeline
+  - [x] Update `worker.py` with GPU-ready `DataLoader`
+  - [x] Implement `WalletProxy` scaffold
+  - [x] Sign batch content hashes in the "Scribe"
+- [x] Final Verification & Walkthrough

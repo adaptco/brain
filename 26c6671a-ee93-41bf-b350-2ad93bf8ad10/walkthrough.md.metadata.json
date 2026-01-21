@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Final walkthrough for the Docling Pipeline. Summarizes all implemented services, schemas, and verification results.",
-  "updatedAt": "2026-01-21T18:46:01.993150600Z",
-  "version": "6"
+  "summary": "Refined Docling Cluster Walkthrough.\nThe cluster has been upgraded to a distributed RQ architecture with a flat directory structure. \nKey components:\n- ingest_api: FastAPI entrypoint.\n- docling_worker: IBM Docling parsing logic (mocked).\n- embed_worker: PyTorch embedding logic (mocked).\n- ledger: FastAPI-based cryptographically chained ledger.\n- lib & schemas: Shared modules for JCS and Pydantic models.\nIntegrity:\n- JCS canonicalization ensures deterministic hashing.\n- Hash-chaining across services via ledger.",
+  "updatedAt": "2026-01-21T19:20:51.503896400Z",
+  "version": "8"
 }

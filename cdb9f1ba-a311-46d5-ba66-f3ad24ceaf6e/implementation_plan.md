@@ -1,34 +1,41 @@
-# Goal: Fix Persistent C++ Include Errors and Markdown Warnings
+# Goal: Implement Batch Processing for Embed Worker
 
-The user is experiencing persistent C++ include errors and markdown warnings. The C++ errors are likely due to the compiler configuration lacking standard library paths, preventing IntelliSense from properly probing the compiler and resolving project headers.
+Integrate high-velocity mechanical enforcement with long-term semantic memory by evolving the `Embed Worker` from single-chunk processing to **Batch Processing**. This maximizes GPU utilization and increases throughput for the Sovereign OS.
 
 ## Proposed Changes
 
-### Configuration
+### 1. Docling Worker Refactor
 
-#### [MODIFY] [.vscode/c_cpp_properties.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/.vscode/c_cpp_properties.json)
+#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
 
-- Add absolute paths for project includes.
-- Add explicit paths for MSVC Standard Library and Windows SDK to ensure IntelliSense can resolve core headers like `<vector>` and `<memory>`.
+- Group chunks created in `create_chunks` into batches (e.g., size 32).
+- Enqueue a single job `tasks.embed_batch` for each group, containing a list of chunk payloads.
 
-#### [MODIFY] [compile_commands.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/compile_commands.json)
+### 2. Embed Worker Refactor
 
-- Convert all relative paths to absolute paths for better compatibility.
+#### [MODIFY] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
 
-### Documentation
+- Rename `embed_chunk` to `embed_batch`.
+- Modify `get_embeddings` (plural) to accept a list of strings and returned a batched tensor.
+- Implement batch normalization and deterministic pseudo-embedding for the entire batch.
+- Update Qdrant `upsert` and Ledger `append` to handle multiple records in a single block.
 
-#### [MODIFY] [GEMINI.md](file:///c:/Users/eqhsp/.gemini/GEMINI.md)
+### 3. Task Mapping Consistency
 
-- Add a top-level `# Gemini Project` heading.
-- Adjust list spacing and trailing newlines to satisfy markdown linting.
+#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)
+
+- Reflect the same changes as `worker.py` to maintain consistency for the Docker container.
 
 ## Verification Plan
 
 ### Automated Tests
 
-- Run `cl.exe` manually from the workspace root with the full set of include paths (MSVC + Windows SDK + Project) to verify `src/main.cpp` can compile.
-- Command: `& "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe" /I"c:\Users\eqhsp\.gemini\antigravity\playground\ghost-void\include" /I"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\include" /I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt" /std:c++17 /c src/main.cpp`
+- Modify the `ingress_test.py` (or equivalent) to send a document that generates >32 chunks.
+- Verify that only one `embed_batch` job is enqueued in Redis.
+- Verify that Qdrant contains all expected points.
+- Check Ledger for consecutive "chunk.embedding.v1" events from the same batch.
 
 ### Manual Verification
 
-- Request the user to reload the VS Code window and verify if the @[current_problems] list is cleared.
+- Monitor Redis queue size during large document ingestion.
+- Verify GPU utilization (simulated or real) increases while processing time per chunk decreases.

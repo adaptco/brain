@@ -15,4 +15,9 @@
 - [x] Deploy Docling Cluster
   - [x] Investigate/Create `scripts/deploy-local.bat`
   - [x] Run deployment script
-  - [/] Verify services are running
+  - [x] Verify services are running
+
+- [/] Batch Processing Evolution
+  - [ ] Modify `docling-worker` to batch chunks
+  - [ ] Modify `embed-worker` to handle batched embedding jobs
+  - [ ] Verify throughput improvements and ledger integrity

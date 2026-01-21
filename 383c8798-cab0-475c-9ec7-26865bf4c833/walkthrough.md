@@ -2,10 +2,10 @@
 
 ## Summary
 
-Built a deterministic document processing pipeline:
-**Documents → IBM Docling → Canonical JSON → PyTorch Embeddings → Qdrant**
+Built a deterministic, high-throughput document processing pipeline:
+**Documents → IBM Docling → Canonical JSON → Batch PyTorch Embeddings → Qdrant**
 
-All outputs are hash-chained for replay and audit.
+The system has been upgraded to **"Scribe" Batch Mode**, utilizing PyTorch `DataLoader` for vectorized inference and batch-committing to the Sovereign Vault (Ledger + Qdrant).
 
 ## Files Created (25 total)
 
@@ -50,4 +50,5 @@ curl -X POST http://localhost:8000/ingest -F "file=@doc.pdf"
 | Normalizer version | `lib/normalize.py` |
 | Embedder model + hash | `services/embed-worker/worker.py` |
 | Queue System | RQ (Redis Queue) |
+| Batch Logic | `services/embed-worker/worker.py` (DataLoader) |
 | Hash chain | `lib/ledger.py` |

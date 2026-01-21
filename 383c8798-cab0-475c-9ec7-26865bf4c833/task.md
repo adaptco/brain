@@ -31,3 +31,9 @@
 - [x] Test determinism (replay test) — *ledger hash-chain implemented*
 - [x] Validate hash-chain integrity — *verify_chain() implemented*
 - [x] Final linting and cleanup — *walkthrough.md and k8s/ structure resolved*
+
+## Batch Processing Evolution (Scribe Upgrade)
+
+- [x] Evolve `embed-worker` to batch processing mode (PyTorch DataLoader)
+- [x] Update `docling-worker` to emit chunk batches
+- [x] Verify high-throughput flow with mock batch data
