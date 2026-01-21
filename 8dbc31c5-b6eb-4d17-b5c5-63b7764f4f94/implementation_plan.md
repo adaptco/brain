@@ -1,0 +1,29 @@
+# Implementation Plan - .NET Environment Setup
+
+The goal is to install the .NET SDK and guide the user to set up VS Code for .NET development.
+
+## User Review Required
+
+- [ ] **Approval to install software**: I will use `winget` to install the .NET 8 SDK. This requires administrative privileges or user approval in the terminal.
+
+## Proposed Changes
+
+### System Environment
+
+- Install `Microsoft.DotNet.SDK.8` via `winget`.
+
+### Workspace
+
+- Create a temporary `HelloDotNet` directory to verify installation.
+
+## Verification Plan
+
+### Automated Tests
+
+- Run `dotnet --version` to verify successful installation.
+- Run `dotnet new console -n HelloDotNet` to create a test project.
+- Run `dotnet run --project HelloDotNet` to verify it builds and runs.
+
+### Manual Verification
+
+- User should open VS Code and install the "C# Dev Kit" extension if not already present.

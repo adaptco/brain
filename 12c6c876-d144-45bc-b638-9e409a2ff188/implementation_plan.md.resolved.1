@@ -1,0 +1,44 @@
+# Boss Model Deployment Plan
+
+## Goal Description
+Refactor the "Genesis Event" (Plane Spawning) so that the **Boss** agent is responsible for "running the model deployment". Instead of the [Orchestrator](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Orchestrator.cpp#7-9) directly spawning the plane via [Sandbox](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#9-10), it will command the [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#7-19) to perform the deployment. The [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#7-19) will then interact with the [WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#18-19) to create the structure.
+
+## Proposed Changes
+
+### Engine
+
+#### [MODIFY] [Sandbox.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Sandbox.hpp)
+- Add method `TriggerGenesis()` which delegates to the Boss.
+- Make `GetWorld()` accessible (non-const) or provide a `GetMutableWorld()` for the Boss to use during deployment.
+
+#### [MODIFY] [Sandbox.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp)
+- Implement `TriggerGenesis()`:
+  - Check if Boss exists.
+  - Call `boss_->DeployEmergence(world_.get())`.
+  - Fallback to default behavior if Boss is dead?
+
+#### [MODIFY] [Orchestrator.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Orchestrator.cpp)
+- Change `genesis_plane` command handler to call `sandbox_->TriggerGenesis()` instead of [SpawnPlane](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#25-31).
+
+### Agents
+
+#### [MODIFY] [Boss.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp)
+- Add virtual method `DeployEmergence(engine::WorldModel* world)`.
+
+#### [MODIFY] [BigBoss.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp)
+- Override `DeployEmergence`.
+
+#### [MODIFY] [BigBoss.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/BigBoss.cpp)
+- Implement `DeployEmergence`:
+  - Log "Big Boss is deploying the model...".
+  - Call `world->SpawnPlane(...)`.
+  - Maybe add some visual flare (log message) or state change (e.g. freeze while deploying).
+
+## Verification Plan
+
+### Manual Verification
+- Run `server` and `stripe trigger payment_intent.succeeded`.
+- Verify logs show:
+    - Orchestrator received command.
+    - **BigBoss** log message "Deploying model...".
+    - Genesis Plane appears.

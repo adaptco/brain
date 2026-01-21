@@ -1,0 +1,6 @@
+# Track Map Visualization via EmbeddingCircuit
+
+- [ ] Explore data and context in `training/` folder <!-- id: 0 -->
+- [ ] Create implementation plan for Track Mapper <!-- id: 1 -->
+- [ ] Implement `track_mapper.py` <!-- id: 2 -->
+- [ ] Verify with dummy data or existing data <!-- id: 3 -->

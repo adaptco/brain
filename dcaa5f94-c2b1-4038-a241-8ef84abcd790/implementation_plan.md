@@ -1,0 +1,86 @@
+# Implementation Plan: Zapier-Native Agent Architecture
+
+## Goal Description
+
+Implement the artifacts and specifications for a Zapier-native agent architecture. This involves defining the database schemas for Zapier Tables, detailing the configuration steps for the core Zaps, and establishing the JSON contracts for data exchange between Zapier and external tools.
+
+## User Review Required
+>
+> [!NOTE]
+> This is a documentation and specification task. The "code" will be primarily configuration guides, JSON schemas, and CSV templates for Zapier import.
+
+## Proposed Changes
+
+### Database Schemas
+
+Create CSV templates and specification documents for the core Zapier Tables.
+
+#### [NEW] [agent_events.csv](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/schemas/agent_events.csv)
+
+- Schema for the append-only audit log.
+
+#### [NEW] [milestones.csv](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/schemas/milestones.csv)
+
+- Schema for stateful user-visible milestones.
+
+### Zap Definitions
+
+Detailed step-by-step guides for configuring the Zaps.
+
+#### [NEW] [zap_specifications.md](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/specs/zap_specifications.md)
+
+- Contains "Click-by-click" instructions for Zap A, B, C, and D.
+- Includes wiring checklists.
+
+### Interface Contracts
+
+#### [NEW] [payload_contract.json](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/contracts/payload_contract.json)
+
+- Standard JSON schema for the payload passed to external tools.
+
+### Operational Guide
+
+#### [NEW] [operations_guide.md](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/docs/operations_guide.md)
+
+- Debugging & Failure Recovery patterns.
+- Scaling Strategy for Zapier limits.
+
+## Verification Plan
+
+### Automated Tests
+
+- Build Docker container and verify startup.
+- `docker-compose up` to verify orchestration with Stripe CLI.
+- Curl request to localhost endpoint to verify API response.
+
+### Manual Verification
+
+- User will use the generated CSVs to import tables into Zapier.
+- User will follow the guides to build Zaps.
+- User will validate the JSON payloads against their external tools.
+
+## Proposed Changes (Cont.)
+
+### External Tool Implementation
+
+Scaffold a minimal .NET 8 Web API to serve as the orchestrator.
+
+#### [NEW] [Program.cs](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/src/ExternalTool/Program.cs)
+
+- Minimal API setup with `/webhook/agent-event` endpoint.
+
+#### [NEW] [ExternalTool.csproj](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/src/ExternalTool/ExternalTool.csproj)
+
+- Project file.
+
+### Docker Orchestration
+
+#### [NEW] [Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/src/ExternalTool/Dockerfile)
+
+- Multi-stage build for the .NET application.
+
+#### [NEW] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/brain/dcaa5f94-c2b1-4038-a241-8ef84abcd790/docker-compose.yml)
+
+- Services:
+  - `external-tool`: The API.
+  - `stripe-cli`: Sidecar for forwarding webhooks.

@@ -1,9 +1,7 @@
-# Stripe CLI Management
+# ADK CLI Implementation
 
-- [ ] Install Stripe CLI
-  - [/] Install via Chocolatey (`choco install stripe-cli`)
-  - [ ] Verify installation (`stripe --version`)
-- [ ] Authenticate Stripe CLI
-  - [ ] Run `stripe login` (Requires user interaction)
-- [ ] Verify Setup
-  - [ ] Check configuration
+- [x] Implement `adk.py`
+  - [x] Paste user-provided code into `adk.py`
+- [x] Verify CLI
+  - [x] Run `python adk.py --help`
+  - [x] Test `validate`, `replay`, `commit` commands (Basic invocation verified)

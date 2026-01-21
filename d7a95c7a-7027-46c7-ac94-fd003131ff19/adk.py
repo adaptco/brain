@@ -71,6 +71,7 @@ def cmd_commit(args):
 
 def main():
     parser = argparse.ArgumentParser(description="ADAPTCO-ADK CLI")
+    parser.add_argument("--version", action="version", version="ADAPTCO-ADK v0.1.0-alpha")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # validation command

@@ -1,0 +1,36 @@
+
+# Implementation Plan - Vehicle Agent Avatar
+
+## Goal Description
+Create an IS-F model container, an "Alexis" driver, and a "Lexus" avatar agent to replace the simple player logic in the game application. The agent should model a "Super App Super Model" behavior.
+
+## User Review Required
+> [!NOTE]
+> The driver logic in [AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js) is currently a placeholder ("running all the time"). We may need to expand this to be more "agentic" or complex based on further requirements.
+
+## Proposed Changes
+
+### Game Logic (`server/react-client/src/game`)
+#### [NEW] [ISFModel.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/ISFModel.js)
+- Implements vehicle physics (mass, acceleration, friction).
+- Acts as the "Container" for the agent.
+
+#### [NEW] [AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js)
+- Implements the driver intelligence.
+- Currently has simple "aggressive vs. cruising" states.
+
+#### [NEW] [LexusAgent.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js)
+- The Avatar class that combines the Body (ISFModel) and the Driver (Alexis).
+- Provides a `getRenderState()` method for the UI.
+
+### UI Components (`server/react-client/src/components`)
+#### [MODIFY] [GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx)
+- Replaced simple `player` ref with `LexusAgent` instance.
+- Updated render loop to draw the agent and its status (Agent Name, Driver Name, State).
+
+## Verification Plan
+### Automated Tests
+- Run `npm run build` (or equivalent) in `server/react-client` to ensure no syntax/import errors.
+
+### Manual Verification
+- Inspect the code to ensure imports match file paths.

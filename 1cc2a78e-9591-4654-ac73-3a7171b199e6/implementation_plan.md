@@ -35,3 +35,24 @@ The header will define:
 
 ### Manual Verification
 - Review the generated header file against the user's specific "zero-ambiguity" requirement.
+
+# Orchestrator Agent Implementation
+
+## Goal Description
+Create the "Orchestrator Model" as a formal Agent within the system. This involves:
+1.  **C++ Implementation**: `agents::OrchestratorAgent` that embodies the MoE Kernel logic (Assembly Actuator, Integrity Expert) within the simulation loop.
+2.  **ADK Definition**: `adk/agents/orchestrator.v0.json` declaring the agent's lineage and compliance.
+
+## Proposed Changes
+
+### [OrchestratorAgent](file:///include/agents/OrchestratorAgent.hpp)
+- **Class**: `OrchestratorAgent`
+- **Responsibilities**:
+    - Monitor `WorldModel` state.
+    - Execute `SafetyLayer::clip` on other agents (mocked or actual).
+    - Enforce "Petrified" status.
+
+### [Agent Capsule](file:///adk/agents/orchestrator.v0.json)
+- **Schema**: logic derived from `agent_capsule.v0.json`.
+- **Metadata**: Connects the agent to the specific `assembly_actuator` contract.
+

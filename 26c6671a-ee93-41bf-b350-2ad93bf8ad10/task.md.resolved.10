@@ -1,0 +1,27 @@
+# Task: Release Candidate Blueprint & Contract Pack v0
+
+- [x] Planning & Configuration <!-- id: 0 -->
+    - [x] Analyze requirements and blueprint <!-- id: 1 -->
+    - [x] Obtain user configuration (Language Spine: Docker-first, License: MIT, Repo: adk) <!-- id: 2 -->
+- [x] Repository Scaffolding <!-- id: 3 -->
+    - [x] Create directory structure (`contracts`, `cli`, `examples`, `docs`, `tests`, `.github`) <!-- id: 4 -->
+    - [x] Create root files ([LICENSE](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/LICENSE), [README.md](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/README.md), `SECURITY.md`) <!-- id: 5 -->
+- [x] Contract Pack v0 Implementation <!-- id: 6 -->
+    - [x] Implement Schemas (`artifact`, `event`, `gate_result`, [state](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/tests/contracts/validate_architecture.py#34-81), `tool_policy`) <!-- id: 7 -->
+    - [x] Implement State Machine ([states.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/state_machine/states.yaml), [transitions.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/state_machine/transitions.yaml)) <!-- id: 8 -->
+    - [x] Implement Gate Catalog ([catalog.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/gates/catalog.yaml), [severity.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/gates/severity.yaml)) <!-- id: 9 -->
+    - [x] Implement Vocabulary Map ([vocabulary_map.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/contracts/v0/mappings/vocabulary_map.yaml)) <!-- id: 10 -->
+- [x] CLI Implementation <!-- id: 11 -->
+    - [x] Create [Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/cli/Dockerfile) (if Docker-first) or implementation files <!-- id: 12 -->
+    - [x] Implement wrapper scripts ([adk.sh](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/cli/adk.sh), [validate.sh](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/cli/commands/validate.sh), etc.) <!-- id: 13 -->
+    - [x] Implement Host Wrappers ([adk.ps1](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/adk.ps1), [adk](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/adk) shell script) <!-- id: 24 -->
+- [x] Examples & Tests <!-- id: 14 -->
+    - [x] Create Golden Path example ([input.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/examples/golden_path/input.json), `expected/`) <!-- id: 15 -->
+    - [x] Create Tests ([schema_self_test.sh](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/tests/contracts/schema_self_test.sh), [golden_path_test.sh](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/tests/integration/golden_path_test.sh), [validate_architecture.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/tests/contracts/validate_architecture.py)) <!-- id: 16 -->
+- [x] CI/CD Configuration <!-- id: 17 -->
+    - [x] Configure [ci.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/.github/workflows/ci.yml) <!-- id: 18 -->
+    - [x] Configure [release.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/.github/workflows/release.yml) <!-- id: 19 -->
+- [x] Documentation <!-- id: 20 -->
+    - [x] Author [boundaries.md](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/docs/boundaries.md) <!-- id: 21 -->
+    - [x] Author `golden_path.md`, [threat_model.md](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/docs/threat_model.md), etc. <!-- id: 22 -->
+    - [x] Final Verification <!-- id: 23 -->

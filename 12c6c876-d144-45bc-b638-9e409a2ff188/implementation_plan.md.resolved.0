@@ -1,0 +1,44 @@
+# Create The Big Boss Implementation Plan
+
+## Goal Description
+Create a formidable "Big Boss" character for the game engine. This involves refactoring the existing [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#6-7) class to support polymorphism and implementing a new `BigBoss` subclass with enhanced stats and behaviors (e.g., higher health, different movement pattern).
+
+## User Review Required
+> [!IMPORTANT]
+> This change involves modifying the existing [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#6-7) class to make [Update](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#24-41) virtual. This is a minor refactor but necessary for correct polymorphism.
+
+## Proposed Changes
+
+### Agents
+
+#### [MODIFY] [Boss.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp)
+- Make [Update](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#24-41) method `virtual`.
+- Make destructor `virtual`.
+- Change members to `protected` so `BigBoss` can access them (or add getters/setters).
+
+#### [NEW] [BigBoss.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp)
+- Define `BigBoss` class inheriting from [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#6-7).
+- Override [Update](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#24-41) method.
+- Add specific members for Big Boss if needed (e.g., `rageMode`).
+
+#### [NEW] [BigBoss.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/BigBoss.cpp)
+- Implement `BigBoss::Update`.
+    - Behavior: Moves slower but has a "Jump" or "Charge" mechanic (simulated).
+    - Health: Initialize with 500.
+
+### Engine
+
+#### [MODIFY] [Sandbox.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp)
+- Include `BigBoss.hpp`.
+- Instantiate `BigBoss` instead of [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#6-7) in [Initialize](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#10-16).
+
+## Verification Plan
+
+### Automated Tests
+- Create `tests/boss_test.cpp` to verify:
+    - [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#6-7) and `BigBoss` instantiation.
+    - Polymorphism (calling [Update](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#24-41) on base pointer).
+    - Health values.
+
+### Manual Verification
+- Run the [Sandbox](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#8-9) (if executable) or use `tests/boss_test.cpp` output to verify behavior logs (e.g., "Big Boss charges!").

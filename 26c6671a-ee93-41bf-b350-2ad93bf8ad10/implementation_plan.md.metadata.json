@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan to orchestrate the creation of a release bundle for the ADK.\nThis involves executing the `pack` command via the host wrapper to generate the `contracts` tarball, and then verifying the integrity of the output.\nThis simulates the GitHub Actions `release.yml` workflow locally.",
-  "updatedAt": "2026-01-16T11:26:45.000890300Z",
-  "version": "1"
+  "summary": "Plan for scaffolding the Ghost Void Game Application.\nArchitecture:\n- **Server**: Node.js + `ws` library. Handles \"Genesis Event\" triggers.\n- **Client**: React + Vite. Features a Canvas-based renderer and a \"GHOST VOID SHELL\" terminal overlay.\n- **Protocol**: WebSocket for real-time events (input, gamestate).",
+  "updatedAt": "2026-01-16T18:30:37.620137600Z",
+  "version": "3"
 }

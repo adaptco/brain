@@ -1,28 +1,25 @@
-# Stripe CLI Installation and Setup
+# Design System Updates
 
 ## Goal Description
 
-Install the Stripe CLI to enable management of Stripe resources from the command line. This setup will use the existing Chocolatey installation on the Windows system.
+Add a "Stripe" color token to the game's design system (`style.css`) to facilitate consistent branding for Stripe-related integrations (like "Buy Credits").
 
 ## User Review Required
 >
 > [!NOTE]
-> The installation involves running `choco install stripe-cli`. This might require administrative privileges depending on how Chocolatey is configured.
-> After installation, you will need to complete the `stripe login` flow in your browser.
+> I will be working in `c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/style.css`.
 
 ## Proposed Changes
 
-### System
+### Styles
 
-- Run `choco install stripe-cli` to install the tool.
+- [MODIFY] [style.css](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/style.css)
+  - Add `--stripe-blurple: #635bff;`
+  - Add `--stripe-blurple-hover: #4e48cc;`
+  - Add `.btn-stripe` utility class.
 
 ## Verification Plan
 
-### Automated Tests
-
-- Run `stripe --version` to confirm successful installation.
-
 ### Manual Verification
 
-- User completes `stripe login`.
-- User can run a test command like `stripe customers list`.
+- Inspect `style.css` to ensure tokens are correctly defined.

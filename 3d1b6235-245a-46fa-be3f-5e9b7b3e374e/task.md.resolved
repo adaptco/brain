@@ -1,0 +1,16 @@
+
+# Task: Implementing Vehicle Agent Avatar
+
+## Core Components
+- [x] Create [ISFModel.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/ISFModel.js) (Container/Physics)
+- [x] Create [AlexisDriver.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/AlexisDriver.js) (Driver Logic)
+- [x] Create [LexusAgent.js](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js) (Avatar/Agent Composition)
+
+## Integration
+- [x] Integrate [LexusAgent](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js#9-44) into [GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx)
+- [ ] Fix any import errors in [GameCanvas.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx) (Verified: Imports added)
+
+## Verification
+- [ ] Check [package.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/package.json) for build scripts
+- [ ] Verify project builds without errors
+- [ ] (Optional) Run the application to see the agent in action

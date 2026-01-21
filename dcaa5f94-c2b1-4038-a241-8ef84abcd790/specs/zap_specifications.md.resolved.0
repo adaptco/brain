@@ -1,0 +1,56 @@
+# Zap Configuration Specifications
+
+## Zap A: Button → AgentEvent
+**Goal**: Capture a user action from the Dashboard interface as an audit log event.
+1.  **Trigger**: Interfaces by Zapier → **Button Clicked**
+    *   *Setup*: Select the Interface and Button component.
+2.  **Action**: Zapier Tables → **Create Record**
+    *   *Table*: `AgentEvents`
+    *   *Mappings*:
+        *   `Event Type`: [Hardcoded Value, e.g., "Run Analysis"]
+        *   `Status`: "Pending"
+        *   `Source System`: "Dashboard"
+        *   `Timestamp`: `{{zap_meta_timestamp}}`
+        *   `Session ID`: [Map from Button hidden field if available, or generate UUID]
+        *   `Raw Payload`: [Map additional context fields as JSON string if needed]
+
+## Zap B: AgentEvent → Routing
+**Goal**: Dispatch logic based on the event type created in Zap A.
+1.  **Trigger**: Zapier Tables → **New Record**
+    *   *Table*: `AgentEvents`
+2.  **Filter**: Only run if `Status` matches "Pending".
+3.  **Paths** (Conditional Logic):
+    *   **Path A (Analysis)**: Check if `Event Type` exactly matches "Run Analysis".
+        *   *Yields to*: Zap C (via Webhook) or direct action.
+    *   **Path B (Approval)**: Check if `Event Type` matches "Request Approval".
+        *   *Action*: Slack/Email notification.
+
+## Zap C: AgentEvent → External Tool
+**Goal**: Handoff complex logic to an external API (or Stripe CLI wrapper).
+1.  **Trigger**: Webhooks by Zapier → **Catch Hook** (or triggered via Zap B).
+    *   *Alternative*: Trigger directly from Zap B's Path A using **Webhooks by Zapier (POST)**.
+2.  **Action**: Webhooks by Zapier → **POST**
+    *   *URL*: `[Your External Tool URL]` (e.g., ngrok to local Stripe CLI wrapper)
+    *   *Payload Type*: JSON
+    *   *Data*:
+        *   `event_key`: `{{Record ID}}` (from Trigger)
+        *   `event_type`: `{{Event Type}}`
+        *   `session_id`: `{{Session ID}}`
+        *   `context`: `{{Raw Payload}}`
+
+## Zap D: Result Ingestion → AgentEvent
+**Goal**: Receive results from External Tool and close the loop.
+1.  **Trigger**: Webhooks by Zapier → **Catch Hook**
+    *   *Note*: Use this URL in your External Tool's callback.
+2.  **Action**: Zapier Tables → **Find Record**
+    *   *Table*: `AgentEvents`
+    *   *Lookup Field*: `Record ID` (or `Event Key`)
+    *   *Lookup Value*: `{{event_key}}` from hook payload.
+3.  **Action**: Zapier Tables → **Update Record**
+    *   *Record*: `{{ID}}` from Step 2.
+    *   *Mappings*:
+        *   `Status`: `{{status}}` (e.g., "Complete", "Failed")
+        *   `Result Summary`: `{{summary}}`
+        *   `Severity`: `{{severity}}`
+4.  **Action (Optional)**: Zapier Tables → **Update Record** (Milestones)
+    *   Update the linked Milestone status if the AgentEvent completes a phase.

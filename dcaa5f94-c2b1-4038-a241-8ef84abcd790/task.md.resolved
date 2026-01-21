@@ -1,0 +1,30 @@
+# Task: Zapier-Native Agent Architecture Implementation
+
+- [x] Environment Setup <!-- id: 14 -->
+  - [x] Install .NET SDK <!-- id: 15 -->
+  - [x] Install/Verify Stripe CLI <!-- id: 16 -->
+- [x] Create Database Schemas <!-- id: 0 -->
+  - [x] Define `AgentEvents` Table (CSV/Spec) <!-- id: 1 -->
+  - [x] Define `Milestones` Table (CSV/Spec) <!-- id: 2 -->
+- [x] Define Zap Workflows <!-- id: 3 -->
+  - [x] Zap A: Button → AgentEvent <!-- id: 4 -->
+  - [x] Zap B: AgentEvent → Routing <!-- id: 5 -->
+  - [x] Zap C: AgentEvent → External Tool <!-- id: 6 -->
+  - [x] Zap D: Result Ingestion → AgentEvent <!-- id: 7 -->
+- [x] Define Interface Contracts <!-- id: 8 -->
+  - [x] Standard JSON Payload Contract <!-- id: 9 -->
+  - [x] External Tool API Spec <!-- id: 10 -->
+- [x] Document Operational Patterns <!-- id: 11 -->
+  - [x] Debugging & Failure Recovery <!-- id: 12 -->
+  - [x] Scaling Strategy <!-- id: 13 -->
+- [x] Implement External Tool (C#/.NET) <!-- id: 17 -->
+  - [x] Scaffold Web API Project <!-- id: 18 -->
+  - [x] Implement Webhook Endpoint <!-- id: 19 -->
+- [x] Containerization & Orchestration <!-- id: 20 -->
+  - [x] Create Dockerfile <!-- id: 21 -->
+  - [x] Create docker-compose.yml (App + Stripe CLI) <!-- id: 22 -->
+- [ ] Implement Hub & Spoke Model <!-- id: 23 -->
+    - [ ] Update External Tool to separate 'Hub' (Socket Server) <!-- id: 24 -->
+    - [ ] Define Shell Protocol (JSON over WebSocket) <!-- id: 25 -->
+    - [ ] Create Reference Plugin (Python Spoke) <!-- id: 26 -->
+    - [ ] Update Docker Compose (Hub + Spoke) <!-- id: 27 -->

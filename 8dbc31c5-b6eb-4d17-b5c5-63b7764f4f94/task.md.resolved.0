@@ -1,0 +1,7 @@
+# Setup .NET Development Environment
+
+- [ ] Check .NET SDK Installation
+- [ ] Check VS Code Extensions
+- [ ] Install/Update .NET SDK if needed
+- [ ] Install C# Dev Kit for VS Code if needed
+- [ ] Verify setup with a Hello World project

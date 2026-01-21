@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to implement a \"Game App Shell\" by adding a Retro Terminal component to the React client. This terminal will allow directly sending commands to the engine via WebSocket, providing a \"Shell\" experience for the user.",
+  "updatedAt": "2026-01-16T18:26:06.819686300Z",
+  "version": "2"
+}

@@ -1,0 +1,15 @@
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\bin\Debug\net10.0\HelloDotNet.exe
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\bin\Debug\net10.0\HelloDotNet.deps.json
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\bin\Debug\net10.0\HelloDotNet.runtimeconfig.json
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\bin\Debug\net10.0\HelloDotNet.dll
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\bin\Debug\net10.0\HelloDotNet.pdb
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.AssemblyInfoInputs.cache
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.AssemblyInfo.cs
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.csproj.CoreCompileInputs.cache
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.sourcelink.json
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.dll
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\refint\HelloDotNet.dll
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.pdb
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\HelloDotNet.genruntimeconfig.cache
+C:\Users\eqhsp\.gemini\antigravity\brain\8dbc31c5-b6eb-4d17-b5c5-63b7764f4f94\HelloDotNet\obj\Debug\net10.0\ref\HelloDotNet.dll

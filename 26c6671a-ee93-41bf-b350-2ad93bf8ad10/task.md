@@ -1,27 +1,26 @@
-# Task: Release Candidate Blueprint & Contract Pack v0
+# Task: Release Candidate Blueprint & Contract Pack v0 [COMPLETED]
 
 - [x] Planning & Configuration <!-- id: 0 -->
-    - [x] Analyze requirements and blueprint <!-- id: 1 -->
-    - [x] Obtain user configuration (Language Spine: Docker-first, License: MIT, Repo: adk) <!-- id: 2 -->
 - [x] Repository Scaffolding <!-- id: 3 -->
-    - [x] Create directory structure (`contracts`, `cli`, `examples`, `docs`, `tests`, `.github`) <!-- id: 4 -->
-    - [x] Create root files (`LICENSE`, `README.md`, `SECURITY.md`) <!-- id: 5 -->
 - [x] Contract Pack v0 Implementation <!-- id: 6 -->
-    - [x] Implement Schemas (`artifact`, `event`, `gate_result`, `state`, `tool_policy`) <!-- id: 7 -->
-    - [x] Implement State Machine (`states.yaml`, `transitions.yaml`) <!-- id: 8 -->
-    - [x] Implement Gate Catalog (`catalog.yaml`, `severity.yaml`) <!-- id: 9 -->
-    - [x] Implement Vocabulary Map (`vocabulary_map.yaml`) <!-- id: 10 -->
 - [x] CLI Implementation <!-- id: 11 -->
-    - [x] Create `Dockerfile` (if Docker-first) or implementation files <!-- id: 12 -->
-    - [x] Implement wrapper scripts (`adk.sh`, `validate.sh`, etc.) <!-- id: 13 -->
-    - [x] Implement Host Wrappers (`adk.ps1`, `adk` shell script) <!-- id: 24 -->
 - [x] Examples & Tests <!-- id: 14 -->
-    - [x] Create Golden Path example (`input.json`, `expected/`) <!-- id: 15 -->
-    - [x] Create Tests (`schema_self_test.sh`, `golden_path_test.sh`) <!-- id: 16 -->
 - [x] CI/CD Configuration <!-- id: 17 -->
-    - [x] Configure `ci.yml` <!-- id: 18 -->
-    - [x] Configure `release.yml` <!-- id: 19 -->
 - [x] Documentation <!-- id: 20 -->
-    - [x] Author `boundaries.md` <!-- id: 21 -->
-    - [x] Author `golden_path.md`, `threat_model.md`, etc. <!-- id: 22 -->
-    - [x] Final Verification <!-- id: 23 -->
+
+# Task: Ghost Void Game Application
+
+- [x] Planning & Structure <!-- id: 100 -->
+  - [x] Define Application Architecture <!-- id: 101 -->
+  - [x] Create `server/` and `react-client/` directories <!-- id: 102 -->
+- [x] Game Server Implementation (`server/`) <!-- id: 103 -->
+  - [x] `package.json` (ws, express) <!-- id: 104 -->
+  - [x] `server.js` (WebSocket logic, Game Engine stub) <!-- id: 105 -->
+- [x] React Client Implementation (`server/react-client/`) <!-- id: 106 -->
+  - [x] Initialize Vite App <!-- id: 107 -->
+  - [x] `App.jsx` (Canvas + Layout) <!-- id: 108 -->
+  - [x] `components/Terminal.jsx` (Shell logic, /deploy command) <!-- id: 109 -->
+  - [x] `game/Engine.js` (Implemented inside GameCanvas.jsx for simplicity) <!-- id: 110 -->
+- [/] Verification <!-- id: 111 -->
+  - [x] Verify server startup (System Test Passed) <!-- id: 112 -->
+  - [ ] Verify client build <!-- id: 113 -->

@@ -1,0 +1,10 @@
+# Task: Review Open Points and Launch Playground
+
+- [ ] Review workspace for open TODOs and incomplete implementations <!-- id: 0 -->
+    - [ ] Check for `TODO` comments in key files <!-- id: 1 -->
+    - [ ] Identify status of "Mega Man Engine" components <!-- id: 2 -->
+    - [ ] Identify status of "ADK" components <!-- id: 3 -->
+- [ ] Prepare Playground for Sandbox Testing <!-- id: 4 -->
+    - [ ] Verify Playground entry point <!-- id: 5 -->
+    - [ ] Configure Agents for sandbox environment <!-- id: 6 -->
+- [ ] Launch Playground <!-- id: 7 -->

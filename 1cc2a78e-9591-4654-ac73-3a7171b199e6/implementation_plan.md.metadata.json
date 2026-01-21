@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Design plan for the SafetyLayer C++ interface, defining structures for hard/soft limits, violation reporting, and the core clip function signature.",
-  "updatedAt": "2026-01-15T12:30:59.986143500Z"
+  "summary": "Added plan for Orchestrator Agent implementation (C++ and Capsule).",
+  "updatedAt": "2026-01-17T13:30:12.049921900Z",
+  "version": "1"
 }

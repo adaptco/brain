@@ -98,19 +98,25 @@ Goal: Use the ADK framework to build a game engine scaffolding a Mega Man emulat
 - **Hooks**:
   - `useGameSocket`: Manages WS connection and state updates.
 
-### Stripe Integration
+### Runtime Grounding (Stripe)
 
-#### [NEW] [stripe_integration.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/stripe_integration.md) (Optional Doc)
+#### [NEW] [server/grounding.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/grounding.js)
+
+- Middleware that listens for Stripe Webhooks.
+- Translates `payment_intent.succeeded` into a `{"type": "genesis_plane", "origin": [0,0]}` command for the Engine.
+- **Concept**: The financial transaction "grounds" the agent, creating a solid plane (platform) for it to stand on.
 
 #### [MODIFY] [server/server.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/server.js)
 
-- Add `/create-checkout-session` endpoint.
-- Add `/webhook` endpoint for Stripe events.
-- Requires `stripe` npm package.
+- mount `grounding.js` at `/webhook`.
 
-#### [MODIFY] [server/react-client/src/components/HUD.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client/src/components/HUD.jsx)
+#### [MODIFY] [src/engine/WorldModel.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/WorldModel.cpp)
 
-- Add "Buy Credits" button.
+- Handle `genesis_plane`: Dynamically spawn a platform at the "Origin".
+
+#### [NEW] [docs/grounding_exercise.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/grounding_exercise.md)
+
+- Instructions on using `stripe trigger` to generate the plane.
 
 ## Verification Plan
 

@@ -1,0 +1,49 @@
+# Big Boss Implementation Walkthrough
+
+I have implemented the "Big Boss" agent and extended it to handle "Model Deployment" (Emergence).
+
+## Changes
+
+### Agents
+
+#### [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp)
+- Created [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp#6-15) class inheriting from [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#11-24).
+- Implemented `Rage Mode`: Moves faster (speed 2.0 vs 0.5) when `rageTimer_` exceeds 5 seconds.
+- Increased Health: Starts with 500 health.
+- Implemented [DeployEmergence(WorldModel*)](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#16-17): Spawns the Genesis Plane upon request.
+
+#### [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp)
+- Refactored to support inheritance:
+    - [Update](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.cpp#8-15) is now `virtual`.
+    - [DeployEmergence](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#16-17) added as virtual interface.
+    - Destructor is `virtual`.
+    - Members `position_` and `health_` are now `protected`.
+
+### Engine
+
+#### [Sandbox](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp)
+- Updated to instantiate [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp#6-15).
+- Added [TriggerGenesis()](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Sandbox.cpp#32-41): Delegates the genesis event to the `boss_`.
+
+#### [Orchestrator](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Orchestrator.cpp)
+- Wired `genesis_plane` command to `sandbox_->TriggerGenesis()`.
+
+## Verification Results
+
+### Automated Tests
+I updated the verification test suite: [tests/boss_test.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/tests/boss_test.cpp).
+
+This test verifies:
+1.  **Polymorphism**: [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp#6-15) can be treated as a [Boss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/Boss.hpp#11-24) pointer.
+2.  **Behavior**: [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp#6-15) moves at correct speeds (including Rage Mode).
+3.  **Deployment**: [BigBoss](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/agents/BigBoss.hpp#6-15) correctly spawns a plane in the [WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#18-19).
+
+### Manual Verification Steps
+To verify the full flow:
+1.  Run the server: `npm run start` in `server/`.
+2.  Run the engine (if compiled).
+3.  Trigger grounding: `stripe trigger payment_intent.succeeded`.
+4.  Observe logs:
+    - `Grounding Receptor received: payment_intent.succeeded`
+    - `>> INITIATING GENESIS PLANE <<`
+    - `>> BIG BOSS: I AM DEPLOYING THE MODEL FOR EMERGENCE! <<`

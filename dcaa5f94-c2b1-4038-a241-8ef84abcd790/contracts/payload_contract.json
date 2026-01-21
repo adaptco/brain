@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "AgentEvent Payload",
+    "description": "Standard payload sent from Zapier to External Tools",
+    "type": "object",
+    "required": [
+        "event_key",
+        "event_type",
+        "session_id",
+        "timestamp"
+    ],
+    "properties": {
+        "event_key": {
+            "type": "string",
+            "description": "Unique identifier for the event (Zapier Record ID or UUID)"
+        },
+        "event_type": {
+            "type": "string",
+            "description": "The specific action being requested",
+            "enum": [
+                "Run Analysis",
+                "Approve",
+                "Rollback",
+                "Sync Data"
+            ]
+        },
+        "session_id": {
+            "type": "string",
+            "description": "Correlation ID for the user session"
+        },
+        "timestamp": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "context": {
+            "type": "object",
+            "description": "Arbitrary JSON payload containing input arguments",
+            "additionalProperties": true
+        }
+    }
+}

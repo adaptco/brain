@@ -1,0 +1,2 @@
+Event Key,Session ID,Event Type,Timestamp,Status,Severity,Source System,Raw Payload,Result Summary,Linked Milestone
+"UUID-1234","SESS-001","Run Analysis","2023-10-27T10:00:00Z","Pending","Info","Dashboard","{""key"": ""value""}","Initialized analysis...","MILE-001"

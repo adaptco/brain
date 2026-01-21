@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task list for installing and setting up the Stripe CLI using Chocolatey.",
-  "updatedAt": "2026-01-16T11:49:01.321891100Z"
+  "summary": "Task list for implementing the ADK CLI.",
+  "updatedAt": "2026-01-16T18:30:21.737069100Z",
+  "version": "11"
 }

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  external-tool:
+    build:
+      context: ./src/ExternalTool
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    command: listen --forward-to external-tool:8080/webhook/agent-event --api-key ${STRIPE_API_KEY}
+    depends_on:
+      - external-tool
+    environment:
+      - STRIPE_API_KEY=${STRIPE_API_KEY}

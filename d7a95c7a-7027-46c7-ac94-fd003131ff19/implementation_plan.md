@@ -1,35 +1,32 @@
-# ADK Release Compilation Plan
+# Foundation Substrate Embedding Plan
 
 ## Goal Description
-Compile the `adk` Python CLI and its `adk_core` dependencies into a standalone executable (`adk.exe`) for the release version. This ensures the "Integrity Gate" can be distributed without requiring a specific Python environment on the end-user's machine, furthering the goal of "Environmental Determinism".
+
+"Embed" the ADK Integrity Gate into the **Foundation Model** (interpreted here as the **Base Docker Image** or "Substrate"). This involves creating a `Dockerfile` that compiles the ADK from source into a native Linux binary, making the integrity checks an intrinsic part of the environment.
 
 ## User Review Required
-> [!IMPORTANT]
-> This process requires installing `pyinstaller` in the current environment.
-> The resulting artifact will be a Windows Executable (`.exe`) located in the `dist/` directory.
+>
+> [!NOTE]
+> This plan assumes "Foundation Model" refers to the infrastructure base image (Docker).
+> The Dockerfile will perform a multi-stage build to compile the ADK for Linux, independent of the local Windows `adk.exe`.
 
 ## Proposed Changes
 
-### Build Infrastructure
-#### [NEW] [adk.spec](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.spec)
-*   **Purpose**: PyInstaller specification file.
-*   **Settings**:
-    *   Entry point: `adk.py`
-    *   Name: `adk`
-    *   Onefile: True (Single binary)
-    *   Hidden Imports: None expected (standard lib), but will monitor.
-    *   Paths: Include `adk_core` package.
+### Infrastructure
 
-### Execution Steps
-1.  **Install Build Tools**: `pip install pyinstaller`
-2.  **Generate Spec**: Run PyInstaller to generate the default spec, then verify/modify it for determinism (stripping paths where possible).
-3.  **Build**: Run `pyinstaller adk.spec --clean`
-4.  **Verify**: Run `dist/adk.exe --help` and `dist/adk.exe replay`.
+#### [NEW] [Dockerfile.foundation](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/Dockerfile.foundation)
+
+* **Stage 1: Forge (Builder)**
+  * Base: `python:3.13-slim`
+  * Action: Install `pyinstaller`, copy `adk` source, build `dist/adk` (Linux binary).
+* **Stage 2: Foundation (Runtime)**
+  * Base: `python:3.13-slim` (or a lighter distro if Python isn't needed for runtime, but `adk` is Python-based so it's safer).
+  * Action: Copy `adk` binary to `/usr/local/bin/adk`.
+  * Action: Set `ENTRYPOINT` or default command to show `adk` presence.
 
 ## Verification Plan
-### Automated Tests
-*   `dist/adk.exe validate` (should fail gracefully or pass depending on directory content)
-*   `dist/adk.exe replay` (should pass if `hirr_harness` logic holds)
 
 ### Manual Verification
-*   Check file size and existence of `dist/adk.exe`.
+
+* Review the `Dockerfile.foundation` content.
+* (Optional) If Docker is available locally, build the image: `docker build -f Dockerfile.foundation -t adk-foundation .`

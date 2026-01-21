@@ -1,0 +1,8 @@
+{
+    "id": "capsule-001",
+    "kind": "TestCapsule",
+    "apiVersion": "v1alpha1",
+    "data": {
+        "foo": "bar"
+    }
+}

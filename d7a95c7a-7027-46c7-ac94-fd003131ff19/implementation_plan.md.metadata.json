@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plan to compile the ADK CLI into a standalone executable using PyInstaller.",
-  "updatedAt": "2026-01-16T11:25:06.517537300Z",
-  "version": "1"
+  "summary": "Plan to embed the ADK into a Base Docker Image (Foundation Substrate).",
+  "updatedAt": "2026-01-16T18:26:13.650073100Z",
+  "version": "2"
 }

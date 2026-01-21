@@ -1,0 +1,7 @@
+# Big Boss Implementation Task List
+
+- [/] Analyze existing Boss implementation <!-- id: 0 -->
+- [ ] Design "Big Boss" characteristics and behavior <!-- id: 1 -->
+- [ ] Implement Big Boss class/logic <!-- id: 2 -->
+- [ ] Integrate Big Boss into existing Sandbox/Engine <!-- id: 3 -->
+- [ ] Verify Big Boss behavior <!-- id: 4 -->

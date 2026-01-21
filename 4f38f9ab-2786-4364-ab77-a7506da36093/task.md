@@ -1,0 +1,11 @@
+# Track Map Visualization via EmbeddingCircuit
+
+- [ ] Explore data and context in `training/` folder <!-- id: 0 -->
+- [x] Create implementation plan for Track Mapper <!-- id: 1 -->
+- [x] Implement `track_mapper.py` <!-- id: 2 -->
+- [x] Verify with dummy data or existing data <!-- id: 3 -->
+
+# 3D Phase Map Visualization
+- [ ] Plan 3D Phase Map Visualization <!-- id: 4 -->
+- [ ] Implement `phase_mapper.py` for 3D state space <!-- id: 5 -->
+- [ ] Generate and Verify 3D plots <!-- id: 6 -->

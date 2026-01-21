@@ -1,0 +1,35 @@
+# Stage 1: The Forge (Builder)
+# We use the same python version to ensure compatibility foundation
+FROM python:3.13-slim AS forge
+
+WORKDIR /src
+
+# install build dependencies
+RUN pip install --no-cache-dir pyinstaller
+
+# Copy the "Spine" and "Surface"
+COPY adk_core /src/adk_core
+COPY adk.py /src/adk.py
+
+# Compile the ADK into a single-binary Linux executable
+# --clean: Nuke cache
+# --onefile: Bundled into a single elf
+# --name adk: The binary name
+RUN pyinstaller --clean --onefile --name adk adk.py
+
+# Stage 2: The Substrate (Runtime Foundation)
+# This represents the "Foundation Model" / Base Image for agents
+FROM python:3.13-slim AS foundation
+
+# "Wire the HIRR Oracle directly into the pre-commit lifecycle"
+# We place the ADK binary in the global path, making it an environmental constant.
+COPY --from=forge /src/dist/adk /usr/local/bin/adk
+
+# Ensure executable permissions (Law of Gravity must be enforceable)
+RUN chmod +x /usr/local/bin/adk
+
+# Verification: Assert availability
+RUN adk --version
+
+# Default entrypoint
+CMD ["adk", "--help"]
