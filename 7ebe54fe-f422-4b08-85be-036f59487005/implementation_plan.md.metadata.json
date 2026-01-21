@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Implementation plan for Batch Processing in the RAG pipeline. This plan covers consolidating the `embed_worker` service, implementing device-aware batch embedding with PyTorch `DataLoader`, and ensuring strict adherence to \"Sovereign\" data integrity protocols (SHA-256 IDs, L2 normalization, Canonical Hashing).",
-  "updatedAt": "2026-01-21T19:23:17.172006700Z",
-  "version": "7"
+  "summary": "Comprehensive plan for the Docling Cluster Pipeline. This plan covers the creation of a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment. It includes technical specifications for core libraries (canonical hashing, normalization), FastAPI ingestion, and background workers for parsing and embedding with strict \"Sovereign\" identity protocols.",
+  "updatedAt": "2026-01-21T19:54:05.372934200Z",
+  "version": "8"
 }

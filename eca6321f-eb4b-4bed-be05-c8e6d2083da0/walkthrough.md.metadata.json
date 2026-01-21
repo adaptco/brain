@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "I resolved the ENOENT error by creating the missing `.ssh` directory and `config` file.",
+  "updatedAt": "2026-01-21T19:51:29.627575900Z"
+}

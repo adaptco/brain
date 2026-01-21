@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Added Batch Processing details to the Docling plan.",
-  "updatedAt": "2026-01-21T19:20:40.258060900Z",
-  "version": "1"
+  "summary": "Refined implementation plan for the Docling Cluster Pipeline, focusing on determinism, batch processing, and the 'pipeline/' directory structure.",
+  "updatedAt": "2026-01-21T19:54:16.037323800Z",
+  "version": "2"
 }

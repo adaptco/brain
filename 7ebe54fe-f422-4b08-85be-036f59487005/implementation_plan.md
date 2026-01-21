@@ -1,178 +1,58 @@
-# Mega Man Emulation Implementation Plan
+# Docling Cluster Pipeline Implementation Plan
 
-Goal: Use the ADK framework to build a game engine scaffolding a Mega Man emulation, including level generation ("World Model"), avatar control, and physics.
+Goal: Create a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment.
 
-## User Review Required
->
-> [!IMPORTANT]
-> The emulation will be text/state-based for the "Orchestrator" view. 9 Levels will be scaffolded via the `LevelGenerator`, but only the logic for platforming and boss encounters will be implemented, not the full graphical assets.
+## Core Modules
 
-## Proposed Changes
+### [NEW] `lib/canonical.py`
 
-### Build System
+- `jcs_canonical_bytes(obj)`: RFC8785-style JSON canonicalization.
+- `sha256_hex(b)`: SHA256 hex digest.
+- `hash_canonical_without_integrity(payload)`: Strips integrity, hashes, re-injects.
+- `append_to_ledger(record, ledger_path)`: Appends with `prev_ledger_hash`.
 
-#### [NEW] [Makefile](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/Makefile)
+### [NEW] `lib/normalize.py`
 
-- Compiles `src` and `tests`.
+- `normalize_text(text)`: NFKC, collapse whitespace, LF endings.
+- `l2_normalize(tensor)`: PyTorch L2 normalization.
 
-### ADK Framework Setup (Prerequisites)
+## Services
 
-#### [NEW] [devcontainer.ide_control_surface.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/env/devcontainer.ide_control_surface.v1)
+### [NEW] `ingest_api/main.py` (FastAPI)
 
-#### [NEW] [ide.compliance_checklist.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/policy/ide.compliance_checklist.v1)
+- `POST /ingest`: Accepts file upload + metadata, returns `bundle_id`.
+- Enqueues to `parse_queue` (Redis).
 
-#### [NEW] [ci_parity.v1](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/adk/runbook/ci_parity.v1)
+### [MODIFY] `docling_worker/tasks.py`
 
-### Engine Core (`src/engine`)
+- Consumes `parse_queue`.
+- Parses with IBM Docling.
+- Normalizes text.
+- Batches chunks (e.g., groups of 32).
+- Enqueues batches to `embed_queue`.
 
-#### [NEW] [Orchestrator.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Orchestrator.hpp) / [main.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/main.cpp)
+### [MODIFY] `embed_worker/worker.py`
 
-- **Game Loop**: Inputs -> Physics -> World Update -> Render (State).
-- **Asset Loader**: Mock loader for "9 Levels".
+- Consumes `embed_queue`.
+- Processes batches using PyTorch batch inference.
+- Uses L2 normalization on batch tensors.
+- Performs bulk upsert to Qdrant.
+- Appends multiple records to ledger efficiently.
 
-#### [NEW] [Sandbox.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Sandbox.hpp)
+## Infrastructure (`docker-compose.yml`)
 
-- Holds the `WorldModel` and `Entities`.
-- Manages strict framing (Side-scrolling window).
-
-#### [NEW] [WorldModel.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp) (Agentic Field)
-
-- **LevelGenerator**: Procedurally generates platforms/hazards based on "Level ID" (1-9).
-- **BossRoom**: Special segment at the end of a level.
-- **Checkpoint**: State serialization point.
-
-#### [NEW] [Physics.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Physics.hpp)
-
-- **SafetyLayer Integration**: Enforces "World Boundaries" and "Collision" as safety constraints.
-- Gravity, Jump dynamics, Dash.
-
-### Agents
-
-#### [NEW] [Avatar.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Avatar.hpp)
-
-- "Mega Man" state machine (Idle, Run, Jump, Shoot).
-
-#### [NEW] [Boss.hpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/agents/Boss.hpp)
-
-- Simple behavior tree for Boss (e.g., Jump, Shoot, Pattern).
-
-### WebSocket Shell
-
-#### [NEW] [server.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/server.js)
-
-- Node.js WebSocket Server (`ws` library).
-- Spawns the Game Engine process.
-- Relays JSON messages between WebSocket and Game Engine Stdin/Stdout.
-
-#### [MODIFY] [Orchestrator.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/Orchestrator.cpp)
-
-- Update game loop to read commands from Stdin.
-- Output game state as JSON to Stdout.
-
-### SPA Checkpoint (Client)
-
-#### [NEW] [index.html](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/index.html)
-
-- Main entry point. Defines the Canvas and UI controls.
-
-#### [NEW] [style.css](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/style.css)
-
-- Retro "NES" style CSS.
-
-#### [NEW] [client.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/client.js)
-
-- Connects to WebSocket.
-- Sends inputs (Arrow keys, Space).
-- Renders received state (Avatar pos, Level tiles) on Canvas.
-
-### React SPA Migration
-
-#### [NEW] [server/react-client](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/react-client)
-
-- Vite + React + TypeScript (optional, sticking to JS for speed/consistency with previous files unless inferred otherwise, staying JS based on `server.js`).
-- **Components**:
-  - `App.jsx`: Main container.
-  - `GameCanvas.jsx`: Handles Canvas Ref and Rendering loop.
-  - `HUD.jsx`: Displays Score and Energy.
-  - `ConnectionStatus.jsx`: Shows WS status.
-- **Hooks**:
-  - `useGameSocket`: Manages WS connection and state updates.
-
-### Runtime Grounding (Stripe)
-
-#### [NEW] [server/grounding.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/grounding.js)
-
-- Middleware that listens for Stripe Webhooks.
-- Translates `payment_intent.succeeded` into a `{"type": "genesis_plane", "origin": [0,0]}` command for the Engine.
-- **Concept**: The financial transaction "grounds" the agent, creating a solid plane (platform) for it to stand on.
-
-#### [MODIFY] [server/server.js](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/server.js)
-
-- mount `grounding.js` at `/webhook`.
-
-#### [MODIFY] [src/engine/WorldModel.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/WorldModel.cpp)
-
-- Handle `genesis_plane`: Dynamically spawn a platform at the "Origin".
-
-#### [NEW] [docs/grounding_exercise.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/grounding_exercise.md)
-
-- Instructions on using `stripe trigger` to generate the plane.
+- `redis:alpine`: Queue backend.
+- `qdrant:latest`: Vector store.
+- `ingest-api`: FastAPI (port 8000).
+- `docling-worker`: Celery/RQ worker.
+- `embed-worker`: Celery/RQ worker.
+- Volume: `./ledger:/data/ledger` (Persistent ledger).
 
 ## Verification Plan
 
-### Automated Tests
+### Automated Replay Test
 
-- `make test_emulation`:
-  - Load Level 1.
-  - Spawn Avatar.
-  - Simulate 100 frames of running/jumping.
-  - Verify Avatar reaches "Checkpoint" or interacts with "Boss".
-
----
-
-# Sovereign RAG Pipeline: Batch Processing Evolution
-
-Goal: Integrate high-velocity mechanical enforcement with long-term **Semantic Memory** by implementing an asynchronous batch embedding pipeline.
-
-## User Review Required
-
-> [!IMPORTANT]
-> This upgrade assumes the existence of the `docling-pipeline` directory and its services. The "Sovereign" labeling requires strict adherence to SHA-256 identity and canonical hashing for document provenance.
-
-## Proposed Changes
-
-### Embed Worker (`docling-pipeline/services/embed_worker`)
-
-#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)
-
-- Consolidate logic from `worker.py`.
-- **`get_embeddings`**:
-  - Switch to local device detection (`cuda`, `mps`, `cpu`).
-  - Implement `DataLoader` with `pin_memory=True` and `num_workers > 0` for high-throughput batching.
-  - Implement a real embedding pass (if model is available) or a robust vectorized mock that maintains semantic fidelity.
-- **`embed_batch`**:
-  - Implement bulk upsert to Qdrant using the truncated SHA-256 (32 hex) ID protocol.
-  - Ensure `source_block_refs` and model metadata are correctly mapped for audit trails.
-
-#### [DELETE] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
-
-- Consolidate logic into `tasks.py` and use a generic RQ worker entry point if possible, or keep `worker.py` as a slim wrapper.
-
-### Documentation
-
-#### [NEW] [rag_pipeline.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docs/rag_pipeline.md)
-
-- Technical guide on the **Semantic Ledger**, **Identity Protocol**, and **Integrity Protocol**.
-
-## Verification Plan
-
-### Automated Tests
-
-- `pytest docling-pipeline/tests/test_embed_batch.py`:
-  - Verify SHA-256 ID unicity.
-  - Verify L2 normalization output.
-  - Benchmark batch vs single-chunk throughput.
-
-### Manual Verification
-
-- Use `stripe trigger` (conceptually) or a test script to ingest a large document and observe the `embed-worker` logs for batch processing performance.
+1. Submit a known document to `/ingest`.
+2. Capture `doc_id`, `chunk_ids`, embedding hashes.
+3. Purge and re-process.
+4. Assert identical hashes.

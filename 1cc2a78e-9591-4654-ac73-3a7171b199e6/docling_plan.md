@@ -1,110 +1,68 @@
-# Docling Pipeline Implementation Plan
+# Docling Cluster Pipeline Implementation Plan
 
 ## Goal
 
-Build a local-first document processing pipeline using **IBM Docling** for parsing, **PyTorch** for embeddings, and a **hash-chain ledger** for deterministic replay.
+Create a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment.
 
-## Architecture
+## Architecture & Flow
 
-```mermaid
-graph LR
-    A[ingest-api] --> B[parse_queue]
-    B --> C[docling-worker]
-    C --> D[embed_queue]
-    D --> E[embed-worker]
-    E --> F[Qdrant]
-    C --> G[Ledger]
-    E --> G
-```
+1. **Service Synchronization**:
+    - **Redis/RQ**: Orchestrates asynchronous task management.
+    - **Qdrant**: Manages `document_chunks` using Cosine Distance.
+    - **PyTorch**: Executes high-fidelity embedding generation.
+
+2. **The Integrity Protocol**:
+    - **Identity**: SHA-256 content IDs for every chunk.
+    - **Normalization**: L2 normalization for performant similarity search.
+    - **Canonical Hashing**: JCS (RFC8785) to maintain "Saintly Honesty".
 
 ## Proposed Changes
 
-### [NEW] `docling-pipeline/` (New Directory)
+### [NEW] `pipeline/` Directory Structure
 
 #### [NEW] `docker-compose.yml`
 
-- **Qdrant**: Vector store (`qdrant/qdrant:latest`)
-- **Redis**: Queue backend (`redis:alpine`)
-- **ingest-api**: FastAPI service
-- **docling-worker**: Celery worker for Docling parsing
-- **embed-worker**: Celery worker for PyTorch embeddings
-- Shared volume for ledger persistence
+- Services: `redis`, `qdrant`, `ingest-api`, `docling-worker`, `embed-worker`.
+- Persistent ledger volume: `./ledger:/data/ledger`.
+
+#### [NEW] `schemas/`
+
+- `doc.normalized.v1.schema.json`: Formal JSON Schema for parsed output.
+- `chunk.embedding.v1.schema.json`: Formal JSON Schema for embeddings.
+
+#### [NEW] `lib/`
+
+- `canonical.py`: JCS hash + ledger logic (`append_to_ledger`).
+- `normalize.py`: Text normalization + L2 vector normalization.
+
+#### [NEW] `ingest_api/`
+
+- FastAPI endpoint (`POST /ingest`) returns `bundle_id`.
+
+#### [NEW] `docling_worker/`
+
+- `worker.py`: IBM Docling parsing + batching (32 chunks/batch).
+
+#### [NEW] `embed_worker/`
+
+- `worker.py`: PyTorch `DataLoader` batch inference + bulk Qdrant upsert.
 
 ---
 
-#### [NEW] `schemas/doc_normalized_v1.py`
+## Determinism Anchors
 
-- Pydantic model for `doc.normalized.v1`
-- JCS canonicalization + SHA256 integrity
-
-#### [NEW] `schemas/chunk_embedding_v1.py`
-
-- Pydantic model for `chunk.embedding.v1`
-- L2 normalization for vectors
-
----
-
-#### [NEW] `services/ingest_api/main.py`
-
-- FastAPI app accepting documents
-- Returns `bundle_id`
-- Enqueues to `parse_queue`
-
-#### [NEW] `services/docling_worker/tasks.py`
-
-- Celery task using IBM Docling
-- Normalizes output → `doc.normalized.v1`
-- Writes to ledger
-- Enqueues chunks to `embed_queue`
-
-#### [NEW] `services/embed_worker/tasks.py`
-
-- Celery task using PyTorch embedder
-- L2 normalizes vectors
-- Writes to Qdrant + ledger
-
----
-
-#### [NEW] `lib/ledger.py`
-
-- Append-only JSONL writer
-- Hash-chain: each record includes `prev_ledger_hash`
-- `sha256_canonical` computed via JCS (RFC8785)
-
-#### [NEW] `lib/normalize.py`
-
-- Unicode NFKC
-- Whitespace collapse
-- LF line endings
-- Stable block ordering
-
----
-
-### [MODIFY] `services/embed_worker/tasks.py`
-
-- **Upgrade**: Move from single-chunk to batch processing.
-- **DataLoader**: Use PyTorch `DataLoader` to manage tensor batches.
-- **Qdrant**: Use `upsert` with a list of points for high-velocity ingestion.
-
-## Determinism Anchors (ConfigMap)
-
-| Key | Example |
-|-----|---------|
-| `pipeline_version` | `v0.1.0` |
-| `docling_version` | `0.5.0` |
+| Key | Value |
+|-----|-------|
+| `pipeline_version` | `v1.0.0` |
+| `docling_version` | `0.4.0` |
 | `normalizer_version` | `norm.v1` |
-| `chunker_version` | `chunk.v1` |
-| `embedder_model_id` | `text-embedder-v1` |
-| `weights_hash` | `sha256:abc...` |
+| `embedder_model_id` | `sentence-transformers/all-MiniLM-L6-v2` |
 
 ## Verification Plan
 
-### Automated Tests
+### Replay Test
 
-- Replay test: same input → identical `doc_id`, `chunk_ids`, embedding hashes
-- Hash-chain integrity: verify `prev_ledger_hash` links
-
-### Manual Verification
-
-- Ingest a test PDF, verify Qdrant contains correct vectors
-- Query ledger JSONL, verify hash chain
+1. Submit document to `/ingest`.
+2. Capture `doc_id` and `chunk_ids`.
+3. Purge system and re-process.
+4. **Assert** identical hashes across all stages.

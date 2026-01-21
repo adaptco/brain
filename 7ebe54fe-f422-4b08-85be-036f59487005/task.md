@@ -1,42 +1,18 @@
-# Task: Emerge Game Engine (Mega Man Emulation)
+# Task: Implement Docling Cluster Pipeline
 
-- [ ] Analyze existing framework (`adk`) <!-- id: 0 -->
-  - [x] Understand `schemas`
-  - [x] Understand `contract` and `gate`
-  - [x] Create missing ADK policy files
-- [x] Design Mega Man Engine utilizing the framework <!-- id: 1 -->
-  - [/] Define Orchestrator (Game Loop)
-  - [/] Define Sandbox (World Model Container)
-  - [/] Design Side-scrolling Agentic Field (Level Generator)
-  - [/] Design Physics Model (Platformer Mechanics)
-  - [/] Design Avatar (Mega Man) and Boss Agents
-- [x] Implement Game Engine Core <!-- id: 2 -->
-  - [x] Orchestrator & Sandbox
-  - [x] Physics & SafetyLayer Integration
-  - [x] Level Generator (World Model)
-- [x] Create WebSocket Shell <!-- id: 4 -->
-  - [x] Design Node.js WebSocket Server
-  - [x] Update Engine for StdIO Communication
-  - [x] Implement Server
-- [x] Deploy SPA Checkpoint <!-- id: 5 -->
-  - [x] Create HTML5 Canvas Frontend
-  - [x] Implement WebSocket Client
-  - [x] Render Game State
-- [x] Migrate to React SPA <!-- id: 6 -->
-  - [x] Initialize Vite React Project
-  - [x] Port Canvas & WebSocket Logic
-  - [x] Create HUD Components
-  - [x] Update Server to Serve React Build
-- [x] Ground Runtime via Stripe CLI <!-- id: 7 -->
-  - [x] Design Stripe Grounding Interface
-  - [x] Implement Webhook Receptor (Server)
-  - [x] Wire Webhook to Plane Generation (Engine)
-  - [x] Document CLI Trigger Commands
-- [/] Verify Emulation <!-- id: 3 -->
-  - [/] Run Scaffolding Test (Level 1 + Boss Room) (Skipped: No Compiler)
-- [/] Implement Batch Processing in RAG Pipeline <!-- id: 8 -->
-  - [/] Locate `embed_chunk` in `embed_worker`
-  - [ ] Research `DataLoader` and Batch embedding logic
-  - [ ] Create Implementation Plan for Batch Processing
-  - [ ] Update `embed_worker` to support batches
-  - [ ] Verify performance improvements and integrity protocols
+- [/] Planning & Specs <!-- id: 0 -->
+  - [x] Analyze deterministic pipeline requirements
+  - [x] Update Implementation Plan
+- [ ] Implement Core Libraries (`lib/`) <!-- id: 1 -->
+  - [ ] Implement `canonical.py` (JCS + SHA256 + Ledger)
+  - [ ] Implement `normalize.py` (NFKC + L2 Norm)
+- [ ] Implement Services <!-- id: 2 -->
+  - [ ] Implement `ingest_api` (FastAPI)
+  - [ ] Implement `docling_worker` (Docling + Batching)
+  - [ ] Implement `embed_worker` (PyTorch Batch Inference)
+- [ ] Orchestration & Infrastructure <!-- id: 3 -->
+  - [ ] Update `docker-compose.yml`
+  - [ ] Create schemas (`doc.normalized.v1`, `chunk.embedding.v1`)
+- [ ] Verification <!-- id: 4 -->
+  - [ ] Implement Replay Test
+  - [ ] Verify deterministic hashing

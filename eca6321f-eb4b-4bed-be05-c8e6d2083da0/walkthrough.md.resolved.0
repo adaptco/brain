@@ -1,0 +1,10 @@
+# Walkthrough - Resolving SSH Config Error
+
+The user reported an error where the `antigravity-remote-openssh` extension failed because it couldn't find [C:\Users\eqhsp\.ssh\config](file:///Users/eqhsp/.ssh/config).
+
+## Changes Made
+- Created the directory `C:\Users\eqhsp\.ssh`.
+- Created an empty file `C:\Users\eqhsp\.ssh\config`.
+
+## Verification Results
+- Ran `Test-Path 'C:\Users\eqhsp\.ssh\config'` which returned `True`.

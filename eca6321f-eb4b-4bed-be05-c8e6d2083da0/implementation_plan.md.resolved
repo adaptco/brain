@@ -1,0 +1,42 @@
+# Docling Cluster Pipeline Implementation Plan
+
+Create a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment.
+
+## Proposed Changes
+
+### Configuration and Infrastructure
+
+#### [NEW] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/docker-compose.yml)
+Define services: Redis (queue), Qdrant (vector store), Ingest API, Docling Worker, Embed Worker.
+
+### Schemas
+
+#### [NEW] [doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/schemas/doc.normalized.v1.schema.json)
+Schema for normalized document content.
+
+#### [NEW] [chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/schemas/chunk.embedding.v1.schema.json)
+Schema for chunks and their embeddings.
+
+### Core Library
+
+#### [NEW] [canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/lib/canonical.py)
+RFC8785-style JSON canonicalization and SHA256 hashing for determinism.
+
+#### [NEW] [normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/lib/normalize.py)
+Text normalization (NFKC, whitespace) and PyTorch L2 normalization for embeddings.
+
+### Services
+
+#### [NEW] [ingest_api/main.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/ingest_api/main.py)
+FastAPI service to handle file uploads and enqueue parsing tasks.
+
+#### [NEW] [docling_worker/worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/docling_worker/worker.py)
+Celery worker using IBM Docling to parse and normalize documents.
+
+#### [NEW] [embed_worker/worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/embed_worker/worker.py)
+Celery worker using PyTorch for batch embedding generation and Qdrant upsert.
+
+## Verification Plan
+
+### Automated Tests
+- **Replay Test**: Process a document, record hashes, re-process, and assert identical output hashes.

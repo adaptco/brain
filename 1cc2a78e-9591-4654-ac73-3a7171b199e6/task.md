@@ -27,12 +27,13 @@
 
 ## Docling Pipeline Infrastructure
 
-- [ ] Create `docker-compose.yml` (Qdrant, Redis, API, Workers) <!-- id: 22 -->
-- [ ] Implement `doc.normalized.v1` schema <!-- id: 23 -->
-- [ ] Implement `chunk.embedding.v1` schema <!-- id: 24 -->
-- [ ] Create `ingest-api` (FastAPI) <!-- id: 25 -->
-- [ ] Create `docling-worker` (Celery) <!-- id: 26 -->
-- [ ] Create `embed-worker` (PyTorch) <!-- id: 27 -->
-- [ ] Implement hash-chain ledger <!-- id: 28 -->
-- [x] Implement Batch Processing for `embed-worker` <!-- id: 31 -->
-- [ ] Determinism gate tests <!-- id: 29 -->
+- [ ] Transition to `pipeline/` directory structure <!-- id: 22 -->
+- [ ] Emit `.schema.json` files (doc.normalized, chunk.embedding) <!-- id: 23 -->
+- [ ] Standardize file names (`worker.py`, `canonical.py`, `normalize.py`) <!-- id: 24 -->
+- [ ] Implement Replay Test for determinism verification <!-- id: 29 -->
+- [x] Create `docker-compose.yml` (Qdrant, Redis, API, Workers) <!-- id: 22 -->
+- [x] Create `ingest-api` (FastAPI) <!-- id: 25 -->
+- [x] Create `docling-worker` (parse + batch) <!-- id: 26 -->
+- [x] Create `embed-worker` (PyTorch + DataLoader) <!-- id: 27 -->
+- [x] Implement hash-chain ledger <!-- id: 28 -->
+- [x] Implement Batch Processing Evolution <!-- id: 31 -->

@@ -44,12 +44,12 @@ curl -X POST http://localhost:8000/ingest -F "file=@doc.pdf"
 
 ## Determinism Anchors
 
-| Anchor      | Location |
-| ----------- | -------- |
-| Docling version | `k8s/configmap.yaml` |
-| Normalizer version | `lib/normalize.py` |
-| Embedder model + hash | `services/embed-worker/worker.py` |
-| Queue System | RQ (Redis Queue) |
-| Batch Logic | `services/embed-worker/worker.py` (DataLoader) |
-| Batch Signing | `WalletProxy` (Sovereign Key) |
-| Hash chain | `lib/ledger.py` |
+|Anchor|Location|
+|---|---|
+|Docling version|`k8s/configmap.yaml`|
+|Normalizer version|`lib/normalize.py`|
+|Embedder model + hash|`services/embed-worker/worker.py`|
+|Queue System|RQ (Redis Queue)|
+|Batch Logic|`services/embed-worker/worker.py` (DataLoader)|
+|Batch Signing|`WalletProxy` (Sovereign Key)|
+|Hash chain|`lib/ledger.py`|

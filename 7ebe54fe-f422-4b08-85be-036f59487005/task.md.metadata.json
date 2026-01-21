@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Exploring the RAG pipeline codebase to find the background worker and embed_chunk function. Found `docling_worker`, `embed_worker`, and `ingest_api` services. Currently investigating the `embed_worker` for the `embed_chunk` implementation.",
-  "updatedAt": "2026-01-21T19:22:38.283483Z",
-  "version": "19"
+  "summary": "Task list for the Docling Cluster Pipeline implementation. Activities include implementing core libraries, services, and infrastructure, followed by verification through replay tests.",
+  "updatedAt": "2026-01-21T19:54:05.374625800Z",
+  "version": "20"
 }

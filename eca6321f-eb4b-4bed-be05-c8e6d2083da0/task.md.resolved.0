@@ -1,0 +1,4 @@
+# Task: Resolve SSH Config ENOENT Error
+
+- [/] Create `.ssh` directory and `config` file <!-- id: 0 -->
+- [ ] Verify fix <!-- id: 2 -->
