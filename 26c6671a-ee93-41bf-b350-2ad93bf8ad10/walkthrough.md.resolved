@@ -1,42 +1,39 @@
-# Walkthrough - System Framework Verification
+# Walkthrough - Docling Pipeline
 
-## Summary
-All system components have been verified:
+## Implementation Complete
 
-| Component | Verification Method | Status |
-|-----------|---------------------|--------|
-| ADK Contracts | [validate_architecture.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/tests/contracts/validate_architecture.py) | ✅ PASSED |
-| Game Server | [QubeAgent.test.ts](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/Qube/QubeAgent.test.ts) (Jest) | ✅ PASSED |
-| React Client | `npm run build` (Vite) | ✅ PASSED |
+| Component | Status |
+|-----------|--------|
+| Infrastructure | ✅ docker-compose.yml with Redis, Qdrant, 4 services |
+| Schemas | ✅ doc.normalized.v1, chunk.embedding.v1 |
+| JCS Library | ✅ Canonicalization + hashing |
+| ingest-api | ✅ FastAPI document submission |
+| docling-worker | ✅ Parse + normalize |
+| embed-worker | ✅ Chunk + embed |
+| ledger | ✅ Append-only hash-chain |
+| Replay Test | ✅ PASSED |
 
-## Test Results
+## Directory Structure
 
-### QubeAgent System Test
+```text
+docling/
+├── docker-compose.yml
+├── services/
+│   ├── ingest-api/
+│   ├── docling-worker/
+│   ├── embed-worker/
+│   └── ledger/
+├── schemas/
+├── lib/jcs.py
+└── tests/
 ```
- PASS  Qube/QubeAgent.test.ts
-  QubeAgent System Test
-    √ Agent should trigger Genesis Event via /deploy (39 ms)
-```
 
-### Client Build
-```
-vite v4.5.14 building for production...
-✓ 36 modules transformed.
-dist/index.html         0.40 kB
-dist/assets/index.js  146.85 kB
-✓ built in 727ms
-```
+## Usage
 
-## Running the Application
-
-**Terminal 1 (Server):**
 ```bash
-cd server && npm install && node server.js
+cd docling
+docker-compose up --build
 ```
 
-**Terminal 2 (Client):**
-```bash
-cd server/react-client && npm install && npm run dev
-```
-
-Open `http://localhost:5173`, type `/deploy` in the terminal, and press Enter.
+Ingest: `curl -X POST http://localhost:8000/ingest -F "file=@doc.txt"`
+Verify: `curl http://localhost:8001/verify`

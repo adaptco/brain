@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Walkthrough of the Docling pipeline implementation with Docker Compose, FastAPI, workers, schemas, ledger, and verification steps.",
-  "updatedAt": "2026-01-21T18:33:11.300016Z",
-  "version": "2"
+  "summary": "Final consolidated walkthrough merging the ADK Release Candidate Blueprint, Embedding logic, and Docling Pipeline into a unified state.",
+  "updatedAt": "2026-01-21T18:52:40.670856800Z",
+  "version": "4"
 }

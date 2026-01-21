@@ -1,0 +1,44 @@
+# Walkthrough: Docling Pipeline
+
+## Summary
+
+Built a **deterministic document processing pipeline** using IBM Docling, PyTorch embeddings, and an append-only ledger with hash-chain integrity.
+
+## Components Created
+
+### Infrastructure
+
+- [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docker-compose.yml) — Multi-service: Redis, Qdrant, ingest-api, workers
+
+### Schemas
+
+- [doc_normalized_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/doc_normalized_v1.py) — Pydantic schema for parsed documents
+- [chunk_embedding_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/chunk_embedding_v1.py) — Pydantic schema for embeddings
+
+### Services
+
+- **ingest-api**: [main.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/ingest_api/main.py) — FastAPI `POST /ingest`
+- **docling-worker**: [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/docling_worker/tasks.py) — Docling parse + normalize
+- **embed-worker**: [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/embed_worker/tasks.py) — PyTorch embeddings
+
+### Common Utilities
+
+- [canonicalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/common/canonicalize.py) — JCS + SHA256 hashing
+- [normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/common/normalize.py) — NFKC text + L2 vector normalization
+- [ledger.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/ledger/ledger.py) — Append-only JSONL with hash-chain
+
+## Running the Pipeline
+
+```bash
+cd knowledge
+docker compose up --build -d
+curl -X POST http://localhost:8000/ingest -F file=@test.pdf
+cat docling/data/ledger.jsonl | jq .
+```
+
+## Determinism Anchors
+
+- `parser.config_hash`
+- `embedding.weights_hash`
+- `integrity.sha256_canonical`
+- `integrity.prev_ledger_hash`

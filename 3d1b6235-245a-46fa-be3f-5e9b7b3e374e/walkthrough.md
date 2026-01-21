@@ -1,59 +1,50 @@
-# Walkthrough: Docling Pipeline
 
-## Summary
+# Walkthrough: Unified Knowledge Cloud (RC0)
 
-Built a **deterministic document processing pipeline** using IBM Docling, PyTorch embeddings, and an append-only ledger with hash-chain integrity.
+This document serves as the "Merge Point" for all development threads: the ADK Release Candidate Blueprint, the Embedding Infrastructure, and the Docling Pipeline.
 
-## Components Created
+## 1. Integrated Components
 
-### Infrastructure
+The following components are now unified and committed to the `main` branch of the `knowledge/` repository:
 
-| File | Description |
-|------|-------------|
-| [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docker-compose.yml) | Multi-service: Redis, Qdrant, ingest-api, workers |
+### ADK Core (v0)
 
-### Schemas (`docling/schemas/`)
+- **Path**: [adk/](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/)
+- **Status**: Release Candidate (RC0) finalized.
+- **Includes**: Contracts, validation scripts, threat model, and boundaries.
 
-| File | Description |
-|------|-------------|
-| [doc_normalized_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/doc_normalized_v1.py) | Pydantic schema for parsed documents |
-| [chunk_embedding_v1.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/schemas/chunk_embedding_v1.py) | Pydantic schema for embeddings |
+### Ghost Void Server + React Client
 
-### Services
+- **Path**: [server/](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/)
+- **Features**:
+  - **Lexus Agent**: "Super App Super Model" Avatar.
+  - **Alexis Driver**: Expert logic driving the IS-F container.
+  - **Genesis Event**: Triggered by `/deploy`, now with artifact embedding.
+- **Verification**: `npm run build` passed successfully.
 
-| Service | Path | Description |
-|---------|------|-------------|
-| ingest-api | [main.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/ingest_api/main.py) | FastAPI: `POST /ingest` |
-| docling-worker | [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/docling_worker/tasks.py) | Docling parse + normalize |
-| embed-worker | [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/embed_worker/tasks.py) | PyTorch embeddings |
+### Docling Pipeline (Deterministic DB)
 
-### Common Utilities (`docling/common/`)
+- **Path**: [docling/](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/)
+- **Features**:
+  - **Deterministic Hashing**: JCS-canonical JSON hashing for all documents and embeddings.
+  - **Cryptographic Ledger**: Hash-chain integrity in `ledger.jsonl`.
+  - **Services**: Ingest API, Docling Worker, Embed Worker (PyTorch).
+- **Control**: Managed via `docker-compose.yml`.
 
-- **canonicalize.py**: JCS + SHA256 hashing
-- **normalize.py**: NFKC text + L2 vector normalization
+## 2. Determinism & Traceability
 
-### Ledger (`docling/ledger/`)
+All components now share a common integrity pattern:
 
-- **ledger.py**: Append-only JSONL with hash-chain
+- Every document parse generates a `doc_id` based on content SHAs.
+- Every embedding chunk generates a `chunk_id` and is L2-normalized.
+- All operations are recorded in the append-only ledger with `prev_hash` links.
 
-## Running the Pipeline
+## 3. Operations & Debugging
 
-```bash
-# Start all services
-docker compose up --build -d
+- **Local Runner**: [adk.ps1](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/adk/adk.ps1) (PowerShell wrapper for ADK commands).
+- **IDE Control**: [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) added for Dockerized FastAPI debugging.
+- **Build**: `docker compose up --build` runs the entire knowledge-processing cluster.
 
-# Ingest a document
-curl -X POST http://localhost:8000/ingest -F file=@document.pdf
+---
 
-# View ledger
-cat docling/data/ledger.jsonl | jq .
-```
-
-## Determinism Anchors
-
-All outputs are reproducible via:
-
-- `parser.config_hash`
-- `embedding.weights_hash`
-- `integrity.sha256_canonical`
-- `integrity.prev_ledger_hash`
+✅ **Thread Merge Complete**: All active components (ADK, Game Engine, Pipeline) are validated and anchored in a single commit history.

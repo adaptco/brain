@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task checklist for the Docling Pipeline implementation. Covers infrastructure (Docker Compose), schemas (JSON), services (FastAPI workers), storage (Redis/Qdrant), and verification.",
-  "updatedAt": "2026-01-21T18:29:38.638819400Z",
-  "version": "17"
+  "summary": "Task tracking: All implementation done. Running tests.",
+  "updatedAt": "2026-01-21T18:45:07.910186900Z",
+  "version": "21"
 }

@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task checklist for Docling pipeline showing completed infrastructure, schemas, and services.",
-  "updatedAt": "2026-01-21T18:33:11.293901300Z",
-  "version": "3"
+  "summary": "Final task list showing completion of all infrastructure, schemas, services, and the thread merge.",
+  "updatedAt": "2026-01-21T18:52:42.739070800Z",
+  "version": "4"
 }

@@ -1,0 +1,99 @@
+# Verification Strategy: Replay & Integration Tests
+
+Implement a verification strategy with two test categories: **Replay Tests** (determinism) and **Integration Tests** (end-to-end flow).
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Breaking Change**: The current `bundle_id` uses `uuid.uuid4()` which is non-deterministic. To achieve replay determinism (same doc → same `bundle_id`), I propose making `bundle_id` a hash of `doc_id + filename`. This changes API behavior.
+
+**Decision needed**: Should `bundle_id` be:
+
+- **Option A**: Content-hash based (deterministic, enables replay assertion)
+- **Option B**: Keep UUID (non-deterministic, test only `doc_id` and hashes)
+
+---
+
+## Proposed Changes
+
+### Test Infrastructure
+
+#### [NEW] [conftest.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/conftest.py)
+
+- Pytest fixtures for test isolation
+- Temp ledger file setup/teardown
+- Mock Redis client for queue testing
+- Sample document fixtures (PDF bytes, text content)
+
+---
+
+### Replay Tests
+
+#### [NEW] [test_replay.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_replay.py)
+
+```python
+# Test cases:
+def test_replay_identical_doc_id():
+    """Submit same document twice → identical doc_id (sha256 hash)."""
+
+def test_replay_identical_bundle_id():
+    """Submit same document twice → identical bundle_id."""
+
+def test_replay_identical_canonical_hash():
+    """Same content → same JCS canonical hash."""
+
+def test_replay_different_doc_diff_id():
+    """Different document → different doc_id."""
+```
+
+---
+
+### Integration Tests
+
+#### [NEW] [test_integration.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_integration.py)
+
+```python
+# End-to-end flow tests:
+def test_ingest_creates_queue_entry():
+    """POST /ingest → job appears in parse_queue."""
+
+def test_ledger_entry_created():
+    """Process doc → ledger entry with hash-chain."""
+
+def test_ledger_chain_verification():
+    """Multiple entries → verify_chain() passes."""
+
+def test_integrity_hash_matches():
+    """Ledger entry integrity.sha256_canonical is valid."""
+```
+
+---
+
+### API Fix (if Option A approved)
+
+#### [MODIFY] [main.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/ingest-api/main.py)
+
+```diff
+-    bundle_id = str(uuid.uuid4())
++    # Deterministic bundle_id for replay testing
++    bundle_id = f"bundle:{hashlib.sha256((doc_id + file.filename).encode()).hexdigest()[:16]}"
+```
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+| Command | Description |
+|---------|-------------|
+| `cd c:\Users\eqhsp\Downloads\Qube\docling-cluster && pip install -e ".[dev]"` | Install with dev deps |
+| `pytest tests/ -v` | Run all tests with verbose output |
+| `pytest tests/test_replay.py -v` | Run replay tests only |
+| `pytest tests/test_integration.py -v` | Run integration tests only |
+
+### Manual Verification
+
+1. Start Redis: `docker-compose up redis -d`
+2. Run ingest API: `uvicorn services.ingest-api.main:app --reload`
+3. POST same file twice via curl and compare responses

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Tracks implementation of replay and integration tests for docling-cluster verification strategy. Includes fixing deterministic bundle_id generation and creating pytest-based test suite.",
+  "updatedAt": "2026-01-21T18:43:27.574279100Z"
+}

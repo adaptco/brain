@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Final walkthrough with all verification results: ADK contracts validated, Game Server tested via QubeAgent, React Client build verified.",
-  "updatedAt": "2026-01-21T18:22:53.413648500Z",
-  "version": "5"
+  "summary": "Final walkthrough for the Docling Pipeline. Summarizes all implemented services, schemas, and verification results.",
+  "updatedAt": "2026-01-21T18:46:01.993150600Z",
+  "version": "6"
 }

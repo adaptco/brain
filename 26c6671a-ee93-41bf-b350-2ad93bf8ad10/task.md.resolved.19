@@ -1,0 +1,25 @@
+# Task: Docling Pipeline Implementation
+
+## Infrastructure
+- [x] Create [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/docker-compose.yml) with all services
+- [x] Create Dockerfiles for each service
+- [x] Create [requirements.txt](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/services/ledger/requirements.txt) per service
+
+## Schemas
+- [/] Define `doc.normalized.v1` JSON schema
+- [ ] Define `chunk.embedding.v1` JSON schema
+- [ ] Implement JCS canonicalization + hashing
+
+## Services
+- [ ] `ingest-api` (FastAPI): accept docs, return `bundle_id`
+- [ ] `docling-worker`: parse + normalize → `doc.normalized.v1`
+- [ ] `embed-worker`: chunk + embed → `chunk.embedding.v1`
+- [ ] `ledger`: append-only JSONL + hash-chain
+
+## Queues / Storage
+- [ ] Redis for task queues
+- [ ] Qdrant for vector storage
+
+## Verification
+- [ ] Replay test: same input → identical hashes
+- [ ] Integration test: full pipeline end-to-end
