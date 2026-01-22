@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/invariant_set.v1.schema.json",
+  "title": "Kernel Invariant Set",
+  "description": "Canonical schema for a hash-bound invariant set referenced by a kernel state token.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "invset_id",
+    "vehicle",
+    "scenario",
+    "epoch",
+    "chamber",
+    "merkle_root",
+    "invariants",
+    "created_utc"
+  ],
+  "properties": {
+    "invset_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for this invariant set (e.g., invset_042_dry_v1)."
+    },
+    "vehicle": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable vehicle identifier."
+    },
+    "scenario": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Scenario key (e.g., dry_track_v1, wet_emergency_v2)."
+    },
+    "epoch": {
+      "type": ["string", "integer"],
+      "description": "Training or validation epoch identifier."
+    },
+    "chamber": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Verification chamber identifier (e.g., ASILD-LANEKEEP-V1)."
+    },
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]+$",
+      "description": "Hex digest committing to the invariant set (Merkle root)."
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "statement"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Invariant identifier (e.g., inv_1)."
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Canonical invariant statement."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Optional scope or segment filter (e.g., S12-S14)."
+          },
+          "source": {
+            "type": "string",
+            "description": "Optional source reference for the invariant derivation."
+          }
+        }
+      }
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp for when the invariant set was minted."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional freeform metadata describing provenance or derivation context.",
+      "additionalProperties": true
+    }
+  }
+}
