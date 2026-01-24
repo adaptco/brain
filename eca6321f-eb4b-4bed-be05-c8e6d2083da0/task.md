@@ -6,6 +6,6 @@
 - [x] Implement core library modules (`canonical.py`, `normalize.py`) <!-- id: 1 -->
 - [x] Implement `ingest_api` (FastAPI) <!-- id: 2 -->
 - [x] Implement `docling_worker` (Celery + Docling) <!-- id: 3 -->
-- [/] Implement `embed_worker` (Celery + PyTorch) <!-- id: 4 -->
-- [ ] Create `docker-compose.yml` and infrastructure configuration <!-- id: 5 -->
+- [x] Implement `embed_worker` (Celery + PyTorch) <!-- id: 4 -->
+- [/] Create `docker-compose.yml` and infrastructure configuration <!-- id: 5 -->
 - [ ] Verify pipeline with Replay Test <!-- id: 6 -->
