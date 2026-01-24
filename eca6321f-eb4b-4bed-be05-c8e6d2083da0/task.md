@@ -7,5 +7,5 @@
 - [x] Implement `ingest_api` (FastAPI) <!-- id: 2 -->
 - [x] Implement `docling_worker` (Celery + Docling) <!-- id: 3 -->
 - [x] Implement `embed_worker` (Celery + PyTorch) <!-- id: 4 -->
-- [/] Create `docker-compose.yml` and infrastructure configuration <!-- id: 5 -->
-- [ ] Verify pipeline with Replay Test <!-- id: 6 -->
+- [x] Create `docker-compose.yml` and infrastructure configuration <!-- id: 5 -->
+- [/] Verify pipeline with Replay Test <!-- id: 6 -->
