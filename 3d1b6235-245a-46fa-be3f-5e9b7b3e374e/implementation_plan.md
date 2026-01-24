@@ -1,98 +1,204 @@
-# Implementation Plan: Docling Pipeline
+# Implementation Plan: Agent Capsule Model System
 
 ## Goal
 
-Build a **deterministic document parsing pipeline** using IBM Docling, PyTorch embeddings, and an append-only ledger with hash-chain integrity.
+Build an **Agent Capsule Model** system that serves as foundational routing nodes for embedding vectors, enabling RAG agents to select and apply LoRA weights for real-time fine-tuning.
 
-## User Review Required
+## Architecture Overview
 
-> [!IMPORTANT]
-> This plan creates a `docling/` directory with the new pipeline code. The existing `compose.yaml` will be **replaced** with a multi-service configuration.
+```mermaid
+graph TB
+    A[Document Ingest] --> B[Docling Worker]
+    B --> C[Embed Worker]
+    C --> D[Capsule Router]
+    D --> E[LoRA Selector]
+    E --> F[Fine-tuned Embedding]
+    F --> G[Qdrant Vector Store]
+    
+    H[Agent Query] --> D
+    D --> I[Routing Node Selection]
+    I --> E
+```
+
+## Core Concepts
+
+### 1. Capsule Model
+
+A **capsule** is a reusable, composable agent component that encapsulates:
+
+- Base embedding model
+- Routing logic (which LoRA to apply)
+- State/context for decision-making
+
+### 2. Routing Nodes
+
+**Routing nodes** are decision points that:
+
+- Analyze incoming embedding vectors
+- Select appropriate LoRA weights based on context
+- Route to specialized fine-tuning paths
+
+### 3. LoRA Weight Registry
+
+A **registry** of Low-Rank Adaptation weights that:
+
+- Stores domain-specific adaptations
+- Enables real-time model fine-tuning
+- Supports agent remixing and composition
+
+---
 
 ## Proposed Changes
 
-### Project Structure
+### New Service: `capsule-model`
 
-```text
-knowledge/
-├── docling/
-│   ├── ingest_api/          # FastAPI service
-│   ├── docling_worker/      # Docling parse worker
-│   ├── embed_worker/        # PyTorch embedding worker
-│   ├── ledger/              # Hash-chain ledger library
-│   ├── schemas/             # JSON schemas
-│   └── common/              # Shared utils (JCS, hashing)
-├── docker-compose.yml       # Multi-service compose
-└── ...
+#### [NEW] `Qube/docling-cluster/services/capsule-model/`
+
+**Purpose**: Routing node service that selects LoRA weights for embedding fine-tuning.
+
+**Components**:
+
+- `router.py` — Routing logic for LoRA selection
+- `lora_registry.py` — LoRA weight storage and retrieval
+- `capsule_api.py` — FastAPI service for agent queries
+
+---
+
+### Schema Extensions
+
+#### [NEW] `schemas/capsule_v1.py`
+
+```python
+class CapsuleModel(BaseModel):
+    capsule_id: str
+    base_model_id: str
+    routing_nodes: list[RoutingNode]
+    lora_weights: dict[str, LoRAWeight]
+
+class RoutingNode(BaseModel):
+    node_id: str
+    condition: str  # e.g., "domain == 'medical'"
+    lora_id: str
+    
+class LoRAWeight(BaseModel):
+    lora_id: str
+    rank: int
+    alpha: float
+    weights_hash: str
+    domain: str
 ```
 
 ---
 
-### Infrastructure
+### Integration Points
 
-#### [MODIFY] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/compose.yaml)
+#### [MODIFY] `embed-worker/worker.py`
 
-Replace with multi-service configuration:
+Add capsule routing before embedding generation:
 
-- `redis:alpine` — task queue
-- `qdrant:latest` — vector store
-- `ingest-api` — FastAPI (port 8000)
-- `docling-worker` — Celery worker
-- `embed-worker` — Celery worker
+```python
+# After chunking, before embedding
+capsule_response = capsule_router.route(chunk_text, context)
+lora_weights = lora_registry.get(capsule_response.lora_id)
+
+# Apply LoRA to base model
+fine_tuned_model = apply_lora(base_model, lora_weights)
+embedding = fine_tuned_model.encode(chunk_text)
+```
 
 ---
 
-### New Files
+### Docker Configuration
 
-#### [NEW] `docling/schemas/doc_normalized_v1.py`
+#### [NEW] `services/capsule-model/Dockerfile`
 
-Pydantic model for `doc.normalized.v1`.
+```dockerfile
+FROM python:3.11-slim
 
-#### [NEW] `docling/schemas/chunk_embedding_v1.py`
+WORKDIR /app
 
-Pydantic model for `chunk.embedding.v1`.
+COPY services/capsule-model/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-#### [NEW] `docling/common/canonicalize.py`
+COPY lib/ ./lib/
+COPY schemas/ ./schemas/
+COPY services/capsule-model/ ./
 
-JCS canonicalization + SHA256 hashing.
+EXPOSE 8002
 
-#### [NEW] `docling/common/normalize.py`
+CMD ["uvicorn", "capsule_api:app", "--host", "0.0.0.0", "--port", "8002"]
+```
 
-L2 normalization for embeddings (PyTorch).
+#### [MODIFY] `docker-compose.yml`
 
-#### [NEW] `docling/ledger/ledger.py`
+Add capsule-model service:
 
-Append-only JSONL writer with hash-chain.
-
-#### [NEW] `docling/ingest_api/main.py`
-
-FastAPI app: `POST /ingest` → enqueue to `parse_queue`.
-
-#### [NEW] `docling/docling_worker/worker.py`
-
-Celery worker: Docling parse + normalize.
-
-#### [NEW] `docling/embed_worker/worker.py`
-
-Celery worker: chunk + embed + L2 normalize.
+```yaml
+capsule-model:
+  build:
+    context: .
+    dockerfile: ./services/capsule-model/Dockerfile
+  ports:
+    - "8002:8002"
+  environment:
+    - REDIS_URL=redis://redis:6379
+    - QDRANT_URL=http://qdrant:6333
+  depends_on:
+    redis:
+      condition: service_healthy
+```
 
 ---
 
 ## Verification Plan
 
-### Automated Tests
+### 1. Routing Node Test
 
 ```bash
-# Build and start all services
-docker compose up --build -d
+# Test routing decision
+curl -X POST http://localhost:8002/route \
+  -d '{"text": "medical diagnosis", "context": {"domain": "healthcare"}}'
 
-# Submit a test document
-curl -X POST http://localhost:8000/ingest -F file=@test.pdf
-
-# Check ledger for deterministic hashes
-cat docling/data/ledger.jsonl | jq '.integrity.sha256_canonical'
+# Expected: { "lora_id": "medical-v1", "confidence": 0.95 }
 ```
 
-### Determinism Replay Test
+### 2. LoRA Application Test
 
-- Ingest same document twice → verify identical `doc_id`, `chunk_ids`, and embedding hashes.
+```python
+# Verify LoRA weights are applied correctly
+base_embedding = base_model.encode("test text")
+lora_embedding = fine_tuned_model.encode("test text")
+
+assert base_embedding != lora_embedding
+assert lora_embedding.shape == base_embedding.shape
+```
+
+### 3. End-to-End Agent Test
+
+```bash
+# Ingest document with domain context
+curl -X POST http://localhost:8000/ingest \
+  -F file=@medical_paper.pdf \
+  -F context='{"domain": "medical"}'
+
+# Verify embedding uses medical LoRA
+# Check ledger for lora_id in embedding record
+```
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> This system introduces **real-time model fine-tuning** which may impact:
+>
+> - Embedding generation latency
+> - Memory requirements (multiple LoRA weights loaded)
+> - Determinism (LoRA selection must be logged in ledger)
+
+> [!WARNING]
+> LoRA weight management requires:
+>
+> - Version control for LoRA weights
+> - Validation that weights match base model architecture
+> - Rollback strategy if LoRA degrades performance

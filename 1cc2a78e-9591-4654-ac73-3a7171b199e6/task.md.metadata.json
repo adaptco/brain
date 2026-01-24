@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Updated Docling pipeline tasks to reflect the 'pipeline/' directory move and refined architecture.",
-  "updatedAt": "2026-01-21T19:54:15.395321900Z",
-  "version": "22"
+  "summary": "Marked phase space bifurcation tasks as complete.",
+  "updatedAt": "2026-01-24T16:29:36.302267400Z",
+  "version": "24"
 }
