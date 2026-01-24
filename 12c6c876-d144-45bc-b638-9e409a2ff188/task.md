@@ -33,3 +33,12 @@
   - [x] Implement Batch Processing (PyTorch/Qdrant)
 - [x] Create docker-compose.yml
 - [ ] Add operational checklist / determinism gates
+
+## Jurassic Pixels & Home World (NEW)
+
+- [x] Create Home World (Level 0) in WorldModel
+- [x] Implement HUB docking in QubeRuntime
+- [x] Implement pattern reorganization and synthesis
+- [x] Create jurassic_pixels_test.cpp verification
+- [x] Add test_jurassic Makefile target
+- [ ] Run verification test

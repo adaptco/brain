@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Implementation plan for Batch Processing in the Embed Worker. This involves refactoring the docling_worker to group chunks into batches and updating the embed_worker to process these batches using PyTorch's vectorized capabilities.",
-  "updatedAt": "2026-01-21T19:20:28.671879300Z",
-  "version": "1"
+  "summary": "Plan to align the existing batch processing implementation with the detailed Docling Cluster Pipeline specification, focusing on core library enhancements and JSON schema creation.",
+  "updatedAt": "2026-01-24T18:14:16.773952900Z",
+  "version": "2"
 }

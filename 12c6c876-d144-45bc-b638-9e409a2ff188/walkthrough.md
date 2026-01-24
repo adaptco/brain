@@ -46,3 +46,34 @@ docker-compose up -d --build
 - [x] Group chunks into batches (size=32)
 - [x] L2 normalize output tensors
 - [x] Chain-hash entire pipeline flow
+
+---
+
+## 🦖 Jurassic Pixels: The Learning Loop
+
+I have implemented the "Home World" HUB and the recursive pattern synthesis system.
+
+### Architecture
+
+- **[Home World (Level 0)](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/WorldModel.cpp#L21-L28)**: Stable, symmetric training environment with balanced platforms.
+- **[HUB Docking](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#L76-L85)**: `DockPattern` method ingests embedding data and rehashes the kernel state.
+- **[Pattern Synthesis](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#L87-L105)**: `ReorganizeAndSynthesize` generates deterministic synthetic structures from the current state hash.
+
+### The Recursion Loop
+
+1. **Soak**: Embeddings from Qdrant are docked into the Qube HUB.
+2. **Reorganize**: Pattern clusters are rehashed and reorganized.
+3. **Synthesize**: New `SyntheticStructure` objects are generated.
+4. **Materialize**: Structures are spawned back into the `WorldModel` via `SpawnPlane`.
+5. **Stabilize**: Agents train in the evolved environment, closing the loop.
+
+### Verification
+
+**Test**: [jurassic_pixels_test.cpp](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/tests/jurassic_pixels_test.cpp)
+
+**Note**: The test requires a C++ compiler. To run manually:
+
+```bash
+g++ -I./include tests/jurassic_pixels_test.cpp src/engine/WorldModel.cpp src/qube/QubeRuntime.cpp -o bin/jurassic_pixels_test
+./bin/jurassic_pixels_test
+```

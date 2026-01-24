@@ -1,41 +1,52 @@
-# Goal: Implement Batch Processing for Embed Worker
+# Docling Cluster Pipeline Implementation Plan
 
-Integrate high-velocity mechanical enforcement with long-term semantic memory by evolving the `Embed Worker` from single-chunk processing to **Batch Processing**. This maximizes GPU utilization and increases throughput for the Sovereign OS.
+## Goal
+
+Align the existing batch processing implementation with the detailed Docling Cluster Pipeline specification, ensuring all core libraries, schemas, and determinism anchors are properly configured.
 
 ## Proposed Changes
 
-### 1. Docling Worker Refactor
+### Core Libraries
 
-#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
+#### [MODIFY] [normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/lib/normalize.py)
 
-- Group chunks created in `create_chunks` into batches (e.g., size 32).
-- Enqueue a single job `tasks.embed_batch` for each group, containing a list of chunk payloads.
+- Add `l2_normalize(tensor)` for PyTorch L2 normalization of embedding vectors.
 
-### 2. Embed Worker Refactor
+#### [MODIFY] [canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/lib/canonical.py)
+
+- Add `append_to_ledger(record, ledger_path)` helper function for direct ledger appends.
+
+---
+
+### Schemas
+
+#### [NEW] [doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/schemas/doc.normalized.v1.schema.json)
+
+JSON Schema for normalized document events.
+
+#### [NEW] [chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/schemas/chunk.embedding.v1.schema.json)
+
+JSON Schema for chunk embedding events.
+
+---
+
+### Worker Refinement
 
 #### [MODIFY] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
 
-- Rename `embed_chunk` to `embed_batch`.
-- Modify `get_embeddings` (plural) to accept a list of strings and returned a batched tensor.
-- Implement batch normalization and deterministic pseudo-embedding for the entire batch.
-- Update Qdrant `upsert` and Ledger `append` to handle multiple records in a single block.
-
-### 3. Task Mapping Consistency
-
-#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)
-
-- Reflect the same changes as `worker.py` to maintain consistency for the Docker container.
+- Import and utilize `l2_normalize` from `lib.normalize`.
+- Ensure batch processing uses L2 normalization on embedding tensors.
 
 ## Verification Plan
 
-### Automated Tests
+### Replay Test
 
-- Modify the `ingress_test.py` (or equivalent) to send a document that generates >32 chunks.
-- Verify that only one `embed_batch` job is enqueued in Redis.
-- Verify that Qdrant contains all expected points.
-- Check Ledger for consecutive "chunk.embedding.v1" events from the same batch.
+1. Submit a known document to `/ingest`
+2. Capture `doc_id`, `chunk_ids`, and embedding hashes
+3. Purge and re-process
+4. Assert identical hashes to verify determinism
 
-### Manual Verification
+### Infrastructure Verification
 
-- Monitor Redis queue size during large document ingestion.
-- Verify GPU utilization (simulated or real) increases while processing time per chunk decreases.
+- Verify `docker-compose.yml` environment variables match determinism anchors
+- Confirm ledger persistence via volume mounts

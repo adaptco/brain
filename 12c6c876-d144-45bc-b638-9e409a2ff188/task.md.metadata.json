@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Batch processing and pipeline setup completed. All Docling services are implement and orchestrated.",
-  "updatedAt": "2026-01-21T19:22:08.464323100Z",
-  "version": "14"
+  "summary": "Added Jurassic Pixels and Home World implementation tasks",
+  "updatedAt": "2026-01-24T18:14:25.372669100Z",
+  "version": "15"
 }
