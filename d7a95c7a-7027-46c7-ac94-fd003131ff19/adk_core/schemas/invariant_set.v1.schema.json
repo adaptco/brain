@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sovereign.os/v1/invariant_set.schema.json",
+  "title": "Invariant Set",
+  "description": "Logical collapse of a Rank 3 physics volume into a verifiable, hash-bound set of safety invariants.",
+  "type": "object",
+  "required": ["set_id", "metadata", "invariants", "forest_root", "merkle_root"],
+  "properties": {
+    "set_id": {
+      "type": "string",
+      "description": "Unique handle for this invariant set (e.g., invset_042_dry_v1)"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["vehicle_id", "scenario_id", "epoch"],
+      "properties": {
+        "vehicle_id": { "type": "string" },
+        "scenario_id": { "type": "string" },
+        "epoch": { "type": "integer" }
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "domain", "statement", "leaf_hash"],
+        "properties": {
+          "id": { "type": "string" },
+          "domain": { "type": "string" },
+          "statement": { "type": "string" },
+          "bounds": {
+            "type": "object",
+            "required": ["feature", "op", "val"],
+            "properties": {
+              "feature": { "type": "string" },
+              "op": {
+                "type": "string",
+                "enum": ["lt", "lte", "eq", "gte", "gt", "neq"]
+              },
+              "val": {
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string" },
+                  { "type": "boolean" }
+                ]
+              }
+            }
+          },
+          "leaf_hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "description": "SHA-256 hash of the canonicalized invariant statement"
+          }
+        }
+      }
+    },
+    "forest_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Merkle root of the underlying tick-level telemetry forest"
+    },
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Merkle root of this invariant set"
+    }
+  }
+}
