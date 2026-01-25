@@ -1,52 +1,42 @@
-# Docling Cluster Pipeline Implementation Plan
+# VT-TQ-Search: Challenge Generator Implementation Plan
 
 ## Goal
 
-Align the existing batch processing implementation with the detailed Docling Cluster Pipeline specification, ensuring all core libraries, schemas, and determinism anchors are properly configured.
+Implement the logic gap identified in the verification report: the "Challenges & Clusters" feature. This involves creating a `ChallengeGenerator` service that uses vector similarity to find tool clusters and generate exploratory challenges.
 
 ## Proposed Changes
 
-### Core Libraries
+### 1. New Service Logic
 
-#### [MODIFY] [normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/lib/normalize.py)
+#### [NEW] [challenge_generator.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/challenge_generator.py)
 
-- Add `l2_normalize(tensor)` for PyTorch L2 normalization of embedding vectors.
+- **`ChallengeGenerator` Class**:
+  - `find_tool_clusters(tool_id)`: Find semantic neighbors using Qdrant.
+  - `calculate_novelty(tool_id, user_history)`: Compute novelty score based on user's past usage (inverse frequency).
+  - `generate_challenge(tool_id)`: Create a `SemanticChallenge` object.
+    - *Logic*: Select a target tool, find 2-3 neighbors, and construct a prompt like "Compare X with Y and Z".
 
-#### [MODIFY] [canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/lib/canonical.py)
+### 2. API Integration
 
-- Add `append_to_ledger(record, ledger_path)` helper function for direct ledger appends.
+#### [MODIFY] [semantic_search_api.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/semantic_search_api.py)
 
----
-
-### Schemas
-
-#### [NEW] [doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/schemas/doc.normalized.v1.schema.json)
-
-JSON Schema for normalized document events.
-
-#### [NEW] [chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/schemas/chunk.embedding.v1.schema.json)
-
-JSON Schema for chunk embedding events.
-
----
-
-### Worker Refinement
-
-#### [MODIFY] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
-
-- Import and utilize `l2_normalize` from `lib.normalize`.
-- Ensure batch processing uses L2 normalization on embedding tensors.
+- Add `POST /api/challenges/generate` endpoint.
+- Inject `ChallengeGenerator` dependency.
 
 ## Verification Plan
 
-### Replay Test
+### Automated Tests
 
-1. Submit a known document to `/ingest`
-2. Capture `doc_id`, `chunk_ids`, and embedding hashes
-3. Purge and re-process
-4. Assert identical hashes to verify determinism
+- **Cluster Validity**: Verify that `find_tool_clusters` returns tools with similarity > 0.7.
+- **Novelty Scoring**: Verify that tools in `user_history` have lower novelty scores.
+- **Challenge Structure**: Verify `SemanticChallenge` output matches the schema.
 
-### Infrastructure Verification
+### Manual Verification
 
-- Verify `docker-compose.yml` environment variables match determinism anchors
-- Confirm ledger persistence via volume mounts
+- Curl the new endpoint:
+
+  ```bash
+  curl -X POST http://localhost:8001/api/challenges/generate \
+    -H "Content-Type: application/json" \
+    -d '{"target_tool_id": "grep_001", "user_history": ["find_001"]}'
+  ```

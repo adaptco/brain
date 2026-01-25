@@ -46,14 +46,26 @@ Defines the data models for the semantic search system.
 - Ranked search result with similarity score
 - Includes full tool metadata
 
-**`SemanticChallenge`**
+### 4. [challenge_generator.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/challenge_generator.py)
 
-- AI-generated challenges based on semantic neighbors
-- Novelty factor for exploration
+**Status**: ✅ IMPLEMENTED
+
+Service logic for AI-generated challenges.
+
+**Key Features:**
+
+- **Semantic Clustering**: Finds tools with high vector similarity (e.g., >0.7).
+- **Novelty Scoring**: Calculates score based on user history (inverse frequency).
+- **Prompt Engineering**: Constructs exploratory tasks (e.g., "Compare X with Y").
+
+**Integration:**
+
+- Injected into `semantic_search_api.py`.
+- Exposed via `/api/challenges/generate`.
 
 ---
 
-### 2. [embedding_pipeline.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/embedding_pipeline.py)
+### 3. [embedding_pipeline.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/embedding_pipeline.py)
 
 Generates and indexes tool embeddings using `sentence-transformers/all-mpnet-base-v2`.
 

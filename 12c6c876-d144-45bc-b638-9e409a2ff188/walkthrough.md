@@ -49,6 +49,28 @@ docker-compose up -d --build
 
 ---
 
+## 🧭 VT-TQ-Search AI Challenges
+
+I have implemented the "Exploratory Learning" module for ToolQuest.
+
+### Architecture
+
+- **[Challenge Generator](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/challenge_generator.py)**: Service that synthesizes interactive scenarios.
+- **[Search API](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/semantic_search_api.py)**: Exposes `POST /api/challenges/generate`.
+
+### Challenge Logic
+
+1. **Cluster Discovery**: Uses Qdrant vector search to find tools semantically related to the focus tool.
+2. **Scenario Synthesis**: Generates a task requiring the use of the focus tool + neighbors.
+3. **Dynamic Difficulty**: Calculates XP reward and tier based on tool complexity.
+
+### Verification
+
+**Test**: `python -m pytest toolquest/semantic/test_challenge_generator.py`
+✅ Passed (Mocked Qdrant)
+
+---
+
 ## 🦖 Jurassic Pixels: The Learning Loop
 
 I have implemented the "Home World" HUB and the recursive pattern synthesis system.

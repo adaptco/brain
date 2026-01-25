@@ -4,3 +4,10 @@
 - [x] Verify service health (Ingest, Worker, Embed, Qdrant) <!-- id: 1 -->
 - [x] Test document ingestion <!-- id: 2 -->
 - [x] Verify processing pipeline (Ledger, Embeddings) <!-- id: 3 -->
+
+# Core Implementation
+
+- [x] Implement Canonical & Ledger Libs (`lib/*.py`) <!-- id: 4 -->
+- [x] Implement Schemas (`schemas/*.py`) <!-- id: 5 -->
+- [x] Implement Docling Worker Logic (`docling-worker/worker.py`) <!-- id: 6 -->
+- [ ] Implement Embed Worker Logic (`embed-worker/worker.py`) <!-- id: 7 -->
