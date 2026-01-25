@@ -45,3 +45,12 @@
 - [x] Implement parallel execution framework <!-- id: 34 -->
 - [x] Define phase space metrics and observables <!-- id: 35 -->
 - [x] Implement bifurcation detection logic <!-- id: 36 -->
+
+## VT-TQ-Search: Semantic Tool Discovery
+
+- [ ] Design semantic search schema (tools, work orders, errors) <!-- id: 37 -->
+- [ ] Implement embedding pipeline for tool metadata <!-- id: 38 -->
+- [ ] Create vector search API endpoint <!-- id: 39 -->
+- [ ] Integrate Discovery Mode into ToolQuest UI <!-- id: 40 -->
+- [ ] Implement AI-generated challenge system <!-- id: 41 -->
+- [ ] Add semantic leaderboard metrics <!-- id: 42 -->
