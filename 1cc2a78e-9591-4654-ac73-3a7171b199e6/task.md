@@ -48,8 +48,8 @@
 
 ## VT-TQ-Search: Semantic Tool Discovery
 
-- [ ] Design semantic search schema (tools, work orders, errors) <!-- id: 37 -->
-- [ ] Implement embedding pipeline for tool metadata <!-- id: 38 -->
+- [x] Design semantic search schema (tools, work orders, errors) <!-- id: 37 -->
+- [x] Implement embedding pipeline for tool metadata <!-- id: 38 -->
 - [ ] Create vector search API endpoint <!-- id: 39 -->
 - [ ] Integrate Discovery Mode into ToolQuest UI <!-- id: 40 -->
 - [ ] Implement AI-generated challenge system <!-- id: 41 -->

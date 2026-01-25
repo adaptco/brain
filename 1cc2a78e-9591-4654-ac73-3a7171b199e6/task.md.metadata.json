@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Added ToolQuest Semantic Search integration tasks.",
-  "updatedAt": "2026-01-25T00:47:10.813273600Z",
-  "version": "25"
+  "summary": "Marked semantic search data foundation tasks as complete.",
+  "updatedAt": "2026-01-25T00:49:02.286730Z",
+  "version": "26"
 }
