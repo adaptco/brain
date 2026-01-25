@@ -42,3 +42,10 @@
 - [x] Create jurassic_pixels_test.cpp verification
 - [x] Add test_jurassic Makefile target
 - [ ] Run verification test
+
+## ToolQuest Semantic Search (NEW)
+
+- [ ] Analyze ToolQuest semantic search directory
+- [ ] Verify `semantic_search_api.py` implementation
+- [ ] Verify `test_semantic_search.py`
+- [ ] Update documentation for ToolQuest integration

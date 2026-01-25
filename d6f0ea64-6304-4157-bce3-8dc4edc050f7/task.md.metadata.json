@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task list for implementing the ADK CLI.",
-  "updatedAt": "2026-01-16T18:30:21.737069100Z",
-  "version": "11"
+  "summary": "Task list for installing Swift toolchain on Windows using Chocolatey",
+  "updatedAt": "2026-01-25T13:29:18.919288200Z",
+  "version": "13"
 }

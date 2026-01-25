@@ -5,7 +5,7 @@
   - [x] Confirm Chocolatey is available
 - [ ] Install Swift
   - [-] Run `choco install swiftforwindows` (Failed: permission issues)
-  - [x] Run `winget install --id Swift.Toolchain -e`
-  - [/] Verify installation with `swift --version`
+  - [/] Run `winget install --id Swift.Toolchain -e`
+  - [ ] Verify installation with `swift --version`
 - [ ] Document installation
   - [ ] Create walkthrough
