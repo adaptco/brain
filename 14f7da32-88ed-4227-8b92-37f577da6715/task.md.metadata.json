@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Marking cluster start as in-progress (re-attempt).",
-  "updatedAt": "2026-01-25T13:53:04.051265Z",
-  "version": "3"
+  "summary": "Marking ingestion and processing tasks as complete.",
+  "updatedAt": "2026-01-25T13:54:36.668693Z",
+  "version": "5"
 }
