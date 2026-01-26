@@ -20,6 +20,20 @@ Created a robust test infrastructure in `tests/`:
 - **[test_replay.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_replay.py)**: Verifies that identical documents produce identical IDs and hashes.
 - **[test_integration.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/tests/test_integration.py)**: Verifies the full ingest → ledger flow and ledger hash-chain integrity.
 
+### 🏗️ Scribe Batch Processing Evolution
+
+I have evolved the Embed Worker into a high-throughput **"Scribe"** service:
+
+- **[worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py)**: Now implements `embed_batch` using PyTorch's `DataLoader`.
+- **Architectural Flow**:
+  - **Vectorized Generation**: Chunks are processed in parallel batches (default `32`), maximizing GPU/CPU efficiency.
+  - **Strict Determinism**: Each chunk's embedding is seeded by its own content hash (`hashlib.sha256`).
+  - **Sovereign Signing (Constitutional Braid)**:
+    - Each batch is anchored by a **Batch Digest** (hash of all chunk content hashes).
+    - A **Wallet Signature** certifies the batch digest, creating an undeniable provenance link.
+    - Ledger entries include `batch_signature`, ensuring the audit trail is cryptographically bound to the authorized Scribe.
+- **Service Optimization**: Maintained `embed-worker` naming with Docker-compatible import paths.
+
 ### Embed Worker Implementation
 
 I have added the **Embed Worker** service based on your provided implementation:
