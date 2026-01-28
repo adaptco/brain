@@ -129,17 +129,17 @@ winget install Stripe.StripeCLI
 
 ### Verification results
 
-**Stripe CLI**
+#### Stripe CLI
 
-```
+```text
 stripe version 1.34.0
 ```
 
 Verified command execution with `stripe --help`.
 
-**Swift**
+#### Swift
 
-```
+```text
 Swift version 6.2.3 (swift-6.2.3-RELEASE)
 Target: x86_64-unknown-windows-msvc
 ```
