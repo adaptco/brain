@@ -1,0 +1,22 @@
+# Task: Scaffold Agentic RAG Pipeline with Helper Bot
+
+- [ ] **Initialize Project Scaffolding**
+  - [ ] Create directory structure for `helper_bot`, `rag_worker`, `scripts`.
+  - [ ] Initialize Python environment/requirements.
+- [ ] **Implement Helper Bot (Agent)**
+  - [ ] Create `bot.py` using Claude API for orchestration.
+  - [ ] Implement "Code Assist" actions simulation (activator).
+- [ ] **Create Worker Service**
+  - [ ] Implement `worker.py` for RAG operations.
+  - [ ] Setup message queue/dispatch.
+- [ ] **Implement LoRa & Model Generation Scripts**
+  - [ ] Create `lora_script.py` for context/model generation.
+  - [ ] Implement `extender.py` for model generation logic.
+- [ ] **Implement "Panda" Python Script**
+  - [ ] Create `panda_script.py` (likely using Pandas) for data handling.
+- [ ] **Setup Auto-Roll Lint Tooling**
+  - [ ] Configure `lint_roller.py` or similar tool.
+  - [ ] Integrate with the Helper Bot.
+- [ ] **Finalize Integration**
+  - [ ] Connect all components to Claude API map.
+  - [ ] Verify flow: Bot -> Worker -> RAG -> Script -> Model -> Panda -> Lint.

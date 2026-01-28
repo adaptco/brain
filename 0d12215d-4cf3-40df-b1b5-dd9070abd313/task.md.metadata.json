@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task checklist for scaffolding the Agentic RAG Pipeline with Helper Bot.\nIncludes steps for Helper Bot, Worker, RAG, LoRa scripts, Panda scripts, and Linting automation.",
+  "updatedAt": "2026-01-28T15:39:43.349155300Z"
+}
