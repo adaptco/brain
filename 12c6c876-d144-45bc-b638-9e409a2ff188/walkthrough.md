@@ -99,3 +99,34 @@ I have implemented the "Home World" HUB and the recursive pattern synthesis syst
 g++ -I./include tests/jurassic_pixels_test.cpp src/engine/WorldModel.cpp src/qube/QubeRuntime.cpp -o bin/jurassic_pixels_test
 ./bin/jurassic_pixels_test
 ```
+
+---
+
+## 🎯 Agency Docking Shell
+
+I have implemented the portable Hub for Agentic Field Games that normalizes environmental states into a shared cognitive manifold.
+
+### Architecture
+- **[TensorField](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/tensor_field.py)**: Voxelizes arbitrary states and computes eigenstates via random projection.
+- **[SpokeAdapter](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/spoke_adapter.py)**: ABC that Field Games implement to dock with the Hub.
+- **[DockingShell](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/docking_shell.py)**: Hub controller executing the Observe → Normalize → Unify → Act cycle.
+
+### The Cycle
+1. **Observe**: `spoke.observe()` → raw environmental state
+2. **Normalize**: `tensor_field.voxelize_state()` → voxel tensor → eigenstate
+3. **Unify**: `tensor_field.rag_unify()` → knowledge-grounded state
+4. **Act**: `_synthesize_token()` → action token → `spoke.act()`
+
+### Verification
+**Test**: `python agency_hub/learning_routine.py`
+
+**Results**:
+- ✅ Docking successful with `DummyFieldGame`
+- ✅ Knowledge injection: 5 concepts (64-dim vectors)
+- ✅ 5 learning cycles executed
+- ✅ Eigenstate variance stabilized
+
+### Next Steps
+1. **GhostVoidSpoke**: Integrate with `WorldModel` and `QubeRuntime`
+2. **LLM Integration**: Replace `_synthesize_token` with Gemini API
+3. **Multi-Environment Learning**: Test agent transfer between spokes

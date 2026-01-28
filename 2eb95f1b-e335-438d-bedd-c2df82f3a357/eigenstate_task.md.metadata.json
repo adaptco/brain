@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task breakdown for building a self-referential AI system that creates a 4-cycle eigenstate loop: pixel → token → checkpoint → pixel, with auto-coding, auto-execution, and unit testing to maintain stateless operation.",
+  "updatedAt": "2026-01-26T13:03:29.876515300Z"
+}

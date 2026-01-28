@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Comprehensive architecture walkthrough of the Agency Docking Shell system, documenting the Hub-Spoke pattern, TensorField mathematics, RAG unification, and the cognitive cycle (Observe → Normalize → Unify → Act)",
+  "updatedAt": "2026-01-26T12:48:16.306998600Z"
+}

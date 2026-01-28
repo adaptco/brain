@@ -1,11 +1,8 @@
-# Swift Installation
+# Stripe CLI Management
 
-- [ ] Check Swift installation status
-  - [x] Verify Swift is not installed
-  - [x] Confirm Chocolatey is available
-- [ ] Install Swift
-  - [-] Run `choco install swiftforwindows` (Failed: permission issues)
-  - [x] Run `winget install --id Swift.Toolchain -e`
-  - [/] Verify installation with `swift --version`
-- [ ] Document installation
-  - [ ] Create walkthrough
+- [x] Install Stripe CLI
+  - [x] Install via WinGet (`winget install Stripe.StripeCLI`)
+  - [x] Verify installation (`stripe --version`)
+- [x] Verify functionality ("Unit Test")
+  - [x] Run `stripe --help` to ensure executable
+  - [x] Run `stripe status` (if available) or check version output

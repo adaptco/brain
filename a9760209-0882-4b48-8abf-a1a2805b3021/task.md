@@ -1,7 +1,16 @@
 # Unified Shell Design
 
 - [x] Draft Architecture Document (`unified_shell_design.md`) <!-- id: 0 -->
-    - [x] Define Core Principles (Determinism, Uniformity) <!-- id: 1 -->
-    - [x] Design Runtime Bridge Patterns (Subprocess, FFI, RPC) <!-- id: 2 -->
-    - [x] Design Plugin/Extension System <!-- id: 3 -->
-- [ ] Review with User <!-- id: 4 -->
+  - [x] Define Core Principles (Determinism, Uniformity) <!-- id: 1 -->
+  - [x] Design Runtime Bridge Patterns (Subprocess, FFI, RPC) <!-- id: 2 -->
+  - [x] Design Plugin/Extension System <!-- id: 3 -->
+- [x] Review with User <!-- id: 4 -->
+- [x] Scaffold Prototype Implementation <!-- id: 5 -->
+  - [x] Create directory structure (`unified_shell/`) <!-- id: 6 -->
+  - [x] Implement core shell (`shell.py`) <!-- id: 7 -->
+  - [x] Implement IO Bridge (subprocess wrapper) <!-- id: 8 -->
+  - [x] Implement FFI Bridge (ctypes example) <!-- id: 9 -->
+  - [x] Implement RPC Bridge (socket/gRPC stub) <!-- id: 10 -->
+  - [x] Create context propagation system <!-- id: 11 -->
+  - [x] Add example commands <!-- id: 12 -->
+  - [x] Create README with usage examples <!-- id: 13 -->

@@ -52,3 +52,12 @@
 - [x] Implement `ChallengeGenerator` class
 - [x] Integrate Challenge API endpoint
 - [x] Verify AI Challenge generation
+
+## Agency Docking Shell (NEW)
+- [x] Create agency_hub directory structure
+- [x] Implement TensorField (voxelized state + eigen-embedding)
+- [x] Implement SpokeAdapter ABC
+- [x] Implement DockingShell (Hub controller)
+- [/] Create GhostVoidSpoke adapter for WorldModel
+- [x] Implement learning_routine.py
+- [x] Verify docking and cycle execution

@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Complete implementation of the Docling Cluster Pipeline with all services, infrastructure, and verification testing.",
-  "updatedAt": "2026-01-24T18:20:29.928420300Z",
-  "version": "1"
+  "summary": "Complete release of Docling Pipeline v1.0.0 with cryptographic anchoring, determinism testing, and comprehensive documentation.",
+  "updatedAt": "2026-01-26T12:57:10.297922400Z",
+  "version": "2"
 }

@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Detailed plan for building the Docling Cluster Pipeline.",
-  "updatedAt": "2026-01-21T19:54:00.316638500Z"
+  "summary": "Plan for building the Agency Docking Shell with LLM integration, field games, and the Docling Pipeline as RAG backend.",
+  "updatedAt": "2026-01-26T13:08:18.097614300Z",
+  "version": "1"
 }

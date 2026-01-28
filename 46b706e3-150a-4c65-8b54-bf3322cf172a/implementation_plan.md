@@ -1,0 +1,44 @@
+# Implementation Plan - Wire Agentic Runtime to Geodesic Qube
+
+The goal is to transition the current 2D Agent visualization to a 3D "Geodesic Qube" structure, powered by the existing `LexusAgent` runtime model. This involves setting up a 3D environment using React Three Fiber and connecting the agent's state to the 3D geometry.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Visualization Interpretation**: "Qube" with "Geodesic Structure" is interpreted as a **Geodesic Sphere** (Icosahedron) or a structure representing the agent's core. We will use a high-detail Icosahedron to visualize the geodesic lattice.
+
+> [!NOTE]
+> **Dependency Addition**: We will add `three`, `@react-three/fiber`, and `@react-three/drei` to the project.
+
+## Proposed Changes
+
+### Server/React-Client
+
+#### [NEW] [AgenticStructure.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/AgenticStructure.jsx)
+
+- Creates a 3D wrapper for the Agentic Runtime.
+- Instantiates `LexusAgent`.
+- Uses `useFrame` (R3F loop) to drive `agent.update()`.
+- Renders the "Geodesic Qube" which reacts to agent state (rotation, pulse, color).
+
+#### [MODIFY] [App.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/App.jsx)
+
+- Replaces or augments `GameCanvas` with `AgenticStructure`.
+- Passes WebSocket events (Genesis Protocol) to the new structure.
+
+#### [MODIFY] [package.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/package.json)
+
+- Add dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
+
+## Verification Plan
+
+### Automated Tests
+
+- Build verification: `npm run build`.
+
+### Agentic Verification
+
+1. **Agent** starts the client: `npm run dev`.
+2. **Agent** opens the browser to `http://localhost:5173`.
+3. **Agent** verifies the 3D canvas is present.
+4. **Agent** triggers "Genesis Event" and captures a recording/screenshot of the "Geodesic Qube" reaction.

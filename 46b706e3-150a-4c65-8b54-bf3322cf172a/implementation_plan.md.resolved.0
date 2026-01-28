@@ -1,0 +1,39 @@
+# Implementation Plan - Wire Agentic Runtime to Geodesic Qube
+
+The goal is to transition the current 2D Agent visualization to a 3D "Geodesic Qube" structure, powered by the existing [LexusAgent](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js#9-44) runtime model. This involves setting up a 3D environment using React Three Fiber and connecting the agent's state to the 3D geometry.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Visualization Interpretation**: "Qube" with "Geodesic Structure" is interpreted as a **Geodesic Sphere** (Icosahedron) or a structure representing the agent's core. We will use a high-detail Icosahedron to visualize the geodesic lattice.
+
+> [!NOTE]
+> **Dependency Addition**: We will add `three`, `@react-three/fiber`, and `@react-three/drei` to the project.
+
+## Proposed Changes
+
+### Server/React-Client
+
+#### [NEW] [AgenticStructure.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/AgenticStructure.jsx)
+- Creates a 3D wrapper for the Agentic Runtime.
+- Instantiates [LexusAgent](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/game/LexusAgent.js#9-44).
+- Uses `useFrame` (R3F loop) to drive `agent.update()`.
+- Renders the "Geodesic Qube" which reacts to agent state (rotation, pulse, color).
+
+#### [MODIFY] [App.jsx](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/App.jsx)
+- Replaces or augments [GameCanvas](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/src/components/GameCanvas.jsx#4-112) with `AgenticStructure`.
+- Passes WebSocket events (Genesis Protocol) to the new structure.
+
+#### [MODIFY] [package.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/server/react-client/package.json)
+- Add dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
+
+## Verification Plan
+
+### Automated Tests
+- Build verification: `npm run build`.
+
+### Manual Verification
+1. Start the client: `npm run dev`.
+2. Verify a 3D Geodesic structure is visible.
+3. Verify it animates (indicating the Agent runtime is ticking).
+4. Trigger "Genesis Event" via WebSocket (using the server) and observe changes in the visualization.
