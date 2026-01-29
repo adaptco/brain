@@ -1,24 +1,20 @@
-# Walkthrough: Fixed launch.json Syntax Errors
+# Walkthrough: IDE Configuration Fixes
 
-I have successfully repaired the `launch.json` file which was reporting persistent syntax errors (e.g., "Expected comma", "Value expected").
+I have addressed the reported IDE problems in `launch.json` and `task.md`.
 
 ## Changes
 
-The root cause was a missing `"version": "0.2.0"` field, which is required for the VS Code launch configuration schema. Without it, the validator likely misinterpreted the structure.
+### VS Code Configuration
 
-I have:
+1. **Fixed `launch.json`**: Removed the invalid `"Batch: Launch Current File"` configuration. It was using `type: "shell"`, which is not a valid debug type.
+2. **Updated `tasks.json`**: Moved the "Batch" capability to `tasks.json` where it belongs. You can now run it via **Terminal > Run Task > Batch: Run Current File**.
 
-1. Recreated `launch.json` from scratch to ensure no encoding issues.
-2. Added the required `version` field.
+### Artifacts
 
-```json
-{
-    "version": "0.2.0",
-    "configurations": [ ... ]
-}
-```
+- **Fixed `task.md`**: Resolved a markdown lint error (Multiple top-level headings) by consolidating the document title.
+- **Skipped `implementation_plan.md`**: The markdown lint error (blank line in blockquote) could not be fixed because the file belongs to a previous conversation (`46b7...`), which is read-only in this context.
 
 ## Verification
 
-- Verified via `git diff` that the correct structure is in place.
-- Validated JSON syntax.
+- Verified `launch.json` and `tasks.json` changes via `git diff` to ensure clean relocation of the configuration.
+- Verified `task.md` structure is now valid.

@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Fixed syntax errors in launch.json by adding missing version field.",
-  "updatedAt": "2026-01-29T06:15:07.082160700Z"
+  "summary": "Moved Batch config to tasks.json and fixed launch.json errors.",
+  "updatedAt": "2026-01-29T11:55:14.109261600Z",
+  "version": "1"
 }

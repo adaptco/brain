@@ -1,0 +1,5 @@
+# Task: Fix launch.json Errors
+
+- [ ] Read [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) to identify syntax errors <!-- id: 0 -->
+- [ ] Fix JSON syntax errors in [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) <!-- id: 1 -->
+- [ ] Verify [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) is valid JSON <!-- id: 2 -->
