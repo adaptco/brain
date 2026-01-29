@@ -1,5 +1,5 @@
 # Task: Repair launch.json
 
-- [ ] Diagnose persistent syntax errors in `launch.json` <!-- id: 0 -->
-- [ ] Fix `launch.json` content or encoding <!-- id: 1 -->
-- [ ] Verify fix <!-- id: 2 -->
+- [x] Diagnose persistent syntax errors in `launch.json` <!-- id: 0 -->
+- [x] Fix `launch.json` content or encoding <!-- id: 1 -->
+- [x] Verify fix <!-- id: 2 -->
