@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "I am proposing to create a `SimKernel.js` architecture to unify the game loop, physics, and agent entities. This will act as the \"OS\" for the simulation, allowing different modules (\"Containerized Sockets\") to be plugged in.\nI will also refactor `GameCanvas.jsx` to use this Kernel, and update `LexusAgent` to work within this new architecture.",
+  "updatedAt": "2026-01-23T03:29:45.734468600Z"
+}

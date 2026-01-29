@@ -30,16 +30,31 @@ I verified that the code now compiles using the actual compiler on your system:
 
 The RAG pipeline has been upgraded to support batch processing, significantly improving throughput for large documents.
 
-### [Docling Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
+### [Docling Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/docling_worker/tasks.py)
 
 - Refactored `parse_document` to group chunks into batches of 32.
 - Updated the queueing mechanism to use `embed_batch` instead of single-chunk tasks.
 
-### [Embed Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
+### [Embed Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py)
 
 - Implemented `embed_batch` to handle multiple chunks in a single vectorized operation.
 - Utilized PyTorch's capabilities for bulk embedding generation.
 - Integrated bulk upserts to **Qdrant** and bulk appends to the **Ledger**.
+- Refactored to use centralized `l2_normalize` from `lib.normalize`.
+
+## Docling Cluster Pipeline Alignment
+
+Aligned the implementation with the detailed Docling Cluster Pipeline specification.
+
+### Core Libraries
+
+- **[normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/normalize.py)**: Added `l2_normalize(tensor)` for PyTorch L2 normalization.
+- **[canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/canonical.py)**: Provides JCS canonicalization and SHA-256 hashing utilities.
+
+### JSON Schemas
+
+- **[doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/schemas/doc.normalized.v1.schema.json)**: Formalizes the structure of document normalization events.
+- **[chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/schemas/chunk.embedding.v1.schema.json)**: Formalizes the structure of chunk embedding events with L2 normalization metadata.
 
 ## Verification Status
 

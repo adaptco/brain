@@ -1,0 +1,228 @@
+# Implementation Plan: GhostVoid Integration & Enhancement
+
+## Goal Description
+
+Implement three critical enhancements to the GhostVoid Agency Hub:
+
+1. **Spoke Integration**: Connect GhostVoidSpoke to WorldModel and QubeRuntime
+2. **LLM Integration**: Replace `_synthesize_token` heuristic with Gemini API
+3. **Multi-Environment Learning**: Enable agent transfer between different spokes
+
+## User Review Required
+>
+> [!IMPORTANT]
+> This plan assumes the Gemini API key is available via environment variable `GEMINI_API_KEY`.
+
+> [!NOTE]
+> The integration requires creating a Python-C++ bridge for WorldModel and QubeRuntime. We'll use `ctypes` or `pybind11` for this.
+
+## Proposed Changes
+
+### 1. GhostVoidSpoke Integration
+
+#### [NEW] [ghost_void_spoke.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/spokes/ghost_void_spoke.py)
+
+- Implement `SpokeAdapter` for the GhostVoid C++ engine
+- Bridge to `WorldModel` and `QubeRuntime` via FFI
+- Map C++ state to Python dictionaries for the Hub
+
+#### [NEW] [world_model_bridge.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/bridges/world_model_bridge.py)
+
+- Python wrapper for `WorldModel.cpp` using `ctypes`
+- Expose: `LoadLevel()`, `IsSolid()`, `GetTiles()`, `SpawnPlane()`
+- Handle Vector2 and Tile struct marshalling
+
+#### [NEW] [qube_runtime_bridge.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/bridges/qube_runtime_bridge.py)
+
+- Python wrapper for `QubeRuntime.cpp`
+- Expose: `Initialize()`, `Execute()`, `DockPattern()`, `ReorganizeAndSynthesize()`
+- Handle TokenPixel struct marshalling
+
+---
+
+### 2. Gemini API Integration
+
+#### [MODIFY] [docking_shell.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/docking_shell.py)
+
+- Replace `_synthesize_token` heuristic with Gemini API call
+- Add `GeminiClient` initialization in `__init__`
+- Construct prompt from `unified_state` and `raw_state`
+- Parse Gemini response into action token
+
+#### [NEW] [gemini_client.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/gemini_client.py)
+
+- Wrapper for `google.generativeai` library
+- Method: `synthesize_action(unified_state, raw_state, schema) -> Dict`
+- Handle API errors and fallback to heuristic
+
+#### [NEW] [action_schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/schemas/action_schema.json)
+
+- JSON schema defining valid action tokens
+- Used for Gemini structured output
+
+---
+
+### 3. Multi-Environment Learning
+
+#### [NEW] [transfer_learning.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/transfer_learning.py)
+
+- `TransferManager` class to handle spoke switching
+- Save/load eigenstate and knowledge vectors
+- Metrics: transfer success rate, adaptation time
+
+#### [MODIFY] [tensor_field.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/tensor_field.py)
+
+- Add `export_state()` and `import_state()` methods
+- Serialize knowledge vectors and voxel mappings
+
+#### [NEW] [test_transfer.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/tests/test_transfer.py)
+
+- Test agent transfer between GhostVoid and a mock spoke
+- Verify eigenstate consistency across environments
+
+---
+
+## Implementation Details
+
+### Step 1: WorldModel & QubeRuntime Bridge
+
+**Approach**: Use `ctypes` to load the compiled shared library.
+
+**Shared Library Build**:
+
+```bash
+# Compile WorldModel and QubeRuntime as shared library
+g++ -shared -fPIC -o libghostvoid.so \
+  src/engine/WorldModel.cpp \
+  src/qube/QubeRuntime.cpp \
+  -Iinclude
+```
+
+**Python Bridge Pattern**:
+
+```python
+import ctypes
+lib = ctypes.CDLL("./libghostvoid.so")
+
+# Define C++ struct in Python
+class Vector2(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_float), ("y", ctypes.c_float)]
+
+# Wrap C++ function
+lib.WorldModel_SpawnPlane.argtypes = [ctypes.c_void_p, Vector2, ctypes.c_float, ctypes.c_float]
+lib.WorldModel_SpawnPlane.restype = None
+```
+
+### Step 2: Gemini Integration
+
+**Prompt Template**:
+
+```
+You are controlling an agent in a 2D platformer game.
+
+Current State:
+- Eigenstate: {eigenstate}
+- Knowledge Match: {similarity_scores}
+- Environment: {raw_state}
+
+Available Actions:
+- explore: Move randomly
+- spawn_structure: Create a platform
+- jump: Jump upward
+
+Output a JSON action token:
+{
+  "action": "spawn_structure",
+  "params": {"type": "platform", "x": 100, "y": 50}
+}
+```
+
+**API Call**:
+
+```python
+import google.generativeai as genai
+
+response = model.generate_content(
+    prompt,
+    generation_config=genai.GenerationConfig(
+        response_mime_type="application/json",
+        response_schema=action_schema
+    )
+)
+token = json.loads(response.text)
+```
+
+### Step 3: Transfer Learning
+
+**Transfer Protocol**:
+
+1. Agent completes N cycles in Spoke A
+2. Export: `eigenstate`, `knowledge_vectors`, `voxel_config`
+3. Dock to Spoke B
+4. Import state and continue learning
+5. Measure: performance delta, adaptation cycles
+
+**Metrics**:
+
+- **Transfer Efficiency**: `(performance_B / performance_A) * 100`
+- **Adaptation Time**: Cycles until performance stabilizes
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+```bash
+# Build shared library
+make lib
+
+# Run Python tests
+pytest tests/test_world_model_bridge.py
+pytest tests/test_qube_runtime_bridge.py
+pytest tests/test_gemini_integration.py
+pytest tests/test_transfer.py
+```
+
+### Manual Verification
+
+1. Run `python -m agency_hub.demo` to see Gemini-powered agent
+2. Verify agent spawns structures intelligently
+3. Test transfer: GhostVoid → MockSpoke → GhostVoid
+4. Check logs for eigenstate consistency
+
+---
+
+## Dependencies
+
+### Python Packages
+
+```
+google-generativeai>=0.3.0
+numpy>=1.24.0
+pybind11>=2.11.0  # Alternative to ctypes
+```
+
+### Environment Variables
+
+```bash
+export GEMINI_API_KEY="your_api_key_here"
+```
+
+---
+
+## File Structure
+
+```
+agency_hub/
+├── bridges/
+│   ├── world_model_bridge.py
+│   └── qube_runtime_bridge.py
+├── spokes/
+│   └── ghost_void_spoke.py
+├── schemas/
+│   └── action_schema.json
+├── gemini_client.py
+├── transfer_learning.py
+└── docking_shell.py (modified)
+```

@@ -123,4 +123,31 @@ Volumes:
 ### Ledger Integrity
 
 - Verify each record's `prev_ledger_hash` chains correctly
-- Reject records with missing integrity fields
+
+---
+
+## VT-TQ-Search AI Challenges (NEW)
+
+### Goal
+
+Enhance the existing semantic search with "Exploratory Learning" by implementing the logic to generate AI challenges based on tool clusters.
+
+### Core Modules
+
+#### [NEW] `toolquest/semantic/challenge_generator.py`
+
+- `ChallengeGenerator`: Service class for handling challenge logic
+- `generate_challenge(tool_id)`: Finds neighbors, creates a scenario
+- `_generate_scenario(tools)`: Mocked LLM prompt to create a task description
+
+### API Updates
+
+#### [MODIFY] `toolquest/semantic/semantic_search_api.py`
+
+- `POST /api/challenges/generate`: Accepts `tool_id`, returns `SemanticChallenge`
+- Integrates `ChallengeGenerator`
+
+### Verification
+
+- **Unit Test**: `test_challenge_generator.py`
+- **Manual**: Generate a challenge for "grep" and verify it includes "awk" or "sed" as neighbors.

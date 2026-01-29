@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Comprehensive implementation walkthrough for VT-TQ-Search (Vector-Tensor Query Search), a semantic tool discovery system that uses embeddings to enable natural language tool search and selection within the glacial-nadir agent framework",
+  "updatedAt": "2026-01-25T13:33:24.994178100Z"
+}

@@ -1,0 +1,4 @@
+- [/] Start Docling Cluster services <!-- id: 0 -->
+- [ ] Verify service health (Ingest, Worker, Embed, Qdrant) <!-- id: 1 -->
+- [ ] Test document ingestion <!-- id: 2 -->
+- [ ] Verify processing pipeline (Ledger, Embeddings) <!-- id: 3 -->

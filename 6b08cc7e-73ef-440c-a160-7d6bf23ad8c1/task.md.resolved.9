@@ -1,0 +1,29 @@
+# Verification Strategy Implementation
+
+## Tasks
+
+- [x] Create implementation plan for review
+- [x] Fix `bundle_id` generation to be deterministic (content-hash based)
+- [x] Create `tests/` directory structure
+- [x] Implement Replay Test (submit same doc twice → identical bundle_id/hashes)
+- [x] Implement Integration Test (end-to-end ingest → ledger entry)
+- [x] Add pytest configuration to pyproject.toml
+- [x] Verify tests pass
+
+## Embed Worker Implementation
+
+- [x] Implement [embed-worker/worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed-worker/worker.py) from user snippet
+- [x] Verify imports and schema compliance
+- [x] Test deterministic embedding generation
+
+## Batch Processing Evolution
+
+- [x] Refine `embed_batch` implementation in [worker.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/embed_worker/worker.py)
+- [x] Restore local path support and deterministic seeding
+- [x] Implement `verify_batch_logic.py` to test throughput and determinism
+- [x] Update walkthrough with "Scribe" Batch Processing details
+
+## Architecture Restoration (VT-TQ-Search)
+- [ ] Restore deterministic Ingest API
+- [ ] Restore "Scribe" Embed Worker
+- [ ] Verify Docker compatibility

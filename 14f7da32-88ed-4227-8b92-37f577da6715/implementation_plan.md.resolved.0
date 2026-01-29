@@ -1,0 +1,30 @@
+# Restore Docling Cluster Source Code
+
+The source code for the docling-cluster services appears to be missing from the directory. I will restore the minimal viable implementation to allow testing the ingestion endpoint.
+
+## Proposed Changes
+
+### [docling-cluster/services/ingest-api]
+
+#### [NEW] [main.py](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/ingest-api/main.py)
+- FastAPI application with `/ingest` endpoint
+- Redis queue integration (RQ)
+- Health check endpoint
+
+#### [NEW] [Dockerfile](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/services/ingest-api/Dockerfile)
+- Python 3.10-slim
+- Install requirements
+- Run uvicorn
+
+### [docling-cluster]
+
+#### [MODIFY] [docker-compose.yml](file:///c:/Users/eqhsp/Downloads/Qube/docling-cluster/docker-compose.yml)
+- (Already restored, but will verify paths)
+
+## Verification Plan
+
+### Automated Tests
+1. Start services: `docker compose up -d`
+2. Check health: `curl localhost:8000/health`
+3. Ingest document: `curl -X POST localhost:8000/ingest -F "file=@test_document.txt"`
+4. Verify Redis job enqueueing.

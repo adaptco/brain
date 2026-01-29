@@ -1,51 +1,216 @@
-# Docling Cluster Pipeline Implementation Plan
+# Agency Docking Shell Implementation Plan
 
-Create a deterministic, hash-anchored document processing pipeline using IBM Docling, PyTorch embeddings, and a local-first Docker Compose deployment.
+Build a portable "Hub" for Agentic Field Games that normalizes environmental states into a shared cognitive manifold.
+
+## Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Agency Docking Shell                      │
+├─────────────────────────────────────────────────────────────┤
+│  DockingShell (Hub)                                         │
+│    ↓                                                         │
+│  Observe → Normalize → Unify → Act                          │
+│    ↓           ↓          ↓       ↓                          │
+│  TensorField   │      RAG Layer  LLM                         │
+│  (Math Core)   │         ↓                                   │
+│                │    Docling Pipeline (Vector Store)          │
+│                ↓                                             │
+│           SpokeAdapter (ABC)                                 │
+│                ↓                                             │
+│           Field Games (Spokes)                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Integration Strategy
+
+### Docling Pipeline as RAG Backend
+
+The existing Docling Pipeline provides:
+
+- ✅ Vector embeddings (all-mpnet-base-v2, 768-dim)
+- ✅ Qdrant vector store
+- ✅ Deterministic hash-anchored storage
+- ✅ Document ingestion API
+
+**Connection Point**: TensorField queries Qdrant for RAG unification
+
+---
 
 ## Proposed Changes
 
-### Configuration and Infrastructure
+### Core Components
 
-#### [NEW] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/docker-compose.yml)
+#### [NEW] [agency_hub/](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/)
 
-Define services: Redis (queue), Qdrant (vector store), Ingest API, Docling Worker, Embed Worker.
+Main directory for the Agency Docking Shell.
 
-### Schemas
+#### [NEW] [docking_shell.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/docking_shell.py)
 
-#### [NEW] [doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/schemas/doc.normalized.v1.schema.json)
+Central Hub controller implementing the cognitive cycle:
 
-Schema for normalized document content.
+- `observe()` - Get state from Spoke
+- `normalize()` - Voxelize via TensorField
+- `unify()` - RAG query to Qdrant
+- `act()` - LLM synthesis → Token
 
-#### [NEW] [chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/schemas/chunk.embedding.v1.schema.json)
+#### [NEW] [tensor_field.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/tensor_field.py)
 
-Schema for chunks and their embeddings.
+Math core for state processing:
 
-### Core Library
+- Voxelized state representation (n-dimensional)
+- Eigen-embedding for variance normalization
+- State → Eigenstate transformation
+- Integration with Qdrant for RAG
 
-#### [NEW] [canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/lib/canonical.py)
+#### [NEW] [spoke_adapter.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/spoke_adapter.py)
 
-RFC8785-style JSON canonicalization and SHA256 hashing for determinism.
+Abstract base class for Field Games:
 
-#### [NEW] [normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/lib/normalize.py)
+```python
+class SpokeAdapter(ABC):
+    @abstractmethod
+    def get_state(self) -> np.ndarray
+    
+    @abstractmethod
+    def apply_action(self, token: str) -> None
+    
+    @abstractmethod
+    def reset(self) -> None
+```
 
-Text normalization (NFKC, whitespace) and PyTorch L2 normalization for embeddings.
+#### [NEW] [llm_synthesizer.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/llm_synthesizer.py)
 
-### Services
+LLM integration layer:
 
-#### [NEW] [ingest_api/main.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/ingest_api/main.py)
+- Replace `_synthesize_token` heuristic
+- Gemini API integration
+- Context: Eigenstate + RAG results → Action token
 
-FastAPI service to handle file uploads and enqueue parsing tasks.
+---
 
-#### [NEW] [docling_worker/worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/docling_worker/worker.py)
+### Field Games (Spokes)
 
-Celery worker using IBM Docling to parse and normalize documents.
+#### [NEW] [spokes/racer_2d5/](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/spokes/racer_2d5/)
 
-#### [NEW] [embed_worker/worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/pipeline/embed_worker/worker.py)
+2.5D Mario Kart-style racing game:
 
-Celery worker using PyTorch for batch embedding generation and Qdrant upsert.
+- Physics engine (position, velocity, acceleration)
+- Track representation
+- Collision detection
+- Implements `SpokeAdapter`
 
-## Verification Plan
+#### [NEW] [spokes/dummy_game.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/spokes/dummy_game.py)
 
-### Automated Tests
+Simple test spoke for verification (already mentioned in your description).
 
-- **Replay Test**: Process a document, record hashes, re-process, and assert identical output hashes.
+---
+
+### RAG Integration
+
+#### [MODIFY] [rag_client.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/rag_client.py)
+
+Client for Qdrant vector store:
+
+- Query embeddings by similarity
+- Integrate with Docling Pipeline's Qdrant instance
+- Return top-k knowledge vectors
+
+---
+
+### Deployment
+
+#### [NEW] [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/playground/rogue-comet/agency_hub/docker-compose.yml)
+
+Orchestrate all services:
+
+- Agency Hub (DockingShell)
+- Docling Pipeline (RAG backend)
+- LLM API (Gemini or local)
+- Field Game instances
+
+---
+
+## Implementation Phases
+
+### Phase 1: Core Hub (Week 1)
+
+- [ ] Implement `DockingShell` with cognitive cycle
+- [ ] Implement `TensorField` (voxelization, eigen-embedding)
+- [ ] Implement `SpokeAdapter` ABC
+- [ ] Create `DummyFieldGame` for testing
+
+### Phase 2: RAG Integration (Week 1)
+
+- [ ] Connect `TensorField` to Qdrant
+- [ ] Implement RAG query logic
+- [ ] Seed knowledge base with test concepts
+- [ ] Verify Eigenstate → RAG → Knowledge flow
+
+### Phase 3: LLM Integration (Week 2)
+
+- [ ] Replace `_synthesize_token` with Gemini API
+- [ ] Implement context construction (Eigenstate + RAG)
+- [ ] Add prompt engineering for action synthesis
+- [ ] Test end-to-end: State → LLM → Action
+
+### Phase 4: Real Spoke - 2.5D Racer (Week 2-3)
+
+- [ ] Implement physics engine
+- [ ] Create track representation
+- [ ] Implement `SpokeAdapter` interface
+- [ ] Integrate with Hub
+- [ ] Visualize game state
+
+### Phase 5: Production Deployment (Week 3-4)
+
+- [ ] Containerize all components
+- [ ] Scale RAG with production vector store
+- [ ] Add monitoring and logging
+- [ ] Performance optimization
+- [ ] Documentation
+
+---
+
+## Technical Decisions
+
+### LLM Choice
+
+**Recommended**: Gemini 2.0 Flash
+
+- Fast inference
+- Good reasoning
+- API available
+
+**Alternative**: Local Llama 3.2 (for offline)
+
+### Vector Store
+
+**Current**: Qdrant (from Docling Pipeline)
+**Future**: Consider Pinecone/Weaviate for scale
+
+### State Representation
+
+- **Voxel Grid**: 3D spatial discretization
+- **Eigen-Embedding**: PCA-based variance normalization
+- **Dimension**: Configurable (start with 64-128 dim)
+
+---
+
+## Success Criteria
+
+✅ **Deterministic Replay**: Same state → same action (with fixed LLM seed)  
+✅ **RAG Grounding**: Actions informed by knowledge base  
+✅ **Spoke Agnostic**: Multiple games use same Hub  
+✅ **LLM Integration**: Real model inference (not heuristic)  
+✅ **Containerized**: Docker deployment ready
+
+---
+
+## Next Immediate Steps
+
+1. **Create `agency_hub/` directory structure**
+2. **Implement `DockingShell` skeleton**
+3. **Implement `TensorField` with Qdrant integration**
+4. **Create `DummyFieldGame` spoke**
+5. **Test cognitive cycle: Observe → Normalize → Unify → Act**

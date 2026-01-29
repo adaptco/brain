@@ -1,41 +1,42 @@
-# Goal: Implement Batch Processing for Embed Worker
+# VT-TQ-Search: Challenge Generator Implementation Plan
 
-Integrate high-velocity mechanical enforcement with long-term semantic memory by evolving the `Embed Worker` from single-chunk processing to **Batch Processing**. This maximizes GPU utilization and increases throughput for the Sovereign OS.
+## Goal
+
+Implement the logic gap identified in the verification report: the "Challenges & Clusters" feature. This involves creating a `ChallengeGenerator` service that uses vector similarity to find tool clusters and generate exploratory challenges.
 
 ## Proposed Changes
 
-### 1. Docling Worker Refactor
+### 1. New Service Logic
 
-#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
+#### [NEW] [challenge_generator.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/challenge_generator.py)
 
-- Group chunks created in `create_chunks` into batches (e.g., size 32).
-- Enqueue a single job `tasks.embed_batch` for each group, containing a list of chunk payloads.
+- **`ChallengeGenerator` Class**:
+  - `find_tool_clusters(tool_id)`: Find semantic neighbors using Qdrant.
+  - `calculate_novelty(tool_id, user_history)`: Compute novelty score based on user's past usage (inverse frequency).
+  - `generate_challenge(tool_id)`: Create a `SemanticChallenge` object.
+    - *Logic*: Select a target tool, find 2-3 neighbors, and construct a prompt like "Compare X with Y and Z".
 
-### 2. Embed Worker Refactor
+### 2. API Integration
 
-#### [MODIFY] [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
+#### [MODIFY] [semantic_search_api.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/toolquest/semantic/semantic_search_api.py)
 
-- Rename `embed_chunk` to `embed_batch`.
-- Modify `get_embeddings` (plural) to accept a list of strings and returned a batched tensor.
-- Implement batch normalization and deterministic pseudo-embedding for the entire batch.
-- Update Qdrant `upsert` and Ledger `append` to handle multiple records in a single block.
-
-### 3. Task Mapping Consistency
-
-#### [MODIFY] [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py)
-
-- Reflect the same changes as `worker.py` to maintain consistency for the Docker container.
+- Add `POST /api/challenges/generate` endpoint.
+- Inject `ChallengeGenerator` dependency.
 
 ## Verification Plan
 
 ### Automated Tests
 
-- Modify the `ingress_test.py` (or equivalent) to send a document that generates >32 chunks.
-- Verify that only one `embed_batch` job is enqueued in Redis.
-- Verify that Qdrant contains all expected points.
-- Check Ledger for consecutive "chunk.embedding.v1" events from the same batch.
+- **Cluster Validity**: Verify that `find_tool_clusters` returns tools with similarity > 0.7.
+- **Novelty Scoring**: Verify that tools in `user_history` have lower novelty scores.
+- **Challenge Structure**: Verify `SemanticChallenge` output matches the schema.
 
 ### Manual Verification
 
-- Monitor Redis queue size during large document ingestion.
-- Verify GPU utilization (simulated or real) increases while processing time per chunk decreases.
+- Curl the new endpoint:
+
+  ```bash
+  curl -X POST http://localhost:8001/api/challenges/generate \
+    -H "Content-Type: application/json" \
+    -d '{"target_tool_id": "grep_001", "user_history": ["find_001"]}'
+  ```

@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "I resolved the ENOENT error by creating the missing `.ssh` directory and `config` file.",
-  "updatedAt": "2026-01-21T19:51:29.627575900Z"
+  "summary": "Complete release of Docling Pipeline v1.0.0 with cryptographic anchoring, determinism testing, and comprehensive documentation.",
+  "updatedAt": "2026-01-26T12:57:10.297922400Z",
+  "version": "2"
 }

@@ -1,5 +1,8 @@
-# Install Docker Desktop
+# Implement Tsukuba Trial Embedding Circuit
 
-- [x] Search for Docker Desktop package ID <!-- id: 0 -->
-- [x] Install Docker Desktop via winget <!-- id: 1 -->
-- [x] Verify Docker installation <!-- id: 2 -->
+- [x] Create configuration and contract files <!-- id: 0 -->
+- [x] Implement Circuit architecture (circuit.py) <!-- id: 1 -->
+- [x] Implement Reward functions (reward.py) <!-- id: 2 -->
+- [x] Implement Training script (train.py) <!-- id: 3 -->
+- [x] Verify implementation by running training <!-- id: 4 -->
+- [ ] Prove valid recursion as memory (verify_memory.py) <!-- id: 5 -->

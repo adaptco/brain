@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Final consolidated walkthrough merging the ADK Release Candidate Blueprint, Embedding logic, and Docling Pipeline into a unified state.",
-  "updatedAt": "2026-01-21T18:52:40.670856800Z",
-  "version": "4"
+  "summary": "Walkthrough of the Agent Capsule Model system implementation with routing nodes, LoRA registry, and real-time fine-tuning integration.",
+  "updatedAt": "2026-01-24T16:31:51.995568800Z",
+  "version": "5"
 }

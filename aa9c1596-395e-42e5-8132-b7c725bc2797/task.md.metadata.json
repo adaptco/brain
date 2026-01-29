@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task list for installing Docker Desktop on Windows.",
-  "updatedAt": "2026-01-15T23:11:46.246786800Z"
+  "summary": "Task list updated with memory verification task.",
+  "updatedAt": "2026-01-27T22:48:23.091621800Z",
+  "version": "10"
 }

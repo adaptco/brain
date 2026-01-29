@@ -1,0 +1,44 @@
+# Eigenstate Loop System - Task Breakdown
+
+## Planning
+
+- [/] Define eigenstate cycle architecture
+- [ ] Design pixel → token → checkpoint → pixel flow
+- [ ] Plan AI code generation strategy
+- [ ] Create implementation plan
+
+## Core System
+
+- [ ] Implement pixel representation (RGB/vector)
+- [ ] Create tokenization logic (encoding)
+- [ ] Build processing pipeline
+- [ ] Implement checkpoint validation (unit test)
+- [ ] Create reconstruction (decoding)
+
+## AI Integration
+
+- [ ] Integrate window.ai for code generation
+- [ ] Auto-code generation for transformations
+- [ ] Auto-completion of pipeline steps
+- [ ] Auto-run execution system
+
+## Eigenstate Management
+
+- [ ] Implement full state capture
+- [ ] Create state serialization
+- [ ] Build state reconstruction
+- [ ] Validate stateless operation
+
+## Visualization
+
+- [ ] Create visual representation of cycle
+- [ ] Show pixel → token transformation
+- [ ] Display checkpoint validation
+- [ ] Animate reconstruction loop
+
+## Testing & Verification
+
+- [ ] Verify lossless reconstruction
+- [ ] Test eigenstate preservation
+- [ ] Validate stateless operation
+- [ ] Confirm 1-loop coherence

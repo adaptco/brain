@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Implementation plan for Batch Processing in the Embed Worker. This involves refactoring the docling_worker to group chunks into batches and updating the embed_worker to process these batches using PyTorch's vectorized capabilities.",
-  "updatedAt": "2026-01-21T19:20:28.671879300Z",
-  "version": "1"
+  "summary": "Implementation plan for the `ChallengeGenerator` service in VT-TQ-Search, which will generate AI challenges based on semantic tool neighbors and novelty scoring.",
+  "updatedAt": "2026-01-25T13:59:03.325934500Z",
+  "version": "3"
 }

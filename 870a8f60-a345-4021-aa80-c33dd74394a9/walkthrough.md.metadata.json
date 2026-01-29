@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Fixed syntax errors in launch.json by adding missing version field.",
+  "updatedAt": "2026-01-29T06:15:07.082160700Z"
+}

@@ -1,7 +1,8 @@
-# ADK CLI Implementation
+# Stripe CLI Management
 
-- [x] Implement [adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py)
-    - [x] Paste user-provided code into [adk.py](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py)
-- [x] Verify CLI
-    - [x] Run `python adk.py --help`
-    - [x] Test [validate](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py#8-25), [replay](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py#26-44), [commit](file:///c:/Users/eqhsp/.gemini/antigravity/brain/d7a95c7a-7027-46c7-ac94-fd003131ff19/adk.py#45-71) commands (Basic invocation verified)
+- [x] Install Stripe CLI
+  - [x] Install via WinGet (`winget install Stripe.StripeCLI`)
+  - [x] Verify installation (`stripe --version`)
+- [x] Verify functionality ("Unit Test")
+  - [x] Run `stripe --help` to ensure executable
+  - [x] Run `stripe status` (if available) or check version output

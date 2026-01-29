@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for the Agentic RAG Pipeline.\nOutlines the creation of a Helper Bot, Worker, RAG module, LoRa scripts, Pandas script, and Lint tooling.\nVerification involves running the orchestrated pipeline.",
+  "updatedAt": "2026-01-28T15:40:07.420291700Z"
+}
