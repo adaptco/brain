@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Move invalid launch config to tasks.json and fix markdown lint error.",
+  "updatedAt": "2026-01-29T11:51:29.676266200Z"
+}
