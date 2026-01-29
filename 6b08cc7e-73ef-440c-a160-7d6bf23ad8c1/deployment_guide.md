@@ -1,0 +1,150 @@
+# Docling Cluster Deployment Guide
+
+## Prerequisites
+
+- Docker Desktop installed and running
+- PowerShell or Command Prompt
+
+## Deployment Steps
+
+### 1. Start Docker Desktop
+
+1. Open Windows Start menu
+2. Search for "Docker Desktop"
+3. Launch Docker Desktop
+4. Wait for the whale icon in system tray to become stable (indicates Docker is ready)
+
+### 2. Navigate to Cluster Directory
+
+```powershell
+cd c:\Users\eqhsp\Downloads\Qube\docling-cluster
+```
+
+### 3. Build and Launch Services
+
+```powershell
+docker-compose up --build
+```
+
+This will spin up **5 services**:
+
+- **Redis**: Message queue for async job processing
+- **Qdrant**: Vector database for semantic search
+- **ingest-api**: Document ingestion endpoint
+- **docling-worker** (2x): Document parsing workers
+- **embed-worker** (2x): Embedding generation workers (Scribe)
+
+### 4. Verify Deployment
+
+Check service health:
+
+```powershell
+curl http://localhost:8000/health
+```
+
+Expected response:
+
+```json
+{"status":"ok","redis":"connected"}
+```
+
+View running containers:
+
+```powershell
+docker ps
+```
+
+### 5. Test the Pipeline
+
+Ingest a document:
+
+```powershell
+curl -X POST http://localhost:8000/ingest -F "file=@your_document.pdf"
+```
+
+Expected response:
+
+```json
+{
+  "bundle_id": "bundle:...",
+  "doc_id": "sha256:...",
+  "status": "queued",
+  "queued_at": "2026-01-25T..."
+}
+```
+
+## Troubleshooting
+
+### Docker Not Running
+
+**Error**: `failed to connect to the docker daemon`
+
+**Solution**: Ensure Docker Desktop is fully started. Check the system tray for the whale icon.
+
+### Port Already in Use
+
+**Error**: `port is already allocated`
+
+**Solution**: Stop conflicting services or change ports in `docker-compose.yml`
+
+### Services Not Healthy
+
+Check logs:
+
+```powershell
+docker-compose logs -f
+```
+
+View specific service:
+
+```powershell
+docker-compose logs -f ingest-api
+```
+
+## Architecture Overview
+
+```
+┌─────────────┐
+│  Client     │
+└──────┬──────┘
+       │ POST /ingest
+       ▼
+┌─────────────────┐
+│  ingest-api     │ ← Deterministic bundle_id generation
+└────────┬────────┘
+         │ publish to parse_queue
+         ▼
+    ┌────────┐
+    │ Redis  │
+    └───┬────┘
+        │ consume
+        ▼
+┌──────────────────┐
+│ docling-worker   │ ← Parse PDF → Normalized JSON
+└────────┬─────────┘
+         │ publish to embed_queue
+         ▼
+    ┌────────┐
+    │ Redis  │
+    └───┬────┘
+        │ consume (batch)
+        ▼
+┌──────────────────┐
+│ embed-worker     │ ← Generate embeddings (Scribe)
+└────────┬─────────┘
+         │ store vectors
+         ▼
+    ┌────────┐
+    │ Qdrant │ ← Semantic search ready
+    └────────┘
+```
+
+## Verification Strategy
+
+The cluster implements **deterministic replay**:
+
+- Same document → Same `bundle_id` and `doc_id`
+- Same content → Same canonical hash
+- All operations logged to append-only ledger
+
+See [walkthrough.md](file:///C:/Users/eqhsp/.gemini/antigravity/brain/6b08cc7e-73ef-440c-a160-7d6bf23ad8c1/walkthrough.md) for implementation details.

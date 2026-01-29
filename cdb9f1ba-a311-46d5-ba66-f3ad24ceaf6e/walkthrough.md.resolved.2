@@ -1,0 +1,87 @@
+# Walkthrough: Workspace Fixes and C++ Include Resolution
+
+I have resolved the persistent C++ include errors and markdown warnings in your workspace.
+
+## C++ Include Path Resolution
+
+The "file not found" errors were caused by IntelliSense being unable to probe the compiler for standard library paths in your environment. I fixed this by:
+
+1. **Adding explicit absolute paths** to [c_cpp_properties.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/.vscode/c_cpp_properties.json) for:
+   - Project includes
+   - MSVC Standard Library
+   - Windows SDK (UCRT, Shared, UM)
+2. **Implementing an explicit destructor** in the [Sandbox](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Sandbox.hpp#13-29) class to resolve the "incomplete type" error (`C2027`) caused by `unique_ptr` and forward declarations.
+
+### Manual Verification
+
+I verified that the code now compiles using the actual compiler on your system:
+
+```powershell
+& "cl.exe" /I"./include" ... src/main.cpp
+# Output: main.cpp (Success)
+```
+
+## Markdown Warning Fixes
+
+- **GEMINI.md**: Added a top-level heading and adjusted spacing to satisfy markdown linting.
+- **README.md**: Added a missing language specifier to a fenced code block.
+
+## Batch Processing Implementation
+
+The RAG pipeline has been upgraded to support batch processing, significantly improving throughput for large documents.
+
+### [Docling Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/docling_worker/tasks.py)
+
+- Refactored `parse_document` to group chunks into batches of 32.
+- Updated the queueing mechanism to use [embed_batch](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py#71-152) instead of single-chunk tasks.
+
+### [Embed Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/worker.py)
+
+- Implemented [embed_batch](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py#71-152) to handle multiple chunks in a single vectorized operation.
+- Utilized PyTorch's capabilities for bulk embedding generation.
+- Integrated bulk upserts to **Qdrant** and bulk appends to the **Ledger**.
+
+## Batch Processing Implementation
+The RAG pipeline has been upgraded to support batch processing, significantly improving throughput for large documents.
+
+### [Docling Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/docling_worker/tasks.py)
+- Refactored `parse_document` to group chunks into batches of 32.
+- Updated the queueing mechanism to use [embed_batch](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py#71-152) instead of single-chunk tasks.
+
+### [Embed Worker](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py)
+- Implemented [embed_batch](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py#71-152) to handle multiple chunks in a single vectorized operation.
+- Utilized PyTorch's capabilities for bulk embedding generation.
+- Integrated bulk upserts to **Qdrant** and bulk appends to the **Ledger**.
+- Refactored to use centralized [l2_normalize](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/normalize.py#22-29) from `lib.normalize`.
+
+## Docling Cluster Pipeline Alignment
+Aligned the implementation with the detailed Docling Cluster Pipeline specification.
+
+### Core Libraries
+- **[normalize.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/normalize.py)**: Added [l2_normalize(tensor)](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/normalize.py#22-29) for PyTorch L2 normalization.
+- **[canonical.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/lib/canonical.py)**: Provides JCS canonicalization and SHA-256 hashing utilities.
+
+### JSON Schemas
+- **[doc.normalized.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/schemas/doc.normalized.v1.schema.json)**: Formalizes the structure of document normalization events.
+- **[chunk.embedding.v1.schema.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/schemas/chunk.embedding.v1.schema.json)**: Formalizes the structure of chunk embedding events with L2 normalization metadata.
+
+## Verification Status
+
+- [x] **C++ Include Paths**: Resolved via [compile_commands.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/compile_commands.json) and explicit [c_cpp_properties.json](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/.vscode/c_cpp_properties.json) paths.
+- [x] **Markdown Warnings**: [README.md](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/README.md) and [GEMINI.md](file:///c:/Users/eqhsp/.gemini/GEMINI.md) are now compliant.
+- [x] **Batch Processing**: Code logic implemented and synchronized across [worker.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/pipeline/embed_worker/worker.py) and [tasks.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/docling-pipeline/services/embed_worker/tasks.py).
+- [ ] **Deployment**: Pending user starting Docker Desktop.
+
+> [!IMPORTANT]
+> To see the C++ IntelliSense fixes, please **Reload Window** (`Ctrl+Shift-P` -> `Developer: Reload Window`).
+
+## Deployment Status: Docling Cluster
+
+The local deployment script `deploy-local.bat` for `docling-cluster` was executed but failed because **Docker Desktop is not running**. Once you start Docker, let me know and I can retry the deployment.
+
+---
+
+**Next Steps**:
+
+1. **Reload VS Code Window** (`Ctrl+Shift+P` → "Reload Window") to refresh IntelliSense.
+2. **Start Docker Desktop** if you wish to proceed with the `docling-cluster` deployment.

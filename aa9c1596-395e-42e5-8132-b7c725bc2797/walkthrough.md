@@ -1,0 +1,42 @@
+# Tsukuba Trial Walkthrough
+
+We have successfully implemented and executed the "Tsukuba Trial" Embedding Circuit routine.
+
+## Implementation Details
+
+### Circuit Architecture
+
+The [EmbeddingCircuit](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/circuit.py) compresses vehicle telemetry into a 64-dimensional "Driver Signature" before decoding it into control actions (Steer, Throttle, Brake).
+
+### Rewards
+
+The [reward system](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/reward.py) encourages:
+
+- **Pace**: Reward for speed.
+- **Smoothness**: Penalty for jerky steering.
+- **Stability**: Severe penalty for high slip angles.
+
+### Training
+
+The [training script](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/train.py) initializes the circuit, runs a mock simulation of the Tsukuba circuit, and optimizes the policy.
+
+## Verification Results
+
+### Artifact Minted
+
+The training routine ran successfully and produced the circuit artifact:
+
+- [suzuki_r32_circuit.pt](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/suzuki_r32_circuit.pt)
+
+### Execution Output
+
+```
+Initializing Tsukuba Trial...
+Algorithm: EmbeddingCircuit-PPO
+Contract: suzuki_v1
+Starting training loop (1000 steps)...
+Step 0: Reward=0.0000, Speed=0.00
+Step 100: Reward=..., Speed=...
+...
+Circuit minted to training/suzuki_r32_circuit.pt
+```

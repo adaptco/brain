@@ -1,40 +1,63 @@
-# Dockerize ADK CLI Implementation Plan
+# Manifold Scaffolding Implementation Plan
 
 ## Goal Description
+Create a "Worker" (automation script) that standardizes the dockerization of all completed scripts/services in the codebase. This "scaffolds the manifold" by generating a unified `docker-compose.yaml` (Eigenstate Matrix) and individual `Dockerfile`s for each component.
 
-The goal is to containerize the ADK CLI tools so they can be run reliably in any environment via Docker. This involves creating a `Dockerfile` and a shell script wrapper to build and run the container.
-
-## User Review Required
->
-> [!NOTE]
-> The Docker image will be built securely from the local source. The wrapper script assumes Docker is installed and running.
-> I will create a separate `requirements-cli.txt` to avoid installing heavy dependencies like `torch` which are not needed for the CLI.
+## Unification "Dot Product" Strategy
+The worker will apply a "Dockerization Vector" to the "Project Vector" (Matrix) to generate the standardized infrastructure.
 
 ## Proposed Changes
 
-### ADK Core (`antigravity/implicit`)
+### 1. The Eigenstate Matrix (Configuration)
+#### [NEW] [manifold_matrix.json](file:///c:/Users/eqhsp/.gemini/antigravity/manifold_matrix.json)
+defins the targets to be dockerized.
+Structure:
+```json
+[
+  {
+    "name": "adk-cli",
+    "path": "implicit",
+    "type": "python",
+    "entrypoint": "cli/adk.py",
+    "dockerfile_exists": true
+  },
+  {
+    "name": "ghost-void-server",
+    "path": "playground/ghost-void/server",
+    "type": "node",
+    "port": 8080
+  },
+  {
+    "name": "docling-ingest",
+    "path": "knowledge/docling/ingest_api",
+    "type": "fastapi",
+    "port": 8000
+  },
+  {
+    "name": "glacial-nadir",
+    "path": "glacial-nadir",
+    "type": "python",
+    "entrypoint": "main_agent.py"
+  }
+]
+```
 
-#### [NEW] [Dockerfile](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/Dockerfile)
+### 2. The Worker (Scaffolder)
+#### [NEW] [scaffold_manifold.py](file:///c:/Users/eqhsp/.gemini/antigravity/scaffold_manifold.py)
+A Python script that:
+1.  Reads `manifold_matrix.json`.
+2.  Iterates through each project.
+3.  **Dockerfile Generation**:
+    -   If `Dockerfile` is missing, generates one based on `type` (node, python, fastapi).
+    -   Uses `package.json` or `requirements.txt` detection.
+4.  **Manifold Assembly**:
+    -   Generates a root `docker-compose.yaml` that defines all these services, linking them together.
 
-- Base image: `python:3.11-slim`
-- Installs dependencies from new `requirements-cli.txt`
-- Copies source code (`cli` package)
-- Sets entrypoint to the ADK CLI python module
-
-#### [NEW] [requirements-cli.txt](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/requirements-cli.txt)
-
-- `PyYAML`
-- `jsonschema`
-
-#### [NEW] [docker_adk.sh](file:///c:/Users/eqhsp/.gemini/antigravity/implicit/docker_adk.sh)
-
-- Shell script to build the image (if needed) and run the container.
-- Mounts the current working directory to `/workspace` in the container.
-- Forward arguments to the ADK CLI.
+### 3. Execution
+-   Run `python scaffold_manifold.py` to generate the artifacts.
 
 ## Verification Plan
-
-### Automated Tests
-
-- Run `./docker_adk.sh --help` to verify the container runs and help is displayed.
-- Run `./docker_adk.sh validate .` in a directory with known valid/invalid artifacts to verify functionality.
+### Automated Verification
+-   Run the worker.
+-   Check file existence: `docker-compose.yaml` and sub-project `Dockerfile`s.
+-   Run `docker-compose config` to validate the generated manifest.

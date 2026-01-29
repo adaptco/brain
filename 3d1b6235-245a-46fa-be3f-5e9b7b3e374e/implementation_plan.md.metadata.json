@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Implementation plan for the Docling document parsing pipeline with Docker Compose, FastAPI, workers, PyTorch embeddings, Qdrant vector store, and append-only ledger.",
-  "updatedAt": "2026-01-21T18:23:04.730825Z",
-  "version": "1"
+  "summary": "Implementation plan for Agent Capsule Model system: foundational routing nodes with LoRA-based real-time fine-tuning for RAG agents.",
+  "updatedAt": "2026-01-24T16:19:33.287280400Z",
+  "version": "2"
 }

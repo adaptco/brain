@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Walkthrough of the SafetyLayer implementation, including the interface, logic, and test driver. Note about missing compiler included.",
-  "updatedAt": "2026-01-15T12:33:19.196159600Z"
+  "summary": "Walkthrough of the VT-TQ-Search semantic tool discovery implementation, demonstrating the data foundation layer with embedding pipeline, vector search API, and sample tool indexing.",
+  "updatedAt": "2026-01-25T00:49:48.379792500Z",
+  "version": "1"
 }

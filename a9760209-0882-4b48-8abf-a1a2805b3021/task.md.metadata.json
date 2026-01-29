@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task checklist for designing the Unified Shell Architecture.",
-  "updatedAt": "2026-01-15T22:02:17.876670900Z"
+  "summary": "Task checklist for designing and implementing the Unified Shell Architecture, tracking completion of all scaffold steps.",
+  "updatedAt": "2026-01-26T12:54:18.139778500Z",
+  "version": "3"
 }

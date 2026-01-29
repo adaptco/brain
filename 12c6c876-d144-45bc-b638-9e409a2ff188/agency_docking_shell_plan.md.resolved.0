@@ -1,0 +1,158 @@
+# Agency Docking Shell Implementation Plan
+
+## Goal
+Create a portable "Hub" for Agentic Field Games that normalizes environmental states into a shared cognitive manifold, enabling agents to learn across different game environments.
+
+## Architecture Overview
+
+```
+┌─────────────────────────────────────────┐
+│         Agency Docking Shell            │
+│  (Portable Hub for Agentic Learning)    │
+└─────────────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+   ┌────▼────┐ ┌───▼────┐ ┌───▼─────┐
+   │ Tensor  │ │ Docking│ │  Spoke  │
+   │  Field  │ │  Shell │ │ Adapter │
+   └─────────┘ └────────┘ └─────────┘
+```
+
+## Proposed Changes
+
+---
+
+### Directory Structure
+
+#### [NEW] `agency_hub/`
+
+```
+agency_hub/
+├── __init__.py
+├── tensor_field.py      # Voxelized state + Eigen-embedding
+├── spoke_adapter.py     # ABC for Field Games
+├── docking_shell.py     # Hub controller (Observe -> Normalize -> Unify -> Act)
+├── learning_routine.py  # Verification script
+└── spokes/
+    ├── __init__.py
+    ├── dummy_spoke.py   # Test implementation
+    └── ghostvoid_spoke.py  # Integration with WorldModel
+```
+
+---
+
+### Core Modules
+
+#### [NEW] `agency_hub/tensor_field.py`
+
+**TensorField Class**:
+- `voxelize_state(raw_state)`: Converts arbitrary state to n-dimensional tensor
+- `compute_eigenstate(voxel_tensor)`: Normalizes variance via PCA/SVD
+- `rag_unify(eigenstate, knowledge_vectors)`: Dot-product similarity to knowledge base
+- `get_embedding_dim()`: Returns dimensionality of the manifold
+
+**Key Features**:
+- Deterministic voxelization
+- Stable eigen-decomposition
+- Cosine similarity for RAG retrieval
+
+---
+
+#### [NEW] `agency_hub/spoke_adapter.py`
+
+**SpokeAdapter ABC**:
+```python
+class SpokeAdapter(ABC):
+    @abstractmethod
+    def observe(self) -> Dict:
+        """Return current environmental state"""
+        
+    @abstractmethod
+    def act(self, token: Dict) -> bool:
+        """Execute action token, return success"""
+        
+    @abstractmethod
+    def get_state_schema(self) -> Dict:
+        """Return schema for state normalization"""
+```
+
+---
+
+#### [NEW] `agency_hub/docking_shell.py`
+
+**DockingShell Class**:
+- `dock(spoke: SpokeAdapter)`: Connect to a Field Game
+- `inject_knowledge(concepts: List[np.ndarray])`: Prime RAG with vectors
+- `cycle()`: Execute Observe → Normalize → Unify → Act
+- `_synthesize_token(unified_state)`: Generate action from unified state
+
+**Cycle Flow**:
+1. **Observe**: `spoke.observe()` → raw state
+2. **Normalize**: `tensor_field.voxelize_state()` → voxel tensor
+3. **Unify**: `tensor_field.rag_unify()` → knowledge-grounded state
+4. **Act**: `_synthesize_token()` → action token → `spoke.act()`
+
+---
+
+#### [NEW] `agency_hub/spokes/ghostvoid_spoke.py`
+
+**GhostVoidSpoke Implementation**:
+- Wraps [WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#16-31) and [QubeRuntime](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#7-10)
+- `observe()`: Returns tiles, avatar position, qube state hash
+- `act(token)`: Translates token to [SpawnPlane](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/WorldModel.cpp#54-68) or [DockPattern](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#76-86) calls
+- `get_state_schema()`: Defines expected state structure
+
+**Integration Points**:
+- Uses existing `WorldModel.GetTiles()`, [GetSpawnPoint()](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/engine/WorldModel.cpp#50-51)
+- Uses existing `QubeRuntime.DockPattern()`, [GetStateHash()](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#58-59)
+
+---
+
+### Verification
+
+#### [NEW] `agency_hub/learning_routine.py`
+
+**Test Flow**:
+1. Create `DockingShell`
+2. Dock with `DummyFieldGame` (or `GhostVoidSpoke`)
+3. Inject 5 simulated knowledge concepts
+4. Run 5 epochs of `cycle()`
+5. Verify:
+   - Docking successful
+   - Knowledge injection complete
+   - Tokens generated and executed
+   - State variance stabilizes
+
+**Expected Output**:
+```
+[DOCK] Connected to: DummyFieldGame
+[KNOWLEDGE] Injected 5 concepts
+[CYCLE 1] Eigenstate: [0.12, -0.45, 0.78, ...]
+[CYCLE 1] Token: {"action": "move", "params": {...}}
+[CYCLE 2] ...
+[STABILIZATION] Variance reduced by 42%
+```
+
+---
+
+## Next Steps (Post-Implementation)
+
+1. **Real Spoke**: Replace `DummyFieldGame` with `GhostVoidSpoke`
+2. **LLM Integration**: Replace `_synthesize_token` heuristic with Gemini API
+3. **Multi-Spoke Learning**: Test agent transfer between different environments
+4. **LoRA Fine-Tuning**: Use stabilized trajectories for weight adaptation
+
+---
+
+## Integration with Existing Systems
+
+### Qube Runtime
+- `QubeRuntime.DockPattern()` ← Agency Hub injects embeddings
+- `QubeRuntime.ReorganizeAndSynthesize()` ← Provides synthetic structures
+
+### Docling Pipeline
+- Embeddings from `embed_worker` → Knowledge vectors for RAG
+
+### Jurassic Pixels
+- Home World (Level 0) → Training environment for agent stabilization

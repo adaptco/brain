@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Updated plan to include lightweight requirements for CLI.",
-  "updatedAt": "2026-01-17T17:11:49.201026100Z",
-  "version": "1"
+  "summary": "Plan to scaffold the Dockerization worker (Manifold Scaffolder) and define the configuration matrix.",
+  "updatedAt": "2026-01-27T22:46:30.359866200Z",
+  "version": "2"
 }

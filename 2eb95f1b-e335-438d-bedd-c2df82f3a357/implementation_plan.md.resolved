@@ -1,0 +1,171 @@
+# Join Dots Game - Implementation Plan
+
+A visually stunning Connect Four game with AI integration powered by window.ai.complete, featuring smooth animations, glassmorphism design, and three difficulty levels.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This implementation uses **window.ai.complete** for AI opponent logic. This API requires Chrome with built-in AI capabilities or a compatible browser extension. The game will gracefully handle cases where the API is unavailable.
+
+> [!NOTE]
+> The game will be built as a single-page React application using Vite for fast development and Tailwind CSS for styling. All game logic runs client-side with no backend required.
+
+## Proposed Changes
+
+### Project Setup
+
+#### [NEW] [package.json](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/package.json)
+- Initialize Vite + React + TypeScript project
+- Configure Tailwind CSS with custom theme
+- Add necessary dependencies
+
+#### [NEW] [vite.config.ts](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/vite.config.ts)
+- Configure Vite build settings
+- Set up development server
+
+#### [NEW] [tailwind.config.js](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/tailwind.config.js)
+- Custom color palette (purple, blue, pink gradients)
+- Animation configurations
+- Glassmorphism utilities
+
+---
+
+### Core Application Structure
+
+#### [NEW] [src/App.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/App.tsx)
+- Main application component
+- Game state management (board, current player, game status)
+- Difficulty selection screen
+- Game board and AI panel layout
+- Win/draw detection and display
+
+#### [NEW] [src/index.css](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/index.css)
+- Global styles and CSS variables
+- Custom animations (pulse, float, glow)
+- Glassmorphism effects
+- Gradient definitions
+
+#### [NEW] [src/main.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/main.tsx)
+- React application entry point
+
+---
+
+### Game Logic Modules
+
+#### [NEW] [src/game/gameLogic.ts](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/game/gameLogic.ts)
+- Board state management (6x7 grid)
+- Win detection (horizontal, vertical, diagonal)
+- Draw detection
+- Move validation
+- Helper functions for board manipulation
+
+#### [NEW] [src/game/aiPlayer.ts](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/game/aiPlayer.ts)
+- window.ai.complete integration
+- Board state formatting for AI (ASCII representation)
+- Difficulty-specific prompts:
+  - **Easy**: Casual play, random moves, doesn't always block
+  - **Medium**: Good play, occasional mistakes
+  - **Hard**: Strategic play, always blocks, creates opportunities
+- Move parsing and validation
+- Fallback logic if AI API unavailable
+
+---
+
+### UI Components
+
+#### [NEW] [src/components/GameBoard.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/GameBoard.tsx)
+- 6x7 grid rendering
+- Column hover effects showing drop preview
+- Click handlers for piece placement
+- Last move ring highlight
+- Winning pieces pulse animation
+
+#### [NEW] [src/components/GamePiece.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/GamePiece.tsx)
+- Individual piece rendering
+- Drop animation with easing
+- Gradient fills (red/pink for player, yellow/orange for AI)
+- Glow effects
+- Pulse animation for winning pieces
+
+#### [NEW] [src/components/AIThinkingPanel.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/AIThinkingPanel.tsx)
+- Display AI's thinking process
+- Show board analysis
+- Move history with round numbers
+- Loading state during AI computation
+- Glassmorphism panel design
+
+#### [NEW] [src/components/DifficultySelector.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/DifficultySelector.tsx)
+- Three difficulty buttons (Easy, Medium, Hard)
+- Hover effects and animations
+- Gradient backgrounds
+- Game title and instructions
+
+#### [NEW] [src/components/AnimatedBackground.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/AnimatedBackground.tsx)
+- Floating gradient orbs (purple, blue, pink)
+- Smooth animations
+- Blur effects for depth
+
+#### [NEW] [src/components/GameOverlay.tsx](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/components/GameOverlay.tsx)
+- Win/draw message display
+- Play again button
+- Glassmorphism overlay
+
+---
+
+### TypeScript Types
+
+#### [NEW] [src/types/game.ts](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/src/types/game.ts)
+- Game state types
+- Player types (Human, AI)
+- Difficulty levels
+- Board position types
+- Win condition types
+
+---
+
+### HTML Entry Point
+
+#### [NEW] [index.html](file:///C:/Users/eqhsp/Downloads/Qube/join-dots/index.html)
+- HTML template
+- Meta tags for SEO
+- Google Fonts import (Inter)
+
+## Verification Plan
+
+### Automated Tests
+
+```bash
+# Start development server
+npm run dev
+```
+
+### Manual Verification
+
+1. **Difficulty Selection**: Verify all three difficulty buttons work and start the game
+2. **Game Mechanics**:
+   - Test piece dropping in all columns
+   - Verify pieces stack correctly
+   - Test all win conditions (horizontal, vertical, diagonal)
+   - Verify draw detection when board is full
+3. **AI Behavior**:
+   - **Easy**: Confirm AI makes casual moves, doesn't always block
+   - **Medium**: Verify AI plays well but makes occasional mistakes
+   - **Hard**: Confirm AI always blocks wins and plays strategically
+4. **Animations**:
+   - Verify smooth piece drop animations
+   - Check last move ring highlight appears
+   - Confirm winning pieces pulse
+   - Test hover effects on columns
+5. **Visual Design**:
+   - Verify animated background with floating orbs
+   - Check glassmorphism effects on panels
+   - Confirm gradient colors and glow effects
+   - Test responsive layout
+6. **AI Thinking Panel**:
+   - Verify AI's thinking process displays
+   - Check move history tracking
+   - Confirm loading state during AI computation
+
+### Browser Compatibility
+
+Test in Chrome with window.ai support or verify graceful fallback behavior.

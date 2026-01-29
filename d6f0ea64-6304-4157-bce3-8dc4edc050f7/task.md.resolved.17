@@ -1,0 +1,8 @@
+# Stripe CLI Management
+
+- [ ] Install Stripe CLI
+    - [ ] Run `choco install stripe-cli`
+    - [ ] Verify installation (`stripe --version`)
+- [ ] Verify functionality ("Unit Test")
+    - [ ] Run `stripe --help` to ensure executable
+    - [ ] Run `stripe status` (if available) or check version output

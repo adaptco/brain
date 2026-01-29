@@ -22,3 +22,9 @@
 - [x] Restore local path support and deterministic seeding
 - [x] Implement `verify_batch_logic.py` to test throughput and determinism
 - [x] Update walkthrough with "Scribe" Batch Processing details
+
+## Architecture Restoration (VT-TQ-Search)
+
+- [x] Restore deterministic Ingest API
+- [x] Restore "Scribe" Embed Worker
+- [x] Verify Docker compatibility

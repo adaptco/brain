@@ -1,0 +1,48 @@
+# Tsukuba Trial Implementation Plan
+
+We are implementing the "Tsukuba Trial" Driver Routine, which uses an Embedding Circuit to learn vehicle control policies.
+
+## Proposed Changes
+
+### Directory Structure
+We will create a `training/` directory to house all the related files.
+
+### Configuration
+#### [NEW] [training/config.yaml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/config.yaml)
+- Defines algorithm parameters (Embedding Dim: 64, Timesteps: 1,000,000, LapTime Variance < 0.001).
+
+### Contracts
+#### [NEW] [training/suzuki_v1.contract.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/suzuki_v1.contract.json)
+- Defines the input/output contract for the circuit.
+
+### core Logic
+#### [NEW] [training/circuit.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/circuit.py)
+- `EmbeddingCircuit`: PyTorch Module.
+  - Encoder: [Yaw, Speed, LatG, Slip] -> [64]
+  - Control Plane: Hidden layers.
+  - Action Head: [Steer, Throttle, Brake]
+
+#### [NEW] [training/reward.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/reward.py)
+- Reward functions:
+  - `calculate_pace_reward(speed)`
+  - `calculate_smoothness_penalty(steer_rate)`
+  - `calculate_stability_penalty(slip_angle)`
+
+### Execution
+#### [NEW] [training/train.py](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/train.py)
+- Main entry point.
+- Loads config and contract.
+- Initializes Circuit.
+- Runs mock simulation loop.
+- Saves `suzuki_r32_circuit.pt`.
+
+### Dependencies
+#### [NEW] [training/requirements.txt](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/training/requirements.txt)
+- `torch`
+- `numpy`
+- `pyyaml`
+
+## Verification Plan
+
+### Automated Tests
+- Run `python training/train.py` to ensure it executes without error and produces `suzuki_r32_circuit.pt`.

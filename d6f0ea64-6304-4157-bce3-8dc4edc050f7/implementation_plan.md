@@ -1,25 +1,24 @@
-# Design System Updates
+# Swift Installation Plan
 
 ## Goal Description
 
-Add a "Stripe" color token to the game's design system (`style.css`) to facilitate consistent branding for Stripe-related integrations (like "Buy Credits").
+Install the Swift programming language toolchain on Windows to enable Swift development without requiring reinstallation for each agent session.
 
 ## User Review Required
 >
 > [!NOTE]
-> I will be working in `c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/style.css`.
+> Swift will be installed system-wide using Chocolatey. This requires administrator privileges.
 
 ## Proposed Changes
 
-### Styles
+### System Installation
 
-- [MODIFY] [style.css](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/server/public/style.css)
-  - Add `--stripe-blurple: #635bff;`
-  - Add `--stripe-blurple-hover: #4e48cc;`
-  - Add `.btn-stripe` utility class.
+- Install Swift via Chocolatey: `choco install swift -y`
+- This will install the Swift compiler, standard library, and REPL
 
 ## Verification Plan
 
-### Manual Verification
+### Automated Tests
 
-- Inspect `style.css` to ensure tokens are correctly defined.
+- Run `swift --version` to confirm installation
+- Run `swift --help` to verify command availability

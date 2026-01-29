@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the Agentic RAG Pipeline.\nDescribes the implemented components and the verification run.\nShows how the Helper Bot coordinates the Worker, RAG, LoRa, Panda, and Lint tools.",
+  "updatedAt": "2026-01-28T15:42:21.233644600Z"
+}

@@ -1,0 +1,6 @@
+# Task: Pipeline Release v1.0.0
+
+- [/] Create release documentation <!-- id: 0 -->
+- [ ] Compute model weights hash <!-- id: 1 -->
+- [ ] Test determinism with replay test <!-- id: 2 -->
+- [ ] Create release bundle <!-- id: 3 -->

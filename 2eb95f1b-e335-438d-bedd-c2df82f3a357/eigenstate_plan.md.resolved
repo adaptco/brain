@@ -1,0 +1,255 @@
+# Eigenstate Loop System - Implementation Plan
+
+A self-referential AI system that demonstrates complete state transformation and reconstruction in a single coherent loop.
+
+## Concept Overview
+
+The system creates a **4-cycle eigenstate loop** where:
+
+1. **Pixel → Token**: Encode visual/data into compressed representation
+2. **Token → Processing**: AI generates and executes transformation code
+3. **Processing → Checkpoint**: Unit test validates the transformation
+4. **Checkpoint → Pixel**: Reconstruct original state (eigenstate return)
+
+**Key Principle**: The system must return the **full eigenstate** to remain **stateless** - proving perfect information preservation through the cycle.
+
+---
+
+## Architecture
+
+### The 4-Cycle Loop
+
+```mermaid
+graph LR
+    A[Pixel State] -->|Encode| B[Token]
+    B -->|AI Process| C[Checkpoint]
+    C -->|Validate| D[Unit Test]
+    D -->|Decode| A
+    
+    style A fill:#8B5CF6
+    style B fill:#3B82F6
+    style C fill:#EC4899
+    style D fill:#F59E0B
+```
+
+### Eigenstate Definition
+
+An **eigenstate** is the complete, deterministic representation of the system at any point:
+
+```typescript
+interface Eigenstate {
+  pixel: PixelData;        // Original input
+  token: TokenVector;      // Encoded representation
+  transform: string;       // AI-generated code
+  checkpoint: TestResult;  // Validation proof
+  hash: string;           // Deterministic fingerprint
+}
+```
+
+---
+
+## Proposed Changes
+
+### Core Library Module
+
+#### [NEW] [lib/__init__.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/lib/__init__.py)
+- Export core functions for eigenstate management
+- Provide unified API for the 4-cycle loop
+
+#### [NEW] [lib/eigenstate.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/lib/eigenstate.py)
+- `Eigenstate` class for state management
+- Serialization/deserialization
+- Hash computation for determinism
+
+#### [NEW] [lib/pixel.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/lib/pixel.py)
+- Pixel representation (RGB or vector)
+- Encoding to token
+- Decoding from token
+
+#### [NEW] [lib/tokenizer.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/lib/tokenizer.py)
+- Tokenization logic (embedding)
+- Reversible encoding/decoding
+- Deterministic transformation
+
+#### [NEW] [lib/checkpoint.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/lib/checkpoint.py)
+- Unit test generation
+- Validation logic
+- Checkpoint verification
+
+---
+
+### Ingest API Service
+
+#### [NEW] [api/ingest.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/api/ingest.py)
+- FastAPI service for eigenstate ingestion
+- Endpoints:
+  - `POST /ingest/pixel` - Start the loop with a pixel
+  - `GET /eigenstate/{id}` - Retrieve full eigenstate
+  - `POST /validate/{id}` - Run checkpoint validation
+
+#### [NEW] [api/models.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/api/models.py)
+- Pydantic models for API requests/responses
+- Eigenstate schema validation
+
+---
+
+### AI Code Generation
+
+#### [NEW] [ai/generator.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/ai/generator.py)
+- window.ai integration for code generation
+- Auto-generate transformation functions
+- Auto-complete processing pipeline
+
+#### [NEW] [ai/executor.py](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/ai/executor.py)
+- Safe code execution sandbox
+- Auto-run generated code
+- Capture execution results
+
+---
+
+### Web Interface
+
+#### [NEW] [web/index.html](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/web/index.html)
+- Visual representation of the 4-cycle loop
+- Real-time animation of transformations
+- Eigenstate visualization
+
+#### [NEW] [web/app.js](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/web/app.js)
+- Frontend logic for cycle visualization
+- API integration
+- Animation controls
+
+#### [NEW] [web/styles.css](file:///C:/Users/eqhsp/Downloads/Qube/eigenstate-loop/web/styles.css)
+- Modern UI with glassmorphism
+- Cycle animation styles
+- Responsive design
+
+---
+
+## The Eigenstate Loop Flow
+
+### Step 1: Pixel → Token (Encode)
+
+```python
+# Input: RGB pixel or vector
+pixel = Pixel(r=255, g=128, b=64)
+
+# Encode to token (deterministic)
+token = tokenizer.encode(pixel)
+# token = [0.5, 0.25, 0.125, ...]
+```
+
+### Step 2: Token → Processing (AI Generate)
+
+```python
+# AI generates transformation code
+prompt = f"Generate a function to process token: {token}"
+transform_code = await ai.generate_code(prompt)
+
+# Auto-run the generated code
+result = executor.run(transform_code, token)
+```
+
+### Step 3: Processing → Checkpoint (Validate)
+
+```python
+# Generate unit test
+test_code = checkpoint.generate_test(pixel, token, result)
+
+# Auto-run test
+test_result = executor.run_test(test_code)
+assert test_result.passed
+```
+
+### Step 4: Checkpoint → Pixel (Reconstruct)
+
+```python
+# Decode back to pixel
+reconstructed_pixel = tokenizer.decode(token)
+
+# Verify eigenstate
+assert reconstructed_pixel == pixel
+assert hash(eigenstate) == original_hash
+```
+
+---
+
+## Stateless Operation
+
+The system remains **stateless** by:
+
+1. **Capturing full eigenstate** at each cycle point
+2. **Deterministic hashing** for verification
+3. **Perfect reconstruction** proving no information loss
+4. **Self-contained execution** with no external dependencies
+
+### Eigenstate Preservation
+
+```python
+# Cycle 1
+eigenstate_1 = loop.execute(pixel)
+
+# Cycle 2 (from reconstructed pixel)
+eigenstate_2 = loop.execute(eigenstate_1.reconstructed_pixel)
+
+# Verify stateless operation
+assert eigenstate_1.hash == eigenstate_2.hash
+```
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+```bash
+# Run eigenstate loop test
+python -m pytest tests/test_eigenstate_loop.py
+
+# Verify stateless operation
+python -m pytest tests/test_stateless.py
+
+# Check determinism
+python -m pytest tests/test_determinism.py
+```
+
+### Manual Verification
+
+1. **Visual Inspection**: Watch the cycle animation
+2. **Hash Verification**: Confirm identical hashes across loops
+3. **Reconstruction Quality**: Verify pixel-perfect reconstruction
+4. **AI Code Quality**: Review generated transformation code
+
+---
+
+## Technology Stack
+
+- **Backend**: Python 3.11+ with FastAPI
+- **AI**: window.ai (with fallback to local model)
+- **Frontend**: Vanilla JS with modern CSS
+- **Testing**: pytest with auto-generated tests
+- **Execution**: Restricted Python sandbox
+
+---
+
+## Success Criteria
+
+✅ Complete 4-cycle loop executes successfully  
+✅ AI generates valid transformation code  
+✅ Unit tests auto-generate and pass  
+✅ Pixel reconstructs perfectly (lossless)  
+✅ Eigenstate hash remains constant  
+✅ System operates statelessly  
+✅ Visual demonstration shows full cycle  
+✅ 1-loop coherence is maintained  
+
+---
+
+## Next Steps
+
+1. Create project structure
+2. Implement lib module with `__init__.py`
+3. Build ingest API service
+4. Integrate AI code generation
+5. Create web visualization
+6. Run verification tests

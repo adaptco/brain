@@ -1,0 +1,5 @@
+# Task: Repair launch.json
+
+- [ ] Diagnose persistent syntax errors in [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) <!-- id: 0 -->
+- [ ] Fix [launch.json](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/.vscode/launch.json) content or encoding <!-- id: 1 -->
+- [ ] Verify fix <!-- id: 2 -->

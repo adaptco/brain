@@ -1,28 +1,30 @@
+# Task: Agent Capsule Model System
 
-# Task: Docling Pipeline & Thread Merge
+## Checkpoint
+
+- [x] Create git checkpoint (commit eec885b)
+
+## Architecture Design
+
+- [x] Define capsule model schema
+- [x] Design routing node structure
+- [x] Plan LoRA weight registry
 
 ## Infrastructure
-- [x] Create [docker-compose.yml](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docker-compose.yml) with all services
-- [x] Create Dockerfiles for each service
-- [x] Create [requirements.txt](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/requirements.txt) per service
 
-## Schemas
-- [x] Define `doc.normalized.v1` JSON schema
-- [x] Define `chunk.embedding.v1` JSON schema
-- [x] Implement JCS canonicalization + hashing
+- [x] Create capsule-model service (Docker)
+- [x] Implement routing node API
+- [x] Build LoRA weight selector
+- [x] Integrate with existing Qdrant vector store
 
-## Services
-- [x] `ingest-api` (FastAPI): accept docs, return `bundle_id`
-- [x] `docling-worker`: parse + normalize
-- [x] `embed-worker`: chunk + embed
-- [x] [ledger](file:///c:/Users/eqhsp/.gemini/antigravity/knowledge/docling/ledger/ledger.py#141-148): append-only JSONL + hash-chain
+## Agent Integration
 
-## Thread Merge
-- [x] Resolve 'current problems' (lint/encoding issues addressed)
-- [x] Consolidate ADK, Server, and Pipeline logic
-- [x] Commit all changes to `main` branch
-- [x] Create Unified Walkthrough (merged threads)
+- [x] Connect capsule models to embed-worker
+- [x] Implement real-time fine-tuning pipeline
+- [/] Create agent remix/composition API
 
 ## Verification
-- [x] Build Docker images (Simulated via syntax check/local build ops)
-- [x] Unified Commit b1e9837
+
+- [ ] Test routing node selection
+- [ ] Verify LoRA weight application
+- [ ] End-to-end agent capsule test

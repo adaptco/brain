@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Walkthrough for the Docling Cluster Pipeline implementation. Covers the deterministic document processing flow, from FastAPI ingest to PyTorch-based batch embeddings and Qdrant storage, all anchored by a cryptographic ledger.",
-  "updatedAt": "2026-01-21T19:22:34.338044Z",
-  "version": "3"
+  "summary": "Added Agency Docking Shell walkthrough documentation",
+  "updatedAt": "2026-01-26T12:54:53.158751200Z",
+  "version": "6"
 }

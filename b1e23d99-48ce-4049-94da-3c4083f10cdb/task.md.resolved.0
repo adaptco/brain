@@ -1,0 +1,33 @@
+# ADK CLI & Integrity Engine Implementation
+
+## Project Setup
+- [ ] Create project directory structure
+- [ ] Set up Python environment and dependencies
+
+## Core Components
+- [ ] Implement hashing anchor (`hashing.py`)
+  - [ ] `normalize_newlines` function
+  - [ ] `calculate_file_hash` function
+- [ ] Implement HIRR harness (`hirr_harness.py`)
+  - [ ] `deterministic_dumps` function
+- [ ] Implement schema validator (`schema_validator.py`)
+- [ ] Implement ADK CLI (`adk.py`)
+  - [ ] `validate` command
+  - [ ] `replay` command
+  - [ ] `commit` command
+
+## Testing & Verification
+- [ ] Create test capsule JSON file
+- [ ] Run validation tests
+- [ ] Run replay tests
+- [ ] Run commit interception tests
+
+## Build & Release
+- [ ] Create PyInstaller spec file
+- [ ] Build standalone executable (`adk.exe`)
+- [ ] Verify executable functionality
+- [ ] Create Docker foundation image recipe
+
+## Documentation
+- [ ] Generate test results
+- [ ] Create walkthrough documentation

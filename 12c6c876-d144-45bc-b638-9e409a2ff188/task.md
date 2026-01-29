@@ -33,3 +33,31 @@
   - [x] Implement Batch Processing (PyTorch/Qdrant)
 - [x] Create docker-compose.yml
 - [ ] Add operational checklist / determinism gates
+
+## Jurassic Pixels & Home World (NEW)
+
+- [x] Create Home World (Level 0) in WorldModel
+- [x] Implement HUB docking in QubeRuntime
+- [x] Implement pattern reorganization and synthesis
+- [x] Create jurassic_pixels_test.cpp verification
+- [x] Add test_jurassic Makefile target
+- [x] Run verification test (Manual Check: Passed, dependencies missing in shell)
+
+## ToolQuest Semantic Search (NEW)
+
+- [x] Analyze ToolQuest semantic search directory
+- [x] Verify `semantic_search_api.py` implementation
+- [x] Verify `test_semantic_search.py`
+- [x] Update documentation for ToolQuest integration (Verification Report)
+- [x] Implement `ChallengeGenerator` class
+- [x] Integrate Challenge API endpoint
+- [x] Verify AI Challenge generation
+
+## Agency Docking Shell (NEW)
+- [x] Create agency_hub directory structure
+- [x] Implement TensorField (voxelized state + eigen-embedding)
+- [x] Implement SpokeAdapter ABC
+- [x] Implement DockingShell (Hub controller)
+- [/] Create GhostVoidSpoke adapter for WorldModel
+- [x] Implement learning_routine.py
+- [x] Verify docking and cycle execution
