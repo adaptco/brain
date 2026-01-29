@@ -7,9 +7,9 @@
   - [ ] Export C-compatible functions from WorldModel.cpp <!-- id: 3 -->
   - [ ] Export C-compatible functions from QubeRuntime.cpp <!-- id: 4 -->
 - [ ] Python Bridges <!-- id: 5 -->
-  - [ ] Create `world_model_bridge.py` <!-- id: 6 -->
-  - [ ] Create `qube_runtime_bridge.py` <!-- id: 7 -->
-  - [ ] Write unit tests for bridges <!-- id: 8 -->
+  - [x] Create C wrapper for WorldModel `include/bridge/world_model_c.h`
+- [x] Create C wrapper for QubeRuntime `include/bridge/qube_runtime_c.h`
+- [/] Build C++ shared library `libghostvoid.so` (CMake setup)
 
 ## Phase 2: GhostVoidSpoke Implementation
 

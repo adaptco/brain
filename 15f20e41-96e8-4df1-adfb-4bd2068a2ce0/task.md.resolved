@@ -1,7 +1,7 @@
 # Dockerization Task
 
-- [ ] Locate source scripts [/]
-- [ ] Create Implementation Plan
-- [ ] Create Dockerfile
-- [ ] Create Shell Entrypoint
-- [ ] Verify Docker Build
+- [x] Locate source scripts [x]
+- [x] Create Implementation Plan [x]
+- [x] Create Dockerfile [x]
+- [x] Create Shell Entrypoint [x]
+- [x] Verify Docker Build [x]
