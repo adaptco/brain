@@ -1,174 +1,180 @@
-# Unified Shell Production Enhancements
+# Hawkthorne Speedrun Bot - Implementation Plan
 
-## Goal Description
+## Goal
 
-Upgrade the unified shell prototype to production-ready status with six major enhancements: FFI bindings, gRPC client, TOML configuration, Rich logging, error handling, and plugin system.
+Build an auto-speedrun bot for Project Hawkthorne using MCP-orchestrated frontier LLM agents and tensor manifold generation for optimal trajectory synthesis.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> **C++ Safety Layer**: The FFI bridge requires a compiled C++ library (`libsafetylayer.dll`/`.so`). This plan includes a minimal C implementation for demonstration. For production, you would replace this with your actual safety layer library.
+> **LÖVE Runtime Injection**: The Lua bridge requires modifying Hawkthorne's `main.lua` to load our observer module. This is non-destructive but requires game source access.
 
 > [!WARNING]
-> **gRPC Dependency**: The RPC bridge requires `grpcio` and `grpcio-tools` packages. These will be added to requirements.txt.
+> **LLM API Costs**: The agent cluster uses Gemini API calls per frame/segment. Consider rate limiting for cost control.
 
 ---
 
-## Proposed Changes
+## Architecture Overview
 
-### Infrastructure
-
-#### [NEW] [requirements.txt](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/requirements.txt)
-
-- `tomli` - TOML parsing (stdlib in 3.11+)
-- `rich` - Beautiful terminal output
-- `grpcio` / `grpcio-tools` - gRPC communication
-- `tenacity` - Retry logic
-
-#### [NEW] [adk.toml](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/adk.toml)
-
-- Production configuration file with all bridge settings
-
----
-
-### 1. TOML Configuration System
-
-#### [NEW] [config.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/config.py)
-
-- Parse `adk.toml` using tomli
-- Environment variable overrides
-- Default fallback values
-
-#### [MODIFY] [shell.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/shell.py)
-
-- Replace JSON loading with TOML parser
-- Use new Config class
+```
+┌─────────────────────────────────────────────────────┐
+│              Tensor Manifold (Queen Boo)            │
+│         Worldline vectors → Geodesic paths          │
+└─────────────────────────────────────────────────────┘
+                        ▲
+┌─────────────────────────────────────────────────────┐
+│              LLM Agent Cluster                      │
+│   Planner ─→ Executor ─→ Validator (handoff chain)  │
+└─────────────────────────────────────────────────────┘
+                        ▲
+┌─────────────────────────────────────────────────────┐
+│              MCP Action Hub                         │
+│   observe | execute | checkpoint | handoff          │
+└─────────────────────────────────────────────────────┘
+                        ▲
+┌─────────────────────────────────────────────────────┐
+│        Hawkthorne Bridge (LÖVE/Lua)                 │
+│   State Observer │ Input Injector │ IPC Socket      │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
-### 2. Rich Logging System
+## Phase 1: Game Interface Layer
 
-#### [NEW] [logging_config.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/logging_config.py)
+#### [NEW] hawkthorne_bridge.lua
 
-- Rich console with panels, tables, progress bars
-- Structured log formatting
-- Color-coded bridge identification
+Lua module injected into LÖVE runtime.
 
-#### [MODIFY] All bridge files
+**State Observer** extracts:
 
-- Replace `print()` with Rich console output
-- Add progress spinners for long operations
+- Player position `{x, y}`
+- Current level/room ID
+- Enemy positions and health
+- Collectibles and items
+- Timer/frame count
 
----
+**Input Injector**:
 
-### 3. Error Handling & Retry Logic
+- Programmatic keypresses via `love.keyboard.setKey`
+- Frame-perfect action timing
 
-#### [NEW] [errors.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/errors.py)
+**IPC Socket**:
 
-- Custom exception hierarchy:
-  - `ShellError` (base)
-  - `BridgeError` (bridge failures)
-  - `RetryableError` (transient failures)
-  - `FatalError` (unrecoverable)
-
-#### [NEW] [retry.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/retry.py)
-
-- Retry decorator using tenacity
-- Configurable backoff strategies
-- Per-bridge retry policies
+- JSON-RPC over `localhost:7878`
+- Methods: `getState()`, `sendAction(action)`
 
 ---
 
-### 4. FFI Bridge (Real ctypes Bindings)
+## Phase 2: MCP Action Hub
 
-#### [NEW] [lib/safety_layer.c](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/lib/safety_layer.c)
+#### [NEW] mcp_action_server.py
 
-- Minimal C implementation for demonstration:
-  - `validate_schema(const char* json_str)` → int
-  - `compute_hash(const char* data, size_t len)` → uint64_t
-  - `clip_value(double value, double min, double max)` → double
+| Endpoint | Purpose |
+|----------|---------|
+| `observe` | Get current game state JSON |
+| `execute(action)` | Inject action into game |
+| `checkpoint` | Create validation snapshot |
+| `handoff(context)` | Pass context to next agent |
 
-#### [MODIFY] [bridges/ffi_bridge.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/bridges/ffi_bridge.py)
+**Handoff Protocol**:
 
-- Real ctypes bindings with proper type definitions
-- Error code translation
-- Memory safety guards
-
----
-
-### 5. RPC Bridge (gRPC Client)
-
-#### [NEW] [proto/shell_service.proto](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/proto/shell_service.proto)
-
-- Service definition for remote commands
-- Message types for simulate/deploy
-
-#### [NEW] [bridges/grpc_client.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/bridges/grpc_client.py)
-
-- Generated gRPC stubs wrapper
-- Connection pooling
-- Timeout handling
-
-#### [MODIFY] [bridges/rpc_bridge.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/bridges/rpc_bridge.py)
-
-- Use gRPC client instead of stubs
-- Integrate retry logic
-- Add health checking
+```json
+{
+  "chain": ["navigate:town_hall", "collect:key", "boss:defeat"],
+  "worldline_id": "wv_00a1b2c3",
+  "context": {"elapsed_frames": 1847, "checkpoints_hit": 3}
+}
+```
 
 ---
 
-### 6. Plugin System
+## Phase 3: LLM Agent Cluster
 
-#### [NEW] [plugins/base.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/plugins/base.py)
+#### [NEW] agent_runner.py
 
-- `BaseBridge` abstract class
-- Plugin interface contract
+| Agent | Model | Responsibility |
+|-------|-------|----------------|
+| Planner | gemini-2.5-pro | Long-range route optimization |
+| Executor | gemini-flash | Frame-by-frame action synthesis |
+| Validator | gemini-pro | Checkpoint verification, error recovery |
 
-#### [NEW] [plugins/registry.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/plugins/registry.py)
+**Handoff Chain**:
 
-- Dynamic bridge registration
-- Plugin discovery from directory
-- Route table extension
+```python
+async def run_speedrun():
+    plan = await planner.generate_route(game_state)
+    for segment in plan.segments:
+        actions = await executor.synthesize_actions(segment)
+        for action in actions:
+            await mcp.execute(action)
+        await validator.checkpoint(segment.goal)
+```
 
-#### [MODIFY] [shell.py](file:///c:/Users/eqhsp/code/adaptco/unified_shell_proto/shell.py)
+---
 
-- Use plugin registry for routing
-- Support `--plugin-dir` CLI flag
+## Phase 4: Tensor Manifold (Queen Boo)
+
+#### [NEW] queen_boo.py
+
+**Worldline Vector Encoding**:
+
+```python
+worldline = TensorField.encode(
+    positions=trajectory.positions,   # [N, 2]
+    actions=trajectory.actions,       # [N, A]
+    rewards=trajectory.rewards        # [N]
+)
+```
+
+**Manifold Synthesis**:
+
+```python
+class QueenBoo:
+    def __init__(self, worldlines: List[Tensor]):
+        self.manifold = self._fit_manifold(worldlines)
+    
+    def generate_optimal_path(self, start, goal) -> Trajectory:
+        return self.manifold.geodesic(start, goal)
+```
+
+---
+
+## File Structure
+
+```
+hawkthorne_bot/
+├── bridge/
+│   └── hawkthorne_bridge.lua
+├── mcp/
+│   ├── action_server.py
+│   └── handoff_protocol.py
+├── agents/
+│   ├── planner.py
+│   ├── executor.py
+│   ├── validator.py
+│   └── runner.py
+├── manifold/
+│   ├── worldline.py
+│   └── queen_boo.py
+├── config.toml
+└── requirements.txt
+```
 
 ---
 
 ## Verification Plan
 
-### Automated Tests
+### Checkpoints
 
-1. **Unit Tests** - Run with pytest:
+| Milestone | Target Time |
+|-----------|-------------|
+| Level 1 Clear | < 30 seconds |
+| Boss Room Entry | < 2 minutes |
+| Full Run | < 10 minutes |
 
-   ```bash
-   cd c:/Users/eqhsp/code/adaptco/unified_shell_proto
-   python -m pytest tests/ -v
-   ```
+### Metrics
 
-2. **Config Loading Test**:
-
-   ```bash
-   python -c "from config import Config; c = Config('adk.toml'); print(c)"
-   ```
-
-3. **FFI Bridge Test** (requires compiled library):
-
-   ```bash
-   python shell.py validate test.json
-   python shell.py hash somefile.txt
-   ```
-
-4. **IO Bridge Test**:
-
-   ```bash
-   python shell.py git --version
-   ```
-
-### Manual Verification
-
-1. **Rich Output**: Run any command and verify colorized, formatted output appears in terminal
-2. **Error Handling**: Run `python shell.py unknown_command` and verify graceful error message
-3. **Plugin Discovery**: Add a custom plugin to `plugins/` directory and verify it registers
+- Action accuracy vs reference TAS
+- Worldline vector convergence (cosine similarity)
+- Queen Boo geodesic efficiency
