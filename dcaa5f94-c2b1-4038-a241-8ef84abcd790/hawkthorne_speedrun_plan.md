@@ -53,7 +53,7 @@ Lua module injected into LÖVE runtime:
 ### [NEW] Action Server (`mcp_action_server.py`)
 
 | Endpoint | Purpose |
-|----------|---------|
+| ---------- | --------- |
 | `observe` | Get current game state |
 | `execute(action)` | Inject action into game |
 | `checkpoint` | Create validation snapshot |
@@ -75,7 +75,7 @@ Lua module injected into LÖVE runtime:
 ### Agent Roles
 
 | Agent | Model | Responsibility |
-|-------|-------|----------------|
+| ------- | ------- | ---------------- |
 | **Planner** | `gemini-2.5-pro` | Long-range route optimization |
 | **Executor** | `gemini-flash` | Frame-by-frame action synthesis |
 | **Validator** | `gemini-pro` | Checkpoint verification, error recovery |
