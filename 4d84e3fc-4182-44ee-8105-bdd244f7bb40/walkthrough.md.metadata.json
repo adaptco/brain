@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary": "Final walkthrough documenting the complete Agency Docking Shell implementation, test validation, and git commit. Includes architecture overview, test results, and deployment status.",
-  "updatedAt": "2026-01-26T12:54:42.314630500Z",
-  "version": "2"
+  "summary": "Final walkthrough for the complete ADK. Documents the unified package structure, CLI usage, and verification results.",
+  "updatedAt": "2026-01-30T20:35:25.468056600Z",
+  "version": "3"
 }
