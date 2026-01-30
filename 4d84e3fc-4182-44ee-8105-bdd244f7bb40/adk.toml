@@ -1,0 +1,10 @@
+# ADK Configuration
+[project]
+name = "MyAgent"
+version = "0.1.0"
+
+[hub]
+tensor_shape = [16, 16, 16]
+
+[bridges]
+default = "io"
