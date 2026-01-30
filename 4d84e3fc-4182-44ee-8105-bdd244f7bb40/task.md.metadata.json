@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Task list for the Agency Docking Shell. Focuses on the Hub (Orchestrator), Tensor Field (Memory/State), and Spokes (Adapters).",
-  "updatedAt": "2026-01-15T14:02:01.946774600Z",
-  "version": "4"
+  "summary": "Task list for checking off the ADK completion.\n- Unify directory structure.\n- Create adk.toml.\n- Integrate AgencyHub into UnifiedShell.\n- Create 'adk' CLI entry point.",
+  "updatedAt": "2026-01-29T12:25:53.811379300Z",
+  "version": "6"
 }

@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Implementation plan for the Agency Docking Shell.\nA Python-based architecture acting as the 'Hub' for Agentic Field Games.\nKey Components:\n- **DockingShell:** The main orchestrator/container.\n- **TensorField:** Handles the 'Voxelized Tensor State', applying Eigenvalue normalization and mapping RAGs.\n- **LearningRoutine:** The loop that creates/refines the shell.\n- **Tech Stack:** Python, NumPy (for linear algebra), Generic Vector Interface.",
-  "updatedAt": "2026-01-15T14:02:04.579093Z",
-  "version": "2"
+  "summary": "Implementation plan to 'Complete the ADK'.\nIntegrates the `unified_shell_proto` (CLI) and `agency_hub` (Runtime) into a single cohesion toolchain.\nFeatures:\n- `adk.toml` for configuration.\n- `adk` CLI command.\n- `adk hub start` command.\n- Unified package structure.",
+  "updatedAt": "2026-01-29T12:25:56.307108700Z",
+  "version": "3"
 }
