@@ -1,25 +1,19 @@
-# Task: Scaffold Agentic RAG Pipeline with Helper Bot
+# Task: Agentic RAG Pipeline with Antigravity Head Agent
 
 - [x] **Initialize Project Scaffolding**
-  - [x] Create directory structure for `helper_bot`, `rag_worker`, `scripts`.
-  - [x] Initialize Python environment/requirements.
 - [x] **Implement Helper Bot (Agent)**
-  - [x] Create `bot.py` using Claude API for orchestration.
-  - [x] Implement "Code Assist" actions simulation (activator).
 - [x] **Create Worker Service**
-  - [x] Implement `worker.py` for RAG operations.
-  - [x] Setup message queue/dispatch.
 - [x] **Implement LoRa & Model Generation Scripts**
-  - [x] Create `lora_script.py` for context/model generation.
-  - [x] Implement `extender.py` for model generation logic.
 - [x] **Implement "Panda" Python Script**
-  - [x] Create `panda_script.py` (likely using Pandas) for data handling.
 - [x] **Setup Auto-Roll Lint Tooling**
-  - [x] Configure `lint_roller.py` or similar tool.
-  - [x] Integrate with the Helper Bot.
 - [x] **Finalize Integration**
-  - [x] Connect all components to Claude API map.
-  - [x] Verify flow: Bot -> Worker -> RAG -> Script -> Model -> Panda -> Lint.
-- [ ] **Final Cleanup & Commit**
-  - [ ] Run lint verification.
+- [/] **Refactor to Antigravity Head Agent**
+  - [ ] Rename `HelperBot` to `AntigravityHeadAgent` in `bot.py`.
+  - [ ] Add `manage_brain()` control loop.
+- [ ] **Create Geodesic Hyperloop Bridge**
+  - [ ] Implement `hyperloop.py` for deterministic message passing.
+- [ ] **Define Manifold for Token Embedding**
+  - [ ] Implement `manifold.py` with `embed_token()`.
+- [ ] **Final Commit**
+  - [ ] Run verification.
   - [ ] Stage and commit changes.

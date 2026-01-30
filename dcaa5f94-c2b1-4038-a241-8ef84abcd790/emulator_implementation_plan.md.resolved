@@ -1,0 +1,58 @@
+# Game Emulator for Runtime Models
+
+Build a Python-based game emulator that mirrors the C++ runtime models ([WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#16-31), [QubeRuntime](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#7-10)) for agent training and testing.
+
+## Proposed Architecture
+
+```mermaid
+flowchart LR
+    subgraph Emulator
+        WM[WorldModel]
+        QR[QubeRuntime]
+        GE[GameEngine]
+    end
+    subgraph AgencyHub
+        DS[DockingShell]
+        TF[TensorField]
+    end
+    GE --> WM
+    GE --> QR
+    DS --> GE
+```
+
+## Proposed Changes
+
+---
+
+### Emulator Core
+
+#### [NEW] [emulator.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/emulator.py)
+
+Python implementation containing:
+- [Tile](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#11-15), [Vector2](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Physics.hpp#7-10), [AABB](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/Physics.hpp#11-14) dataclasses
+- [WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#16-31) class: level loading, tile management, spawn points, plane spawning
+- [TokenPixel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/qube/TokenPixel.hpp#9-17) dataclass: hash-chained execution unit
+- [QubeRuntime](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#7-10) class: initialization, pixel execution, pattern docking, synthesis
+- `GameEmulator` facade: combines WorldModel + QubeRuntime for unified API
+
+---
+
+### Integration Layer
+
+#### [NEW] [runtime_bridge.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/runtime_bridge.py)
+
+Abstract `RuntimeBridge` protocol that can load either:
+- Python emulator (default, no dependencies)
+- C++ native library via ctypes (when `libghostvoid.dll` is available)
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Unit tests for [WorldModel](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/include/engine/WorldModel.hpp#16-31): level loading, tile queries
+- Unit tests for [QubeRuntime](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/src/qube/QubeRuntime.cpp#7-10): hash chain validation, pixel execution
+- Integration test: full Observe → Normalize → Unify → Act cycle via [DockingShell](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/docking_shell.py#12-132)
+
+### Manual Verification
+- Run emulator interactively to verify state transitions

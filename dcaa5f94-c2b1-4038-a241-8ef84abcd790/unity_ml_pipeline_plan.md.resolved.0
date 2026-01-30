@@ -1,0 +1,135 @@
+# Unity Game Engine + LoRA/RAG ML Pipeline
+
+Build a Unity-based game environment for training agents via ML-Agents, integrated with a LoRA fine-tuning pipeline and RAG vector store for intelligent action synthesis.
+
+## Architecture Overview
+
+```mermaid
+flowchart TB
+    subgraph Unity["Unity Game Engine"]
+        ENV[Environment]
+        AGENT[ML-Agent]
+        OBS[Observations]
+    end
+    
+    subgraph Python["Python Training Pipeline"]
+        MLAG[mlagents]
+        GYM[gym wrapper]
+    end
+    
+    subgraph MLPipeline["LoRA/RAG Pipeline"]
+        EMB[Embedding Model]
+        VDB[(Vector Store)]
+        LLM[Base LLM + LoRA Adapter]
+    end
+    
+    subgraph Deploy["Gated Network"]
+        ONNX[.onnx Model]
+        GATE[Policy Router]
+    end
+    
+    AGENT --> OBS --> MLAG
+    MLAG --> GYM --> EMB
+    EMB --> VDB
+    VDB --> LLM
+    LLM --> ONNX --> GATE --> AGENT
+```
+
+---
+
+## Phase 1: Unity Scaffold
+
+### Prerequisites
+- Unity 2020.1+ with ML-Agents package (`com.unity.ml-agents@4.0`)
+- Python 3.8+ with `mlagents==1.1.0`
+
+### Components
+
+| Component | Purpose |
+|-----------|---------|
+| `GameEnvironment.cs` | Scene setup (floor, obstacles, goals) |
+| `TrainingAgent.cs` | Agent script: observations, actions, rewards |
+| `BehaviorParameters` | Links agent to neural net / training config |
+| `config.yaml` | Hyperparameters (PPO, learning rate, batch size) |
+
+---
+
+## Phase 2: Training Integration
+
+#### [NEW] [unity_bridge.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/unity_bridge.py)
+
+Wrap Unity environment as gym:
+```python
+from mlagents_envs.environment import UnityEnvironment
+from mlagents_envs.envs.unity_gym_env import UnityToGymWrapper
+
+env = UnityEnvironment(file_name="Build/GameEnv.exe")
+gym_env = UnityToGymWrapper(env)
+```
+
+---
+
+## Phase 3: Vector Store / RAG
+
+#### [NEW] [vector_store.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/vector_store.py)
+
+- Use `chromadb` or `qdrant` for embeddings
+- Store agent trajectories as semantic vectors
+- Enable similarity search for action retrieval
+
+```python
+import chromadb
+from sentence_transformers import SentenceTransformer
+
+client = chromadb.Client()
+collection = client.create_collection("agent_memory")
+model = SentenceTransformer('all-MiniLM-L6-v2')
+```
+
+---
+
+## Phase 4: LoRA Fine-Tuning
+
+#### [NEW] [lora_adapter.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/lora_adapter.py)
+
+Fine-tune action synthesis using HuggingFace `peft`:
+```python
+from peft import LoraConfig, get_peft_model
+from transformers import AutoModelForCausalLM
+
+config = LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj", "v_proj"])
+model = get_peft_model(base_model, config)
+```
+
+---
+
+## Phase 5: Gated Network Deployment
+
+#### [NEW] [policy_router.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/policy_router.py)
+
+Route inference based on context:
+- **Low confidence** → Query RAG for similar past actions
+- **High confidence** → Direct ONNX inference
+- **Unknown domain** → Hot-swap LoRA adapter
+
+---
+
+## Reference Repositories
+
+| Repository | Purpose |
+|------------|---------|
+| [Unity-Technologies/ml-agents](https://github.com/Unity-Technologies/ml-agents) | Core ML-Agents toolkit |
+| [huggingface/peft](https://github.com/huggingface/peft) | LoRA fine-tuning library |
+| [chroma-core/chroma](https://github.com/chroma-core/chroma) | Lightweight vector database |
+
+---
+
+## Verification Plan
+
+### Automated
+- Unit test: Vector store insert/query
+- Integration test: Unity obs → embedding → RAG retrieval → action
+
+### Manual
+- Train agent on 3DBall environment
+- Verify LoRA adapter improves domain-specific action quality

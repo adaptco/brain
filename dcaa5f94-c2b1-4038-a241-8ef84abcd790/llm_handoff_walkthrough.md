@@ -1,0 +1,62 @@
+# Multi-LLM Handoff Pipeline Walkthrough
+
+## Summary
+
+Implemented a **Claude → Gemini → Mistral** handoff pipeline with **Queen Boo tensor manifold** for worldline vector synthesis.
+
+---
+
+## Components Created
+
+| File | Purpose |
+|------|---------|
+| [llm_handoff.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/llm_handoff.py) | Multi-API orchestration with checkpoint validation |
+| [queen_boo.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/queen_boo.py) | Tensor manifold for geodesic path synthesis |
+| [requirements_llm.txt](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/requirements_llm.txt) | API dependencies |
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    C[Claude API] -->|checkpoint| G[Gemini API]
+    G -->|packaged| M[Mistral API]
+    M -->|endpoint| QB[Queen Boo]
+    QB -->|worldline| WV[Vector Store]
+```
+
+---
+
+## Handoff Protocol
+
+Each stage produces a `HandoffPayload`:
+
+```json
+{
+  "stage": "claude_checkpoint",
+  "worldline_id": "wv_00a1b2c3",
+  "checksum": "abc123..."
+}
+```
+
+---
+
+## Verification
+
+```
+$ python -c "from agency_hub.queen_boo import ..."
+OK: {"n_worldlines": 1, "manifold_center": null, "worldline_ids": ["wv_1a49c4c6d546"]}
+```
+
+✅ Queen Boo manifold created successfully with deterministic worldline ID.
+
+---
+
+## Environment Variables Required
+
+| Variable | Provider |
+|----------|----------|
+| `ANTHROPIC_API_KEY` | Claude |
+| `GEMINI_API_KEY` | Gemini |
+| `MISTRAL_API_KEY` | Mistral |

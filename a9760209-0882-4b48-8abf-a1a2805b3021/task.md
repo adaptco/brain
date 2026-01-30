@@ -1,16 +1,34 @@
 # Unified Shell Design
 
-- [x] Draft Architecture Document (`unified_shell_design.md`) <!-- id: 0 -->
-  - [x] Define Core Principles (Determinism, Uniformity) <!-- id: 1 -->
-  - [x] Design Runtime Bridge Patterns (Subprocess, FFI, RPC) <!-- id: 2 -->
-  - [x] Design Plugin/Extension System <!-- id: 3 -->
-- [x] Review with User <!-- id: 4 -->
-- [x] Scaffold Prototype Implementation <!-- id: 5 -->
-  - [x] Create directory structure (`unified_shell/`) <!-- id: 6 -->
-  - [x] Implement core shell (`shell.py`) <!-- id: 7 -->
-  - [x] Implement IO Bridge (subprocess wrapper) <!-- id: 8 -->
-  - [x] Implement FFI Bridge (ctypes example) <!-- id: 9 -->
-  - [x] Implement RPC Bridge (socket/gRPC stub) <!-- id: 10 -->
-  - [x] Create context propagation system <!-- id: 11 -->
-  - [x] Add example commands <!-- id: 12 -->
-  - [x] Create README with usage examples <!-- id: 13 -->
+- [x] Draft Architecture Document (`unified_shell_design.md`)
+- [x] Review with User
+- [x] Scaffold Prototype Implementation
+
+## Production Enhancements
+
+- [ ] Infrastructure Setup
+  - [ ] Create `requirements.txt` with dependencies
+  - [ ] Create `adk.toml` configuration file
+- [ ] TOML Configuration System
+  - [ ] Implement `config.py` parser
+  - [ ] Update `shell.py` to use new config
+- [ ] Rich Logging System
+  - [ ] Implement `logging_config.py`
+  - [ ] Update all bridges for Rich output
+- [ ] Error Handling & Retry Logic
+  - [ ] Implement `errors.py` exception hierarchy
+  - [ ] Implement `retry.py` with tenacity
+- [ ] FFI Bridge (Real ctypes)
+  - [ ] Create minimal C safety layer (`lib/safety_layer.c`)
+  - [ ] Update `ffi_bridge.py` with real bindings
+- [ ] RPC Bridge (gRPC Client)
+  - [ ] Create `proto/shell_service.proto`
+  - [ ] Implement `grpc_client.py`
+  - [ ] Update `rpc_bridge.py` with gRPC
+- [ ] Plugin System
+  - [ ] Implement `plugins/base.py` interface
+  - [ ] Implement `plugins/registry.py`
+  - [ ] Update `shell.py` for dynamic routing
+- [ ] Verification
+  - [ ] Run all automated tests
+  - [ ] Manual verification of Rich output

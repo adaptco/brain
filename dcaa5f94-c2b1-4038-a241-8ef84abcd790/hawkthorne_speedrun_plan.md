@@ -1,0 +1,138 @@
+# Hawkthorne Speedrun Bot Architecture
+
+Auto-speedrun bot for **Project Hawkthorne** (LÖVE/Lua 2D platformer) using MCP-orchestrated frontier LLM agents and tensor manifold generation.
+
+## System Architecture
+
+```mermaid
+flowchart TB
+    subgraph Hawkthorne["Project Hawkthorne (LÖVE)"]
+        GAME[Game Runtime]
+        STATE[State Observer]
+        INPUT[Input Injector]
+    end
+    
+    subgraph MCP["MCP Server Layer"]
+        HUB[Action Hub]
+        HANDOFF[Handoff Chain]
+    end
+    
+    subgraph Agents["LLM Agent Cluster"]
+        PLANNER[Strategic Planner]
+        EXECUTOR[Tactical Executor]
+        VALIDATOR[Checkpoint Validator]
+    end
+    
+    subgraph Tensor["Tensor Manifold"]
+        WV[Worldline Vector]
+        QB[Queen Boo Generator]
+    end
+    
+    GAME --> STATE --> HUB
+    HUB --> PLANNER --> HANDOFF
+    HANDOFF --> EXECUTOR --> INPUT --> GAME
+    VALIDATOR --> WV --> QB
+```
+
+---
+
+## Phase 1: Game Interface Layer
+
+### [NEW] Hawkthorne Bridge (`hawkthorne_bridge.lua`)
+
+Lua module injected into LÖVE runtime:
+
+- **State Observer**: Extract player position, level, enemies, items
+- **Input Injector**: Programmatic keypresses via `love.keyboard`
+- **IPC Socket**: Expose JSON-RPC over localhost
+
+---
+
+## Phase 2: MCP Action Hub
+
+### [NEW] Action Server (`mcp_action_server.py`)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `observe` | Get current game state |
+| `execute(action)` | Inject action into game |
+| `checkpoint` | Create validation snapshot |
+| `handoff(context)` | Pass context to next agent in chain |
+
+**Handoff Protocol**: Single string encodes full action sequence
+
+```json
+{
+  "chain": ["navigate:town_hall", "collect:key", "boss:defeat"],
+  "worldline_id": "wv_00a1b2c3"
+}
+```
+
+---
+
+## Phase 3: LLM Agent Cluster
+
+### Agent Roles
+
+| Agent | Model | Responsibility |
+|-------|-------|----------------|
+| **Planner** | `gemini-2.5-pro` | Long-range route optimization |
+| **Executor** | `gemini-flash` | Frame-by-frame action synthesis |
+| **Validator** | `gemini-pro` | Checkpoint verification, error recovery |
+
+### [NEW] Agent Runner (`agent_runner.py`)
+
+```python
+async def run_speedrun():
+    plan = await planner.generate_route(game_state)
+    for segment in plan.segments:
+        actions = await executor.synthesize_actions(segment)
+        for action in actions:
+            await mcp.execute(action)
+        await validator.checkpoint(segment.goal)
+```
+
+---
+
+## Phase 4: Tensor Manifold (Queen Boo)
+
+### Worldline Vector Generation
+
+Each speedrun trajectory is encoded as a high-dimensional vector:
+
+```python
+worldline = TensorField.encode(
+    positions=trajectory.positions,   # [N, 2]
+    actions=trajectory.actions,       # [N, A]
+    rewards=trajectory.rewards        # [N]
+)
+```
+
+### [NEW] Queen Boo Generator (`queen_boo.py`)
+
+Manifold synthesis from successful runs:
+
+```python
+class QueenBoo:
+    def __init__(self, worldlines: List[Tensor]):
+        self.manifold = self._fit_manifold(worldlines)
+    
+    def generate_optimal_path(self, start, goal) -> Trajectory:
+        return self.manifold.geodesic(start, goal)
+```
+
+---
+
+## Verification Plan
+
+### Checkpoints
+
+1. **Level 1 Clear**: `< 30 seconds`
+2. **Boss Room Entry**: `< 2 minutes`
+3. **Full Run**: `< 10 minutes`
+
+### Metrics
+
+- Action accuracy vs reference TAS
+- Worldline vector convergence (cosine similarity)
+- Queen Boo geodesic efficiency

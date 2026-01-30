@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for building a Python-based game emulator that mirrors C++ runtime models (WorldModel, QubeRuntime) for agent training and testing.",
+  "updatedAt": "2026-01-30T17:09:26.155620600Z"
+}
