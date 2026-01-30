@@ -9,7 +9,7 @@ Implemented a **Claude → Gemini → Mistral** handoff pipeline with **Queen Bo
 ## Components Created
 
 | File | Purpose |
-|------|---------|
+| ------ | --------- |
 | [llm_handoff.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/llm_handoff.py) | Multi-API orchestration with checkpoint validation |
 | [queen_boo.py](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/queen_boo.py) | Tensor manifold for geodesic path synthesis |
 | [requirements_llm.txt](file:///c:/Users/eqhsp/.gemini/antigravity/playground/ghost-void/agency_hub/requirements_llm.txt) | API dependencies |
@@ -44,7 +44,7 @@ Each stage produces a `HandoffPayload`:
 
 ## Verification
 
-```
+```bash
 $ python -c "from agency_hub.queen_boo import ..."
 OK: {"n_worldlines": 1, "manifold_center": null, "worldline_ids": ["wv_1a49c4c6d546"]}
 ```
@@ -56,7 +56,7 @@ OK: {"n_worldlines": 1, "manifold_center": null, "worldline_ids": ["wv_1a49c4c6d
 ## Environment Variables Required
 
 | Variable | Provider |
-|----------|----------|
+| ---------- | ---------- |
 | `ANTHROPIC_API_KEY` | Claude |
 | `GEMINI_API_KEY` | Gemini |
 | `MISTRAL_API_KEY` | Mistral |

@@ -1,5 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
   "summary": "Walkthrough documenting the Multi-LLM Handoff Pipeline implementation: Claude→Gemini→Mistral with Queen Boo tensor manifold for worldline vector synthesis.",
-  "updatedAt": "2026-01-30T18:01:47.335282500Z"
+  "updatedAt": "2026-01-30T18:04:06.811695Z",
+  "version": "1"
 }
